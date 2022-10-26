@@ -4,11 +4,20 @@
 
 from pathlib import Path
 
+#for train data set
+import matplotlib.pyplot as plt
+from sklearn import datasets
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.svm import SVC
+
+
 # from tkinter import *
 # Explicit imports to satisfy Flake8
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
 from tkinter import filedialog as fd
 import sqlite3
+import sqlite3py
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
@@ -22,6 +31,56 @@ def upload_data_set():
     filePathName = fd.askopenfilename()
     splits = filePathName.split("/")
     filename = splits[len(splits) - 1]
+
+def train_model_press():
+    print("train_model_press")
+    #take each point in the matrix
+    Iris = datasets.load_iris()#the data set i need to take the
+    irisData = Iris.data[50:150]
+    trueLabels = Iris.target[50:150]  # true labeling
+
+    X_train, X_test, trainLabels, testLabels = train_test_split(irisData, trueLabels, test_size=0.40)#take the testing presangeges from the combobox
+    plt.plot()
+    plt.title("The Iris Dataset labels")
+    plt.xlabel(Iris.feature_names[0])
+    plt.ylabel(Iris.feature_names[1])
+    plt.scatter(X_train[:, 0], X_train[:, 1], c=trainLabels, s=30, label="train")
+
+    # generate a linear SVM model and fit the train data
+    svClassifier = SVC(kernel='rbf', C=1000)
+    svClassifier.fit(X_train, trainLabels)
+    # get and plot the support vectors
+    suppportVectors = svClassifier.support_vectors_
+    plt.scatter(suppportVectors[:, 0], suppportVectors[:, 1], c="red", marker="+", s=200, label="support vectors")
+    # predict the labels of the test vectors
+    predictedLabels = svClassifier.predict(X_test)
+    #i cant print the data and see something because it has more then 2D
+    plt.scatter(X_test[:, 0], X_test[:, 1], c=predictedLabels, marker="x", s=50, label="test")
+    plt.legend()
+    plt.show()
+
+
+######confusin matrix build
+    table = np.zeros((2, 2), dtype=np.int32)
+
+    for i in range(40):
+        if ((predictedLabels[i] == testLabels[i]) and testLabels[i] == 1):  # add one to TP
+            table[0, 0] += 1
+        elif (predictedLabels[i] == testLabels[i] and testLabels[i] == 2):  # add to TN
+            table[1, 1] += 1
+        elif (predictedLabels[i] != testLabels[i] and testLabels[i] == 1):  # add to FN
+            table[0, 1] += 1
+        elif (predictedLabels[i] != testLabels[i] and testLabels[i] == 2):  # add to FP
+            table[1, 0] += 1
+
+    print("TP ")
+    print(table[0][0])
+    print("FN  ")
+    print(table[0][1])
+    print("FP ")
+    print(table[1][0])
+    print("TN ")
+    print(table[1][1])
 
 class win:
     def __init__(self, *args, **kwargs):
@@ -79,7 +138,7 @@ class win:
             image=button_image_2,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_2 clicked"),
+            command= train_model_press,
             relief="flat"
         )
         button_2.place(
