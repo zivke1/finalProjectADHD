@@ -72,7 +72,7 @@ def BuildFromDir(path):
                     params_ftest = dataFromTest["params_ftest"]
                     params_ftestMat[i][j] = params_ftest[0]
 
-            mapOfData[file] = [ssr_based_F_testMat,ssr_chi2testMat,lrtestMat,params_ftestMat]
+            mapOfData[file] = [("ssr_based_F_testMat",ssr_based_F_testMat),("ssr_chi2testMat",ssr_chi2testMat),("lrtestMat",lrtestMat),("params_ftestMat",params_ftestMat)]
             ssr_based_F_testList.append(ssr_based_F_testMat)
             ssr_chi2testList.append(ssr_chi2testMat)
             lrtestList.append(lrtestMat)
@@ -88,6 +88,8 @@ if __name__ == '__main__':
 
     mapOfData ,ssr_based_F_testList ,ssr_chi2testList,lrtestList, params_ftestList = BuildFromDir(r"C:\Users\zivke\OneDrive\Documents\eeg_recording\TwoPersonCheck\\")
     a = {'a':[[1,1,1],[1,1,1],[1,1,1]],'b':[[2,2,2],[2,2,2],[2,2,2]]}
+    b = {'a':{'b':[1,1,1],'e':[1,1,1]},'c':{'d':[1,1,1]}}
+    k = b['a']
     lists = []
     a1 = np.array([[1,1,1],[1,1,1],[1,1,1]])
     a2 = np.array([[2,2,2],[2,2,2],[2,2,2]])
