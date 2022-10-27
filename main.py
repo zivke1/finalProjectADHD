@@ -18,18 +18,19 @@ def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
     print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
 
-def AvarageMatrix():
+def AvarageMatrix(matrixList):
     a = {'a':[[1,1,1],[1,1,1],[1,1,1]],'b':[[2,2,2],[2,2,2],[2,2,2]]}
     res = np.zeros((3,3))
 
     #add all the matrix in the collection
-    for x in a.values():
+    for x in matrixList:
        res = [[res[i][j] + x[i][j] for j in range(len(res[0]))] for i in range(len(res))]
 
-    t = np.multiply(res, 0.5)
+    t = np.multiply(res, 1 / len(matrixList))
 
     result = [[a['a'][i][j] + a['b'][i][j]  for j in range(len(a['a'][0]))] for i in range(len(a['a']))]
     # t = 5
+    return result
 
 
 def BuildFromDir(path):
@@ -85,8 +86,20 @@ def BuildFromDir(path):
 if __name__ == '__main__':
     print_hi('PyCharm')
 
-    mapOfData ,ssr_based_F_testList ,ssr_chi2testList,lrtestList,params_ftestList = BuildFromDir(r"C:\Users\zivke\OneDrive\Documents\eeg_recording\ADHD_part1\\")
-    AvarageMatrix()
+    mapOfData ,ssr_based_F_testList ,ssr_chi2testList,lrtestList, params_ftestList = BuildFromDir(r"C:\Users\zivke\OneDrive\Documents\eeg_recording\TwoPersonCheck\\")
+    a = {'a':[[1,1,1],[1,1,1],[1,1,1]],'b':[[2,2,2],[2,2,2],[2,2,2]]}
+    lists = []
+    a1 = np.array([[1,1,1],[1,1,1],[1,1,1]])
+    a2 = np.array([[2,2,2],[2,2,2],[2,2,2]])
+    ssr_chi2testMat = np.zeros((3, 3))
+    lists.append(a1)
+    lists.append(a2)
+    ssr_based_F_testAvgMatrix = AvarageMatrix(ssr_based_F_testList)
+    ssr_chi2testMatrix = AvarageMatrix(ssr_chi2testList)
+    lrtestMatrix = AvarageMatrix(lrtestList)
+    params_ftestMatrix = AvarageMatrix(params_ftestList)
+
+
 
 '''
     df = pd.read_csv("C:\\Users\\zivke\\OneDrive\\Documents\\eeg_recording\\ADHD_part1\\ADHD_part1_10_Group_Control.csv", parse_dates=['0'])
