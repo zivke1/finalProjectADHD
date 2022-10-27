@@ -73,6 +73,10 @@ def BuildFromDir(path):
                     params_ftestMat[i][j] = params_ftest[0]
 
             mapOfData[file] = [("ssr_based_F_testMat",ssr_based_F_testMat),("ssr_chi2testMat",ssr_chi2testMat),("lrtestMat",lrtestMat),("params_ftestMat",params_ftestMat)]
+
+          # shani you need to add here fill json for the map above
+            # map of patient name -> couples of 4 matrices and their names
+
             ssr_based_F_testList.append(ssr_based_F_testMat)
             ssr_chi2testList.append(ssr_chi2testMat)
             lrtestList.append(lrtestMat)
@@ -100,51 +104,6 @@ if __name__ == '__main__':
     ssr_chi2testMatrix = AvarageMatrix(ssr_chi2testList)
     lrtestMatrix = AvarageMatrix(lrtestList)
     params_ftestMatrix = AvarageMatrix(params_ftestList)
-
-
-
-'''
-    df = pd.read_csv("C:\\Users\\zivke\\OneDrive\\Documents\\eeg_recording\\ADHD_part1\\ADHD_part1_10_Group_Control.csv", parse_dates=['0'])
-    rowNumber = len(df.index)
-    colNumber = df.shape[1]-1
-    y = grangercausalitytests(df[['0', '0']], maxlag=2)
-
-    dataFromTest = y[1][0]
-    type(dataFromTest)
-    asss = dataFromTest["ssr_ftest"]
-    # type(asss)
-    t = asss[0]
-    ssr_based_F_testMat = np.zeros((colNumber,colNumber))
-    ssr_chi2testMat = np.zeros((colNumber,colNumber))
-    lrtestMat = np.zeros((colNumber,colNumber))
-    params_ftestMat = np.zeros((colNumber,colNumber))
-
-    for i in range (colNumber):
-        for j in range (colNumber):
-            y = grangercausalitytests(df[[str(i), str(j)]], maxlag=2)
-
-            ####data from the first part
-            dataFromTest = y[1][0]
-            # type(dataFromTest)
-            ssr_ftest = dataFromTest["ssr_ftest"]
-            # t = ssr_ftest[0]
-            ssr_based_F_testMat[i][j] = ssr_ftest[0]
-            ssr_chi2test = dataFromTest["ssr_chi2test"]
-            ssr_chi2testMat[i][j] = ssr_chi2test[0]
-            lrtest = dataFromTest["lrtest"]
-            lrtestMat[i][j] = lrtest[0]
-            params_ftest = dataFromTest["params_ftest"]
-            params_ftestMat[i][j] = params_ftest[0]
-
-
-
-    print(ssr_based_F_testMat)
-    print(ssr_chi2testMat)
-    print(lrtestMat)
-    print(params_ftestMat)
-
-    print(ssr_based_F_testMat[0][0])
-'''
 
 stop = 1
 
