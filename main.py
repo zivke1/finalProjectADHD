@@ -11,6 +11,7 @@ import numpy as np
 import pandas as pd
 from statsmodels.tsa.stattools import grangercausalitytests
 import os
+from utilities.json_creator import JsonHandler as jh
 
 
 
@@ -82,15 +83,16 @@ def BuildFromDir(path):
             lrtestList.append(lrtestMat)
 
             params_ftestList.append(params_ftestMat)
-
-
+    jsonC = jh()
+    print(jsonC.martix_to_json)
+    jsonC.martix_to_json(mapOfData)
     return mapOfData ,ssr_based_F_testList ,ssr_chi2testList,lrtestList,params_ftestList
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     print_hi('PyCharm')
 
-    mapOfData ,ssr_based_F_testList ,ssr_chi2testList,lrtestList, params_ftestList = BuildFromDir(r"C:\Users\zivke\OneDrive\Documents\eeg_recording\TwoPersonCheck\\")
+    mapOfData ,ssr_based_F_testList ,ssr_chi2testList,lrtestList, params_ftestList = BuildFromDir("C:\\Users\\shani\\Desktop\\study\\finalProject\\eeg_testing\\")
     a = {'a':[[1,1,1],[1,1,1],[1,1,1]],'b':[[2,2,2],[2,2,2],[2,2,2]]}
     b = {'a':{'b':[1,1,1],'e':[1,1,1]},'c':{'d':[1,1,1]}}
     k = b['a']
