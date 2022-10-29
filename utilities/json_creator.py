@@ -31,7 +31,7 @@ class JsonHandler:
             json.dump(conclusion_matrix, j_file)
             j_file.write(',\n\n')
 
-        j_file.seek(j_file.tell() - 3, os.SEEK_SET)  # go back 3 from last position
+        j_file.seek(j_file.tell() - 5, os.SEEK_SET)  # go back 3 from last position
         j_file.write('\n\t]\n}')
         j_file.close()
 
