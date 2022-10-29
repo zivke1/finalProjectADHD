@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 from statsmodels.tsa.stattools import grangercausalitytests
 import os
-from utilities.json_creator import JsonHandler as jh
+from utilities.json_creator import OutputHandler as jh
 
 
 
@@ -31,7 +31,7 @@ def AvarageMatrix(matrixList):
 
     result = [[a['a'][i][j] + a['b'][i][j]  for j in range(len(a['a'][0]))] for i in range(len(a['a']))]
     # t = 5
-    return result
+    return t
 
 
 def BuildFromDir(path):
@@ -74,7 +74,7 @@ def BuildFromDir(path):
                     params_ftestMat[i][j] = params_ftest[0]
 
             mapOfData[file] = [("ssr_based_F_testMat",ssr_based_F_testMat),("ssr_chi2testMat",ssr_chi2testMat),("lrtestMat",lrtestMat),("params_ftestMat",params_ftestMat)]
-
+            print(file)
           # shani you need to add here fill json for the map above
             # map of patient name -> couples of 4 matrices and their names
 
@@ -86,6 +86,7 @@ def BuildFromDir(path):
     jsonC = jh()
     print(jsonC.martix_to_json)
     jsonC.martix_to_json(mapOfData)
+    jsonC.martix_to_csv(mapOfData)
     return mapOfData ,ssr_based_F_testList ,ssr_chi2testList,lrtestList,params_ftestList
 
 # Press the green button in the gutter to run the script.
