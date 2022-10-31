@@ -21,7 +21,7 @@ def print_hi(name):
 
 def AvarageMatrix(matrixList):
     a = {'a':[[1,1,1],[1,1,1],[1,1,1]],'b':[[2,2,2],[2,2,2],[2,2,2]]}
-    res = np.zeros((3,3))
+    res = np.zeros((19,19))
 
     #add all the matrix in the collection
     for x in matrixList:
@@ -86,7 +86,6 @@ def BuildFromDir(path):
     jsonC = jh()
     print(jsonC.martix_to_json)
     jsonC.martix_to_json(mapOfData)
-    jsonC.martix_to_csv(mapOfData)
     return mapOfData ,ssr_based_F_testList ,ssr_chi2testList,lrtestList,params_ftestList
 
 # Press the green button in the gutter to run the script.
@@ -103,10 +102,16 @@ if __name__ == '__main__':
     ssr_chi2testMat = np.zeros((3, 3))
     lists.append(a1)
     lists.append(a2)
+    jsonC = jh()
+    # average of all patients
     ssr_based_F_testAvgMatrix = AvarageMatrix(ssr_based_F_testList)
+    jsonC.martix_to_csv(ssr_based_F_testAvgMatrix, "ssr_based_F_testAvgMatrix")
     ssr_chi2testMatrix = AvarageMatrix(ssr_chi2testList)
+    jsonC.martix_to_csv(ssr_based_F_testAvgMatrix, "ssr_chi2testMatrix")
     lrtestMatrix = AvarageMatrix(lrtestList)
+    jsonC.martix_to_csv(ssr_based_F_testAvgMatrix, "lrtestMatrix")
     params_ftestMatrix = AvarageMatrix(params_ftestList)
+    jsonC.martix_to_csv(ssr_based_F_testAvgMatrix, "params_ftestMatrix")
 
 stop = 1
 

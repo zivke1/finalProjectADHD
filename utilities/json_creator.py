@@ -14,10 +14,10 @@ class OutputHandler:
     def martix_to_json(self, mapOfData):
         conclusion_matrix = {               # create template for json file
                 "patient_name": "",
-                "mat1": [],
-                "mat2": [],
-                "mat3": [],
-                "mat4": []
+                "ssr_based_F_testMat": [],
+                "ssr_chi2testMat": [],
+                "lrtestMat": [],
+                "params_ftestMat": []
             }
 
         jpath = 'conclusionMatrix.json'
@@ -26,10 +26,10 @@ class OutputHandler:
 
         for patient in mapOfData:           # insert data into struct
             conclusion_matrix['patient_name'] = patient.strip(".csv")
-            conclusion_matrix['mat1'] = mapOfData[patient][0][1].tolist()  # get the second element in the tuple which is the matrix
-            conclusion_matrix['mat2'] = mapOfData[patient][1][1].tolist()
-            conclusion_matrix['mat3'] = mapOfData[patient][2][1].tolist()
-            conclusion_matrix['mat4'] = mapOfData[patient][3][1].tolist()
+            conclusion_matrix['ssr_based_F_testMat'] = mapOfData[patient][0][1].tolist()  # get the second element in the tuple which is the matrix
+            conclusion_matrix['ssr_chi2testMat'] = mapOfData[patient][1][1].tolist()
+            conclusion_matrix['lrtestMat'] = mapOfData[patient][2][1].tolist()
+            conclusion_matrix['params_ftestMat'] = mapOfData[patient][3][1].tolist()
             j_file.write('\t')
             json.dump(conclusion_matrix, j_file)
             j_file.write(',\n\n')
@@ -38,14 +38,12 @@ class OutputHandler:
         j_file.write('\n\t]\n}')
         j_file.close()
 
-    def martix_to_csv(self, mapOfData):
-        i=1
-        for patient in mapOfData:
+    def martix_to_csv(self, matrix, name):
+        #for patient in mapOfData:
             # convert array into dataframe
-            DF = pd.DataFrame(mapOfData[patient][0][1])
+        DF = pd.DataFrame(matrix)
 
-            # save the dataframe as a csv file
-            DF.to_csv("matrix1"+str(i)+".csv")
-            i+=1
+        # save the dataframe as a csv file
+        DF.to_csv("matrix_"+str(name)+".csv")
 
             ##### for now save only the first matrix for each patient !!!
