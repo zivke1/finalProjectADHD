@@ -9,17 +9,18 @@ from sklearn import datasets
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
-from finalProjectADHD.utilities.json_creator import OutputHandler as jh
-from finalProjectADHD.utilities.GeneralFunction import AvarageMatrix
+from utilities.json_creator import OutputHandler as jh
+from utilities.GeneralFunction import AvarageMatrix
+import build_train_model.gui as train_model_win
 
 # from tkinter import *
 # Explicit imports to satisfy Flake8
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
 from tkinter import filedialog as fd
 import sqlite3
-import sqlite3py
 
-from finalProjectADHD.build_load_dataset.LoadDataSetLogic import LoadDataSetLogic
+
+from build_load_dataset.LoadDataSetLogic import LoadDataSetLogic
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
@@ -196,7 +197,11 @@ class win:
             image=button_image_3,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_3 clicked"),
+            command=lambda: {
+                # print("button_3 clicked")
+                    window.destroy():
+                    train_model_win.win()
+                             },
             relief="flat"
         )
         button_3.place(
