@@ -20,7 +20,7 @@ def print_hi(name):
     print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
 
 def AvarageMatrix(matrixList):
-    a = {'a':[[1,1,1],[1,1,1],[1,1,1]],'b':[[2,2,2],[2,2,2],[2,2,2]]}
+    # a = {'a':[[1,1,1],[1,1,1],[1,1,1]],'b':[[2,2,2],[2,2,2],[2,2,2]]}
     res = np.zeros((19,19))
 
     #add all the matrix in the collection
@@ -29,7 +29,7 @@ def AvarageMatrix(matrixList):
 
     t = np.multiply(res, 1 / len(matrixList))
 
-    result = [[a['a'][i][j] + a['b'][i][j]  for j in range(len(a['a'][0]))] for i in range(len(a['a']))]
+    # result = [[a['a'][i][j] + a['b'][i][j]  for j in range(len(a['a'][0]))] for i in range(len(a['a']))]
     # t = 5
     return t
 
@@ -92,7 +92,7 @@ def BuildFromDir(path):
 if __name__ == '__main__':
     print_hi('PyCharm')
 
-    mapOfData ,ssr_based_F_testList ,ssr_chi2testList,lrtestList, params_ftestList = BuildFromDir("C:\\Users\\shani\\Desktop\\study\\finalProject\\eeg_testing\\")
+    mapOfData ,ssr_based_F_testList ,ssr_chi2testList,lrtestList, params_ftestList = BuildFromDir("C:\\Users\\zivke\\OneDrive\\Documents\\eeg_recording\\Control_part2\\")
     a = {'a':[[1,1,1],[1,1,1],[1,1,1]],'b':[[2,2,2],[2,2,2],[2,2,2]]}
     b = {'a':{'b':[1,1,1],'e':[1,1,1]},'c':{'d':[1,1,1]}}
     k = b['a']

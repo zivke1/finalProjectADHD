@@ -11,7 +11,7 @@ class OutputHandler:
         self.telem_path = "/home/maya/Rocky_Simulations/map/metria.csv"   # currently not in use
         # self.flag_first_row = 1
 
-    def martix_to_json(self, mapOfData):
+    def martix_to_json(self, mapOfData, outputFileName):
         conclusion_matrix = {               # create template for json file
                 "patient_name": "",
                 "ssr_based_F_testMat": [],
@@ -20,7 +20,7 @@ class OutputHandler:
                 "params_ftestMat": []
             }
 
-        jpath = 'conclusionMatrix.json'
+        jpath = outputFileName +'.json'
         j_file = open(jpath, 'w')
         j_file.write('{\n"Patients": [\n')
 

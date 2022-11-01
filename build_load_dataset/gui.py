@@ -10,7 +10,8 @@ from sklearn import datasets
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
-
+from finalProjectADHD.utilities.json_creator import OutputHandler as jh
+from finalProjectADHD.utilities.GeneralFunction import AvarageMatrix
 
 # from tkinter import *
 # Explicit imports to satisfy Flake8
@@ -18,6 +19,8 @@ from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
 from tkinter import filedialog as fd
 import sqlite3
 import sqlite3py
+
+from finalProjectADHD.build_load_dataset.LoadDataSetLogic import LoadDataSetLogic
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
@@ -28,9 +31,40 @@ def relative_to_assets(path: str) -> Path:
 
 # added
 def upload_data_set():
-    filePathName = fd.askopenfilename()
+    filePathName = fd.askdirectory()
     splits = filePathName.split("/")
-    filename = splits[len(splits) - 1]
+    # filename = splits[len(splits) - 1]
+    # loadDataSet = LoadDataSetLogic()
+    filePathNameADHD =filePathName +"/ADHD/"
+    filePathNameControl = filePathName + "/Control/"
+    mapOfDataADHD, ssr_based_F_testADHDList, ssr_chi2testADHDList, lrtestADHDList, params_ftestADHDList = LoadDataSetLogic.BuildFromDir(filePathNameADHD)
+    jsonC = jh()
+    print(jsonC.martix_to_json)
+    jsonC.martix_to_json(mapOfDataADHD,"conclusionMatrixADHD")
+
+    # average of all adhd patients
+    ssr_based_F_testAvgADHDMatrix = AvarageMatrix(ssr_based_F_testADHDList)
+    jsonC.martix_to_csv(ssr_based_F_testAvgADHDMatrix, "ssr_based_F_testAvgADHDMatrix")
+    ssr_chi2testAvgADHDMatrix = AvarageMatrix(ssr_chi2testADHDList)
+    jsonC.martix_to_csv(ssr_chi2testAvgADHDMatrix, "ssr_chi2testAvgADHDMatrix")
+    lrtestAvgADHDMatrix = AvarageMatrix(lrtestADHDList)
+    jsonC.martix_to_csv(lrtestAvgADHDMatrix, "lrtestAvgADHDMatrix")
+    params_ftestAvgADHDMatrix = AvarageMatrix(params_ftestADHDList)
+    jsonC.martix_to_csv(params_ftestAvgADHDMatrix, "params_ftestAvgADHDMatrix")
+
+    mapOfDataControl, ssr_based_F_testControlList, ssr_chi2testControlList, lrtestControlList, params_ftestControlList = LoadDataSetLogic.BuildFromDir(filePathNameControl)
+
+    jsonC.martix_to_json(mapOfDataControl, "conclusionMatrixControl")
+
+    # average of all patients control
+    ssr_based_F_testAvgControlMatrix = AvarageMatrix(ssr_based_F_testControlList)
+    jsonC.martix_to_csv(ssr_based_F_testAvgControlMatrix, "ssr_based_F_testAvgControlMatrix")
+    ssr_chi2testAvgControlMatrix = AvarageMatrix(ssr_chi2testControlList)
+    jsonC.martix_to_csv(ssr_chi2testAvgControlMatrix, "ssr_chi2testAvgControlMatrix")
+    lrtestAvgControlMatrix = AvarageMatrix(lrtestControlList)
+    jsonC.martix_to_csv(lrtestAvgControlMatrix, "lrtestAvgControlMatrix")
+    params_ftestAvgControlMatrix = AvarageMatrix(params_ftestControlList)
+    jsonC.martix_to_csv(params_ftestAvgControlMatrix, "params_ftestAvgControlMatrix")
 
 def train_model_press():
     print("train_model_press")
