@@ -37,20 +37,31 @@ def upload_data_set(listBox=None):
 
 
 
-def train_model_press(listBox=None):
+def train_model_press(listBox=None , parent = None):
     filePathName = listBox.selection_get()
     filePathNameADHD = filePathName + "/ADHD/"
     filePathNameControl = filePathName + "/Control/"
-    mapOfDataADHD, ssr_based_F_testADHDList, ssr_chi2testADHDList, lrtestADHDList, params_ftestADHDList = LoadDataSetLogic.BuildFromDir(
-        filePathNameADHD)
 
     path = os.getcwd()
     splits = filePathName.split("/")
     folderName = splits[len(splits) - 1]
     # loadDataSet = LoadDataSetLogic()
     path = path.removesuffix("build_main_page")
-    path = path+ "DB\\"+folderName
+    path = path + "DB\\" + folderName
+    ret = os.path.isdir(path)
+    if ret == True:
+        print('The folder already exist')
+        parent.labelFolderExists = tkinter.Label(parent, text="The folder already exists",fg="red",bg ='#E2D8EF' ).place(x = 810,
+                                               y = 570)
+        # parent.__class__.label.place(x=371.0,
+                                     # y=499.0, )
+        return
     os.mkdir(path)
+
+    mapOfDataADHD, ssr_based_F_testADHDList, ssr_chi2testADHDList, lrtestADHDList, params_ftestADHDList = LoadDataSetLogic.BuildFromDir(
+        filePathNameADHD)
+
+
 
     jsonC = jh()
     print(jsonC.martix_to_json)
@@ -192,7 +203,7 @@ class win:
             image=button_image_2,
             borderwidth=0,
             highlightthickness=0,
-            command= lambda:train_model_press(listBox=listbox),
+            command= lambda:train_model_press(listBox=listbox,parent = window),
             relief="flat"
         )
         button_2.place(
