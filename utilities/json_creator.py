@@ -11,7 +11,7 @@ class OutputHandler:
         self.telem_path = "/home/maya/Rocky_Simulations/map/metria.csv"   # currently not in use
         # self.flag_first_row = 1
 
-    def martix_to_json(self, mapOfData, outputFileName):
+    def martix_to_json(self, mapOfData, outputFileName,outputFolder):
         conclusion_matrix = {               # create template for json file
                 "patient_name": "",
                 "ssr_based_F_testMat": [],
@@ -20,7 +20,7 @@ class OutputHandler:
                 "params_ftestMat": []
             }
 
-        jpath = outputFileName +'.json'
+        jpath = ".\\..\\DB\\"+outputFolder + "\\" +outputFileName +".json"
         j_file = open(jpath, 'w')
         j_file.write('{\n"Patients": [\n')
 
@@ -38,12 +38,13 @@ class OutputHandler:
         j_file.write('\n\t]\n}')
         j_file.close()
 
-    def martix_to_csv(self, matrix, name):
+    def martix_to_csv(self, matrix, outputFileName, outputFolder):
         #for patient in mapOfData:
             # convert array into dataframe
         DF = pd.DataFrame(matrix)
 
         # save the dataframe as a csv file
-        DF.to_csv("matrix_"+str(name)+".csv")
+        path = ".\\..\\DB\\" + outputFolder + "\\" + outputFileName + ".csv"
+        DF.to_csv(path)
 
             ##### for now save only the first matrix for each patient !!!

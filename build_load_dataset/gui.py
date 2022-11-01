@@ -2,7 +2,7 @@
 # https://github.com/ParthJadhav/Tkinter-Designer
 import tkinter
 from pathlib import Path
-
+import os
 #for train data set
 import matplotlib.pyplot as plt
 from sklearn import datasets
@@ -35,9 +35,7 @@ def upload_data_set(listBox=None):
 
     listBox.insert(0, filePathName)
 
-        # splits = filePathName.split("/")
-        # filename = splits[len(splits) - 1]
-        # loadDataSet = LoadDataSetLogic()
+
 
 def train_model_press(listBox=None):
     filePathName = listBox.selection_get()
@@ -45,35 +43,49 @@ def train_model_press(listBox=None):
     filePathNameControl = filePathName + "/Control/"
     mapOfDataADHD, ssr_based_F_testADHDList, ssr_chi2testADHDList, lrtestADHDList, params_ftestADHDList = LoadDataSetLogic.BuildFromDir(
         filePathNameADHD)
+
+    path = os.getcwd()
+    splits = filePathName.split("/")
+    folderName = splits[len(splits) - 1]
+    # loadDataSet = LoadDataSetLogic()
+    path = path.removesuffix("build_main_page")
+    path = path+ "DB\\"+folderName
+    os.mkdir(path)
+
     jsonC = jh()
     print(jsonC.martix_to_json)
-    jsonC.martix_to_json(mapOfDataADHD, "conclusionMatrixADHD")
+    jsonC.martix_to_json(mapOfDataADHD, "conclusionMatrixADHD",folderName)
 
     # average of all adhd patients
     ssr_based_F_testAvgADHDMatrix = AvarageMatrix(ssr_based_F_testADHDList)
-    jsonC.martix_to_csv(ssr_based_F_testAvgADHDMatrix, "ssr_based_F_testAvgADHDMatrix")
+    jsonC.martix_to_csv(ssr_based_F_testAvgADHDMatrix, "ssr_based_F_testAvgADHDMatrix",folderName)
     ssr_chi2testAvgADHDMatrix = AvarageMatrix(ssr_chi2testADHDList)
-    jsonC.martix_to_csv(ssr_chi2testAvgADHDMatrix, "ssr_chi2testAvgADHDMatrix")
+    jsonC.martix_to_csv(ssr_chi2testAvgADHDMatrix, "ssr_chi2testAvgADHDMatrix",folderName)
     lrtestAvgADHDMatrix = AvarageMatrix(lrtestADHDList)
-    jsonC.martix_to_csv(lrtestAvgADHDMatrix, "lrtestAvgADHDMatrix")
+    jsonC.martix_to_csv(lrtestAvgADHDMatrix, "lrtestAvgADHDMatrix",folderName)
     params_ftestAvgADHDMatrix = AvarageMatrix(params_ftestADHDList)
-    jsonC.martix_to_csv(params_ftestAvgADHDMatrix, "params_ftestAvgADHDMatrix")
+    jsonC.martix_to_csv(params_ftestAvgADHDMatrix, "params_ftestAvgADHDMatrix",folderName)
 
     mapOfDataControl, ssr_based_F_testControlList, ssr_chi2testControlList, lrtestControlList, params_ftestControlList = LoadDataSetLogic.BuildFromDir(
         filePathNameControl)
 
-    jsonC.martix_to_json(mapOfDataControl, "conclusionMatrixControl")
+
+
+
+    jsonC.martix_to_json(mapOfDataControl, "conclusionMatrixControl",folderName)
 
     # average of all patients control
     ssr_based_F_testAvgControlMatrix = AvarageMatrix(ssr_based_F_testControlList)
-    jsonC.martix_to_csv(ssr_based_F_testAvgControlMatrix, "ssr_based_F_testAvgControlMatrix")
+    jsonC.martix_to_csv(ssr_based_F_testAvgControlMatrix, "ssr_based_F_testAvgControlMatrix",folderName)
     ssr_chi2testAvgControlMatrix = AvarageMatrix(ssr_chi2testControlList)
-    jsonC.martix_to_csv(ssr_chi2testAvgControlMatrix, "ssr_chi2testAvgControlMatrix")
+    jsonC.martix_to_csv(ssr_chi2testAvgControlMatrix, "ssr_chi2testAvgControlMatrix",folderName)
     lrtestAvgControlMatrix = AvarageMatrix(lrtestControlList)
-    jsonC.martix_to_csv(lrtestAvgControlMatrix, "lrtestAvgControlMatrix")
+    jsonC.martix_to_csv(lrtestAvgControlMatrix, "lrtestAvgControlMatrix",folderName)
     params_ftestAvgControlMatrix = AvarageMatrix(params_ftestControlList)
-    jsonC.martix_to_csv(params_ftestAvgControlMatrix, "params_ftestAvgControlMatrix")
+    jsonC.martix_to_csv(params_ftestAvgControlMatrix, "params_ftestAvgControlMatrix",folderName)
 
+
+"""
     print("train_model_press")
     #take each point in the matrix
     Iris = datasets.load_iris()#the data set i need to take the
@@ -122,7 +134,7 @@ def train_model_press(listBox=None):
     print(table[1][0])
     print("TN ")
     print(table[1][1])
-
+"""
 class win:
     def __init__(self, *args, **kwargs):
         window = Tk()
