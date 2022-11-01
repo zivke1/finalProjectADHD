@@ -92,7 +92,7 @@ def BuildFromDir(path):
 if __name__ == '__main__':
     print_hi('PyCharm')
 
-    mapOfData ,ssr_based_F_testList ,ssr_chi2testList,lrtestList, params_ftestList = BuildFromDir("C:\\Users\\shani\\Desktop\\study\\finalProject\\eeg_testing\\")
+    mapOfData ,ssr_based_F_testList ,ssr_chi2testList,lrtestList, params_ftestList = BuildFromDir("C:\\Users\\shani\\Desktop\\study\\finalProject\\dataSet\\ADHD_part12\\")
     a = {'a':[[1,1,1],[1,1,1],[1,1,1]],'b':[[2,2,2],[2,2,2],[2,2,2]]}
     b = {'a':{'b':[1,1,1],'e':[1,1,1]},'c':{'d':[1,1,1]}}
     k = b['a']
@@ -107,11 +107,11 @@ if __name__ == '__main__':
     ssr_based_F_testAvgMatrix = AvarageMatrix(ssr_based_F_testList)
     jsonC.martix_to_csv(ssr_based_F_testAvgMatrix, "ssr_based_F_testAvgMatrix")
     ssr_chi2testMatrix = AvarageMatrix(ssr_chi2testList)
-    jsonC.martix_to_csv(ssr_based_F_testAvgMatrix, "ssr_chi2testMatrix")
+    jsonC.martix_to_csv(ssr_chi2testMatrix, "ssr_chi2testMatrix")
     lrtestMatrix = AvarageMatrix(lrtestList)
-    jsonC.martix_to_csv(ssr_based_F_testAvgMatrix, "lrtestMatrix")
+    jsonC.martix_to_csv(lrtestMatrix, "lrtestMatrix")
     params_ftestMatrix = AvarageMatrix(params_ftestList)
-    jsonC.martix_to_csv(ssr_based_F_testAvgMatrix, "params_ftestMatrix")
+    jsonC.martix_to_csv(params_ftestMatrix, "params_ftestMatrix")
 
 stop = 1
 
