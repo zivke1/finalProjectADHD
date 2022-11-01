@@ -51,11 +51,13 @@ def train_model_press(listBox=None , parent = None):
     ret = os.path.isdir(path)
     if ret == True:
         print('The folder already exist')
-        parent.labelFolderExists = tkinter.Label(parent, text="The folder already exists",fg="red",bg ='#E2D8EF' ).place(x = 810,
-                                               y = 570)
+        # parent.labelFolderExists['text'] = "aaa"
+        parent.children['labelFolderExists'].config(text = "The folder already exist")
         # parent.__class__.label.place(x=371.0,
                                      # y=499.0, )
         return
+
+    parent.children['labelFolderExists'].config(text="")
     os.mkdir(path)
 
     mapOfDataADHD, ssr_based_F_testADHDList, ssr_chi2testADHDList, lrtestADHDList, params_ftestADHDList = LoadDataSetLogic.BuildFromDir(
@@ -306,6 +308,8 @@ class win:
         listbox = tkinter.Listbox(height=15, width=70)
         listbox.place(x=470.0, y=146.0, )
 
+        labelFolderExists = tkinter.Label(name='labelFolderExists',  fg="red", bg='#E2D8EF').place(x=810,
+                                                                                       y=570)
         window.resizable(False, False)
         window.mainloop()
 
