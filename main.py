@@ -91,6 +91,12 @@ def BuildFromDir(path):
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     print_hi('PyCharm')
+    s = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+    # new_items = [x if x % 2 else None for x in s]
+    for index, item in enumerate(s):
+        for ind, it in enumerate(item):
+            if not (it % 2):
+                s[index][ind] = None
 
     mapOfData ,ssr_based_F_testList ,ssr_chi2testList,lrtestList, params_ftestList = BuildFromDir("C:\\Users\\zivke\\OneDrive\\Documents\\eeg_recording\\Control_part2\\")
     a = {'a':[[1,1,1],[1,1,1],[1,1,1]],'b':[[2,2,2],[2,2,2],[2,2,2]]}

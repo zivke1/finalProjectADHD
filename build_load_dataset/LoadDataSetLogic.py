@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 from statsmodels.tsa.stattools import grangercausalitytests
 # from utilities.json_creator.py import OutputHandler as jh
-from utilities.json_creator import OutputHandler as jh
+from finalProjectADHD.utilities.json_creator import OutputHandler as jh
 
 
 class LoadDataSetLogic:
