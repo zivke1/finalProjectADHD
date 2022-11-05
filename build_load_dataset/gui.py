@@ -11,13 +11,14 @@ from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
 from finalProjectADHD.utilities.json_creator import OutputHandler as jh
 from finalProjectADHD.utilities.GeneralFunction import AvarageMatrix
+import finalProjectADHD.build_train_model.gui as train_model_win
 
 # from tkinter import *
 # Explicit imports to satisfy Flake8
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
 from tkinter import filedialog as fd
 import sqlite3
-import sqlite3py
+
 
 from finalProjectADHD.build_load_dataset.LoadDataSetLogic import LoadDataSetLogic
 
@@ -51,11 +52,13 @@ def train_model_press(listBox=None , parent = None):
     ret = os.path.isdir(path)
     if ret == True:
         print('The folder already exist')
-        parent.labelFolderExists = tkinter.Label(parent, text="The folder already exists",fg="red",bg ='#E2D8EF' ).place(x = 810,
-                                               y = 570)
+        # parent.labelFolderExists['text'] = "aaa"
+        parent.children['labelFolderExists'].config(text = "The folder already exist")
         # parent.__class__.label.place(x=371.0,
                                      # y=499.0, )
         return
+
+    parent.children['labelFolderExists'].config(text="")
     os.mkdir(path)
 
     mapOfDataADHD, ssr_based_F_testADHDList, ssr_chi2testADHDList, lrtestADHDList, params_ftestADHDList = LoadDataSetLogic.BuildFromDir(
@@ -219,7 +222,11 @@ class win:
             image=button_image_3,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_3 clicked"),
+            command=lambda: {
+                # print("button_3 clicked")
+                    window.destroy():
+                    train_model_win.win()
+                             },
             relief="flat"
         )
         button_3.place(
@@ -306,6 +313,8 @@ class win:
         listbox = tkinter.Listbox(height=15, width=70)
         listbox.place(x=470.0, y=146.0, )
 
+        labelFolderExists = tkinter.Label(name='labelFolderExists',  fg="red", bg='#E2D8EF').place(x=810,
+                                                                                       y=570)
         window.resizable(False, False)
         window.mainloop()
 
