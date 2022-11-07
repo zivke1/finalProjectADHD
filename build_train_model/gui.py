@@ -6,11 +6,12 @@ import tkinter
 from pathlib import Path
 import json
 import numpy as np
+import networkx as nx
 
 # from tkinter import *
 # Explicit imports to satisfy Flake8
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
-import finalProjectADHD.build_load_dataset.gui as load_dataset_win
+import build_load_dataset.gui as load_dataset_win
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
@@ -37,7 +38,7 @@ def train_model_press(parent = None):
     precentage = parent.children['precentageEntry'].get()
 
     if precentage == '':
-        parent.children['labelFolderExists'].config(text = "You must enter number")
+        parent.children['labelFolderExists'].config(text = "You must enter a threshold value")
         return
 
     parent.children['labelFolderExists'].config(text="")
@@ -49,7 +50,7 @@ def train_model_press(parent = None):
     dataADHD = conclusionMatrixADHD['Patients']
 
     remove_values_from_matrix_under_precentages(dataADHD, precentage)
-
+    ## TODO: create graph from ssr_based_F_testMat
 
     folderPath = ".\\..\\DB\\"+diractory+"\\conclusionMatrixControl.json"
     f = open(folderPath)
@@ -57,9 +58,27 @@ def train_model_press(parent = None):
     dataControl = conclusionMatrixControl['Patients']
     remove_values_from_matrix_under_precentages(dataControl ,precentage)
 
+## TODO: create graph from ssr_based_F_testMat (control group)
+    for patient in dataControl:
+        control_ssr_based_F_testMat = patient['ssr_based_F_testMat']
+        A = np.array(control_ssr_based_F_testMat)
+        print(A.dtype)
+        G =  nx.from_numpy_matrix(A, create_using=nx.DiGraph)
+        # G = nx.from_dict_of_lists(control_ssr_based_F_testMat)
+        nx.draw(G)
 
-    y = 5
 
+## Global value
+showInfoText = True
+
+def present_info_text(parent = None):       # information Icon msg - each click show / remove msg
+    global showInfoText
+    if showInfoText:
+        parent.children['labelInfo'].config(text = "Threshold value will determine the percentage of data we will discard.")
+        showInfoText = not showInfoText
+        return
+    parent.children['labelInfo'].config(text="")   ## <--- TODO: find better way to remove label
+    showInfoText = not showInfoText
 
 
 
@@ -104,8 +123,8 @@ class win:
         entry_image_1 = PhotoImage(
             file=relative_to_assets("entry_1.png"))
         entry_bg_1 = canvas.create_image(
-            563.0,
-            516.0,
+            549.0,
+            519.0,
             image=entry_image_1
         )
         entry_1 = Entry(name = "precentageEntry",
@@ -114,8 +133,8 @@ class win:
             highlightthickness=0
         )
         entry_1.place(
-            x=536.0,
-            y=498.0,
+            x=522.0,
+            y=501.0,
             width=54.0,
             height=34.0
         )
@@ -132,8 +151,8 @@ class win:
         button_1.place(
             x=784.0,
             y=493.0,
-            width=234.0,
-            height=48.0
+            width=206.0,
+            height=50.0
         )
 
         button_image_2 = PhotoImage(
@@ -142,14 +161,14 @@ class win:
             image=button_image_2,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_2 clicked"),
+            command=lambda: present_info_text(window),
             relief="flat"
         )
         button_2.place(
-            x=432.0,
-            y=119.0,
-            width=499.0,
-            height=310.0
+            x=335.0,
+            y=501.0,
+            width=22.0,
+            height=27.0
         )
 
         button_image_3 = PhotoImage(
@@ -162,10 +181,10 @@ class win:
             relief="flat"
         )
         button_3.place(
-            x=34.0,
-            y=154.0,
-            width=168.0,
-            height=37.0
+            x=432.0,
+            y=119.0,
+            width=499.0,
+            height=310.0
         )
 
         button_image_4 = PhotoImage(
@@ -174,15 +193,12 @@ class win:
             image=button_image_4,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda:{
-                    window.destroy():
-                    load_dataset_win.win()
-            },
+            command=lambda:{},
             relief="flat"
         )
         button_4.place(
             x=34.0,
-            y=92.0,
+            y=154.0,
             width=168.0,
             height=37.0
         )
@@ -193,10 +209,29 @@ class win:
             image=button_image_5,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_5 clicked"),
+            command=lambda: {
+                    window.destroy():
+                    load_dataset_win.win()
+            },
             relief="flat"
         )
         button_5.place(
+            x=34.0,
+            y=92.0,
+            width=168.0,
+            height=37.0
+        )
+
+        button_image_6 = PhotoImage(
+            file=relative_to_assets("button_6.png"))
+        button_6 = Button(
+            image=button_image_6,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: print("button_6 clicked"),
+            relief="flat"
+        )
+        button_6.place(
             x=34.0,
             y=215.0,
             width=168.0,
@@ -223,9 +258,9 @@ class win:
 
         canvas.create_text(
             370.0,
-            506.0,
+            509.0,
             anchor="nw",
-            text="Testing precentage:",
+            text="Threshold value: ",
             fill="#000000",
             font=("JejuMyeongjo", 16 * -1)
         )
@@ -233,8 +268,8 @@ class win:
         listbox = tkinter.Listbox(name='listBoxOfDataSet', height=15, width=70)
         listbox.place(x=470.0, y=146.0, )
         directories = os.listdir(".\\..\\DB\\")
-        labelFolderExists = tkinter.Label(name='labelFolderExists', fg="red", bg='#E2D8EF').place(x=810,
-                                                                                                  y=570)
+        labelFolderExists = tkinter.Label(name='labelFolderExists', fg="red", bg='#E2D8EF').place(x=810,y=570)
+        labelInfo = tkinter.Label(name='labelInfo', fg="black", bg='#E2D8EF').place(x=300,y=570)
 
         for directory in directories:
             listbox.insert(0,directory)
