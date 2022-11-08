@@ -60,7 +60,7 @@ def graph_feature1Press(parent = None):
         # patch.set(title = "11")
 
     fig.suptitle('Transitivity', fontsize=14, fontweight='bold')
-
+    plot1.set_xlabel('ADHD                                  Control')
     canvas = FigureCanvasTkAgg(fig,
                                master=parent)
     canvas.get_tk_widget().place(x=570,y=100)
