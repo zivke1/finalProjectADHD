@@ -11,9 +11,9 @@ from networkx.readwrite import json_graph
 # from tkinter import *
 # Explicit imports to satisfy Flake8
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
-import build_load_dataset.gui as load_dataset_win
-import build_analyze_data.gui as analyze_data_win
-from utilities.json_creator import OutputHandler as jh
+import finalProjectADHD.build_load_dataset.gui as load_dataset_win
+import finalProjectADHD.build_analyze_data.gui as analyze_data_win
+from finalProjectADHD.utilities.json_creator import OutputHandler as jh
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
@@ -54,7 +54,7 @@ def train_model_press(parent = None):
 
     listOf_graphs_ADHD_group = []
     create_graphs(dataADHD, 'ssr_based_F_testMat', listOf_graphs_ADHD_group)  # create graphs for ADHD patients and insert to the list
-    jsonH.listOf_graphs_to_json(listOf_graphs_ADHD_group, "ADHD_group_graphs", "DB2\graphs")
+    jsonH.listOf_graphs_to_json(listOf_graphs_ADHD_group, "ADHD_group_graphs"+precentage, "DB2\graphs")
     #### above ADHD ; below control  ####
 
     folderPath = ".\\..\\DB\\"+diractory+"\\conclusionMatrixControl.json"
@@ -65,7 +65,7 @@ def train_model_press(parent = None):
 
     listOf_graphs_control_group = []
     create_graphs(dataControl, 'ssr_based_F_testMat', listOf_graphs_control_group)  # create graphs for control patients and insert to the list
-    jsonH.listOf_graphs_to_json(listOf_graphs_control_group, "control_group_graphs", "DB2\graphs")
+    jsonH.listOf_graphs_to_json(listOf_graphs_control_group, "control_group_graphs"+precentage, "DB2\graphs")
 
 def create_graphs(patients_data, matrix_name,listOf_graphs):
     ## create graph from ssr_based_F_testMat
