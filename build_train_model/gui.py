@@ -75,7 +75,7 @@ def create_graphs(patients_data, matrix_name,listOf_graphs):
                     ssr_based_F_testMat[i][j] = 0
         listOflist_to_npArray = np.array([np.array(i) for i in ssr_based_F_testMat])
 
-        G = nx.from_numpy_matrix(listOflist_to_npArray, create_using=nx.MultiGraph)
+        G = nx.from_numpy_matrix(listOflist_to_npArray, create_using=nx.DiGraph)
         listOf_graphs.append(G)
 
 ## Global value
