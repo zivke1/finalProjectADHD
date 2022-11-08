@@ -1,6 +1,7 @@
 import json
 import csv
 import os
+from networkx.readwrite import json_graph
 import pandas as pd
 import numpy as np
 # write route data topic to json file from a telemetry file- up to 100 spots
@@ -48,3 +49,25 @@ class OutputHandler:
         DF.to_csv(path)
 
             ##### for now save only the first matrix for each patient !!!
+
+    def listOf_graphs_to_json(self, graphs_list, outputFileName,outputFolder):
+        jpath = ".\\..\\"+outputFolder + "\\" +outputFileName +".json"
+        os.makedirs(os.path.dirname(jpath), exist_ok=True)
+        j_file = open(jpath, 'w')
+        j_file.write('{\n"Graphs": [\n')
+
+        for G in graphs_list:           # insert data into struct
+            data = json_graph.adjacency_data(G)
+            j_file.write('\t')
+            json.dump(data, j_file)
+            j_file.write(',\n\n')
+
+        j_file.seek(j_file.tell() - 5, os.SEEK_SET)  # go back 3 from last position
+        j_file.write('\n\t]\n}')
+        j_file.close()
+
+    def read_json(self,diractory, jsonFile ,dict_name):
+        folderPath = ".\\..\\" + diractory + "\\"+ jsonFile + ".json"
+        f = open(folderPath)
+        data = json.load(f)
+        return data[dict_name]

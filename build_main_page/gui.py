@@ -7,8 +7,9 @@ from pathlib import Path
 # from tkinter import *
 # Explicit imports to satisfy Flake8
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
-import build_load_dataset.gui as next_win
-import build_train_model.gui as train_model_win
+import build_load_dataset.gui as load_EEG_dataSet_win
+import build_train_model.gui as generate_graphs_win
+import build_analyze_data.gui as analyze_data_win
 
 
 OUTPUT_PATH = Path(__file__).parent
@@ -77,9 +78,8 @@ class win:
             borderwidth=0,
             highlightthickness=0,
             command=lambda: {
-                # print("button_1 clicked")
                 window.destroy():
-                train_model_win.win()
+                generate_graphs_win.win()
             },
             relief="flat"
         )
@@ -98,7 +98,7 @@ class win:
             highlightthickness=0,
             command= lambda: {
                         window.destroy():
-                        next_win.win()
+                        load_EEG_dataSet_win.win()
             }, #print("button_2 clicked"),
             relief="flat"
         )
@@ -115,7 +115,10 @@ class win:
             image=button_image_3,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_3 clicked"),
+            command=lambda: {
+                        window.destroy():
+                        analyze_data_win.win()
+            },
             relief="flat"
         )
         button_3.place(
