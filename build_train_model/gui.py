@@ -6,6 +6,7 @@ import tkinter
 from pathlib import Path
 import json
 import numpy as np
+import networkx as nx
 
 # from tkinter import *
 # Explicit imports to satisfy Flake8
@@ -32,6 +33,24 @@ def remove_values_from_matrix_under_precentages(data , precentage):
                     ssr_based_F_testMat[indexD1][indexD2] = None
 
 
+def build_graph(data):
+    for patient in data:
+        # p = patient
+        ssr_based_F_testMat = patient['ssr_based_F_testMat']
+        # graphEdgesList = []
+        # for indexD1, listD1 in enumerate(ssr_based_F_testMat):
+        #     for indexD2, item in enumerate(listD1):
+        #         if ssr_based_F_testMat[indexD1][indexD2] is not None:
+        #             graphEdgesList.append((indexD1,indexD2,ssr_based_F_testMat[indexD1][indexD2]))
+
+        # G = nx.Graph()
+        # G.add_weighted_edges_from(graphEdgesList)
+
+        # y = np.array([np.array(xi) for xi in ssr_based_F_testMat])
+        # temp = nx.MultiGraph()
+        # G = nx.from_numpy_matrix(y)
+        # G =  nx.from_numpy_matrix(y, parallel_edges=True, create_using=temp)
+        return G
 
 def train_model_press(parent = None):
     precentage = parent.children['precentageEntry'].get()
@@ -57,7 +76,10 @@ def train_model_press(parent = None):
     dataControl = conclusionMatrixControl['Patients']
     remove_values_from_matrix_under_precentages(dataControl ,precentage)
 
+    build_graph(dataControl)
 
+    y = np.array([np.array(xi) for xi in dataControl])
+    G = nx.from_numpy_matrix(y, create_using=nx.MultiGraph)
     y = 5
 
 

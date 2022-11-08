@@ -12,6 +12,7 @@ import pandas as pd
 from statsmodels.tsa.stattools import grangercausalitytests
 import os
 from utilities.json_creator import OutputHandler as jh
+import networkx as nx
 
 
 
@@ -91,8 +92,30 @@ def BuildFromDir(path):
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     print_hi('PyCharm')
-    s = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+    s = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
     # new_items = [x if x % 2 else None for x in s]
+    G = nx.from_numpy_matrix(s,create_using=nx.DiGraph)
+    average_degree_connectivity = nx.average_degree_connectivity(G)
+    degree = G.degree()
+    transitivity = nx.transitivity(G)########
+    shortest_path = nx.shortest_path(G)
+    average_clustering = nx.average_clustering(G)########
+    density = nx.density(G)########
+    # k_components = nx.k_components(G)
+    # treewidth_min_degree = nx.treewidth_min_degree(G)
+    degree_assortativity_coefficient= nx.degree_assortativity_coefficient(G)
+    degree_pearson_correlation_coefficient = nx.degree_pearson_correlation_coefficient(G)
+    average_neighbor_degree = nx.average_neighbor_degree(G)
+    average_degree_connectivity = nx.average_degree_connectivity(G)
+    k_nearest_neighbors = nx.k_nearest_neighbors(G)
+    # eppstein_matching = nx.eppstein_matching(G)
+    # hopcroft_karp_matching = nx.hopcroft_karp_matching(G)
+    # latapy_clustering = nx.latapy_clustering(G)
+    # robins_alexander_clustering = nx.robins_alexander_clustering(G)
+    # node_redundancy = nx.node_redundancy(G)
+
+    nx.draw(G)
+
     for index, item in enumerate(s):
         for ind, it in enumerate(item):
             if not (it % 2):
