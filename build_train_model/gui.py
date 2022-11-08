@@ -48,9 +48,12 @@ def train_model_press(parent = None):
     f = open(folderPath)
     conclusionMatrixADHD = json.load(f)
     dataADHD = conclusionMatrixADHD['Patients']
-
     remove_values_from_matrix_under_precentages(dataADHD, precentage)
-    ## TODO: create graph from ssr_based_F_testMat
+
+    listOf_graphs_ADHD_group = []
+    create_graphs(dataADHD, 'ssr_based_F_testMat', listOf_graphs_ADHD_group)  # create graphs for ADHD patients and insert to the list
+
+    #### above ADHD ; below control  ####
 
     folderPath = ".\\..\\DB\\"+diractory+"\\conclusionMatrixControl.json"
     f = open(folderPath)
@@ -58,15 +61,22 @@ def train_model_press(parent = None):
     dataControl = conclusionMatrixControl['Patients']
     remove_values_from_matrix_under_precentages(dataControl ,precentage)
 
-## TODO: create graph from ssr_based_F_testMat (control group)
-    for patient in dataControl:
-        control_ssr_based_F_testMat = patient['ssr_based_F_testMat']
-        A = np.array(control_ssr_based_F_testMat)
-        print(A.dtype)
-        G =  nx.from_numpy_matrix(A, create_using=nx.DiGraph)
-        # G = nx.from_dict_of_lists(control_ssr_based_F_testMat)
-        nx.draw(G)
+    listOf_graphs_control_group = []
+    create_graphs(dataControl, 'ssr_based_F_testMat', listOf_graphs_control_group)  # create graphs for control patients and insert to the list
 
+
+def create_graphs(patients_data, matrix_name,listOf_graphs):
+    ## create graph from ssr_based_F_testMat
+    for patient in patients_data:
+        ssr_based_F_testMat = patient[matrix_name]
+        for i in range(len(ssr_based_F_testMat)):
+            for j in range(len(ssr_based_F_testMat[i])):
+                if ssr_based_F_testMat[i][j] is None:
+                    ssr_based_F_testMat[i][j] = 0
+        listOflist_to_npArray = np.array([np.array(i) for i in ssr_based_F_testMat])
+
+        G = nx.from_numpy_matrix(listOflist_to_npArray, create_using=nx.MultiGraph)
+        listOf_graphs.append(G)
 
 ## Global value
 showInfoText = True
