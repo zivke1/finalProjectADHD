@@ -11,7 +11,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
 from utilities.json_creator import OutputHandler as jh
 from utilities.GeneralFunction import AvarageMatrix
-import build_train_model.gui as train_model_win
+import build_generate_graphs.gui as generate_graphs_win
+import build_analyze_data.gui as analyze_data_win
 
 # from tkinter import *
 # Explicit imports to satisfy Flake8
@@ -225,7 +226,7 @@ class win:
             command=lambda: {
                 # print("button_3 clicked")
                     window.destroy():
-                    train_model_win.win()
+                    generate_graphs_win.win()
                              },
             relief="flat"
         )
@@ -258,7 +259,10 @@ class win:
             image=button_image_5,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_5 clicked"),
+            command=lambda: {
+                    window.destroy():
+                    analyze_data_win.win()
+            },
             relief="flat"
         )
         button_5.place(

@@ -12,7 +12,7 @@ from utilities.json_creator import OutputHandler as jh
 # Explicit imports to satisfy Flake8
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
 import build_load_dataset.gui as load_dataset_win
-import build_train_model.gui as generate_graphs_win
+import build_generate_graphs.gui as generate_graphs_win
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
