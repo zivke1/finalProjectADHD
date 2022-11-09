@@ -38,6 +38,116 @@ def read_graphs():
         H = json_graph.adjacency_graph(g)
         ADHD_group_graphsList.append(H)
 
+def graph_feature5Press(parent = None):
+    ADHDdegree_pearson_correlation_coefficientList = []
+    controlDegree_pearson_correlation_coefficientList = []
+    for patientADHD in ADHD_group_graphsList:
+        ADHDdegree_pearson_correlation_coefficientList.append(nx.degree_pearson_correlation_coefficient(patientADHD))
+
+    for patientcontrol in control_group_graphsList:
+        controlDegree_pearson_correlation_coefficientList.append(nx.degree_pearson_correlation_coefficient(patientcontrol))
+
+    fig = Figure(figsize=(5, 5), dpi=100)
+    data = [ADHDdegree_pearson_correlation_coefficientList, controlDegree_pearson_correlation_coefficientList]
+    plot1 = fig.add_subplot(111)
+    bp = plot1.boxplot(data, patch_artist=True,
+                       notch='True')
+
+    colors = ['#0000FF', '#00FF00']
+
+    for patch, color in zip(bp['boxes'], colors):
+        patch.set_facecolor(color)
+        # patch.set(title = "11")
+
+    fig.suptitle('Degree Pearson Correlation Coefficient', fontsize=14, fontweight='bold')
+    plot1.set_xlabel('ADHD                                  Control')
+    canvas = FigureCanvasTkAgg(fig,
+                               master=parent)
+    canvas.get_tk_widget().place(x=570, y=100)
+
+
+def graph_feature2Press(parent = None):
+    ADHDAverageClusteringList = []
+    controlAverageClusteringList = []
+    for patientADHD in ADHD_group_graphsList:
+        ADHDAverageClusteringList.append(nx.average_clustering(patientADHD))
+
+    for patientcontrol in control_group_graphsList:
+        controlAverageClusteringList.append(nx.average_clustering(patientcontrol))
+
+    fig = Figure(figsize=(5, 5), dpi=100)
+    data = [ADHDAverageClusteringList, controlAverageClusteringList]
+    plot1 = fig.add_subplot(111)
+    bp = plot1.boxplot(data, patch_artist=True,
+                       notch='True')
+
+    colors = ['#0000FF', '#00FF00']
+
+    for patch, color in zip(bp['boxes'], colors):
+        patch.set_facecolor(color)
+        # patch.set(title = "11")
+
+    fig.suptitle('Average Clustering', fontsize=14, fontweight='bold')
+    plot1.set_xlabel('ADHD                                  Control')
+    canvas = FigureCanvasTkAgg(fig,
+                               master=parent)
+    canvas.get_tk_widget().place(x=570, y=100)
+    # canvas.get_tk_widget().grid(row=0, column=0, pady=20, padx=20, sticky="wens")
+
+def graph_feature4Press(parent = None):
+    ADHDDegreeAssortativityCoefficientList = []
+    controlDegreeAssortativityCoefficientList = []
+    for patientADHD in ADHD_group_graphsList:
+        ADHDDegreeAssortativityCoefficientList.append(nx.degree_assortativity_coefficient(patientADHD))
+
+    for patientcontrol in control_group_graphsList:
+        controlDegreeAssortativityCoefficientList.append(nx.degree_assortativity_coefficient(patientcontrol))
+
+    fig = Figure(figsize=(5, 5), dpi=100)
+    data = [ADHDDegreeAssortativityCoefficientList, controlDegreeAssortativityCoefficientList]
+    plot1 = fig.add_subplot(111)
+    bp = plot1.boxplot(data, patch_artist=True,
+                       notch='True')
+
+    colors = ['#0000FF', '#00FF00']
+
+    for patch, color in zip(bp['boxes'], colors):
+        patch.set_facecolor(color)
+        # patch.set(title = "11")
+
+    fig.suptitle('Degree Assortativity Coefficient', fontsize=14, fontweight='bold')
+    plot1.set_xlabel('ADHD                                  Control')
+    canvas = FigureCanvasTkAgg(fig,
+                               master=parent)
+    canvas.get_tk_widget().place(x=570, y=100)
+
+def graph_feature3Press(parent = None):
+    ADHDdensityList = []
+    controldensityList = []
+    for patientADHD in ADHD_group_graphsList:
+        ADHDdensityList.append(nx.density(patientADHD))
+
+    for patientcontrol in control_group_graphsList:
+        controldensityList.append(nx.density(patientcontrol))
+
+    fig = Figure(figsize=(5, 5), dpi=100)
+    data = [ADHDdensityList, controldensityList]
+    plot1 = fig.add_subplot(111)
+    bp = plot1.boxplot(data, patch_artist=True,
+                       notch='True')
+
+    colors = ['#0000FF', '#00FF00']
+
+    for patch, color in zip(bp['boxes'], colors):
+        patch.set_facecolor(color)
+        # patch.set(title = "11")
+
+    fig.suptitle('density', fontsize=14, fontweight='bold')
+    plot1.set_xlabel('ADHD                                  Control')
+    canvas = FigureCanvasTkAgg(fig,
+                               master=parent)
+    canvas.get_tk_widget().place(x=570, y=100)
+
 def graph_feature1Press(parent = None):
     ADHDtransitivityList = []
     controlTransitivityList = []
@@ -185,7 +295,7 @@ class win:
             image=button_image_5,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_5 clicked"),
+            command=lambda: graph_feature5Press(parent=window),
             relief="flat"
         )
         button_5.place(
@@ -217,7 +327,7 @@ class win:
             image=button_image_7,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_7 clicked"),
+            command=lambda:graph_feature2Press(parent = window),
             relief="flat"
         )
         button_7.place(
@@ -233,7 +343,7 @@ class win:
             image=button_image_8,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_8 clicked"),
+            command=lambda:graph_feature3Press(parent = window),
             relief="flat"
         )
         button_8.place(
@@ -249,7 +359,7 @@ class win:
             image=button_image_9,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_9 clicked"),
+            command=lambda: graph_feature4Press(parent=window),
             relief="flat"
         )
         button_9.place(
