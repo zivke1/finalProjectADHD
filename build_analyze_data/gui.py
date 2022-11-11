@@ -31,11 +31,15 @@ def read_graphs():
 
 
 class win:
-    def __init__(self, *args, **kwargs):
+    def __init__(self, file_name_ADHD, file_name_control):
         window = Tk()
         window.geometry("1170x687")
         window.configure(bg = "#FFFFFF")
 
+        # those are the names of the json files in DB2 folder that contains the graphs of
+        # the ADHD and control group that were generated in the previous window -> generate graphs
+        name_of_ADHD_graph_file = file_name_ADHD
+        name_of_control_graph_file = file_name_control
 
         canvas = Canvas(
             window,

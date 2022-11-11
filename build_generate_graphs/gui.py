@@ -18,7 +18,6 @@ from utilities.json_creator import OutputHandler as jh
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
 
-
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
@@ -32,11 +31,11 @@ def remove_values_from_matrix_under_precentages(data , precentage):
         for indexD1, listD1 in enumerate(ssr_based_F_testMat):
             for indexD2, item in enumerate(listD1):
                 if item < threshold:
-                    ssr_based_F_testMat[indexD1][indexD2] = None
+                    ssr_based_F_testMat[indexD1][indexD2] = 0
 
 
 
-def train_model_press(parent = None):
+def gen_graphs_pressed(parent = None):
     precentage = parent.children['precentageEntry'].get()
     jsonH = jh()
     if precentage == '':
@@ -67,14 +66,20 @@ def train_model_press(parent = None):
     create_graphs(dataControl, 'ssr_based_F_testMat', listOf_graphs_control_group)  # create graphs for control patients and insert to the list
     jsonH.listOf_graphs_to_json(listOf_graphs_control_group, "control_group_graphs", "DB2\graphs")
 
+ # destroy window at the end of the function
+    name_of_ADHD_graph_file = "ADHD_group_graphs"
+    name_of_control_graph_file = "control_group_graphs"
+    parent.destroy()
+    analyze_data_win.win(name_of_ADHD_graph_file, name_of_control_graph_file)
+
 def create_graphs(patients_data, matrix_name,listOf_graphs):
     ## create graph from ssr_based_F_testMat
     for patient in patients_data:
         ssr_based_F_testMat = patient[matrix_name]
-        for i in range(len(ssr_based_F_testMat)):
-            for j in range(len(ssr_based_F_testMat[i])):
-                if ssr_based_F_testMat[i][j] is None:
-                    ssr_based_F_testMat[i][j] = 0
+        # for i in range(len(ssr_based_F_testMat)):
+        #     for j in range(len(ssr_based_F_testMat[i])):
+        #         if ssr_based_F_testMat[i][j] is None:
+        #             ssr_based_F_testMat[i][j] = 0
         listOflist_to_npArray = np.array([np.array(i) for i in ssr_based_F_testMat])
 
         G = nx.from_numpy_matrix(listOflist_to_npArray, create_using=nx.DiGraph)
@@ -156,7 +161,9 @@ class win:
             image=button_image_1,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda:train_model_press(parent = window),
+            command=lambda:{
+                gen_graphs_pressed(parent = window)
+            },
             relief="flat"
         )
         button_1.place(
