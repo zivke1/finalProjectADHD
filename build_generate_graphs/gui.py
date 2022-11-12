@@ -53,7 +53,7 @@ def gen_graphs_pressed(parent = None):
 
     listOf_graphs_ADHD_group = []
     create_graphs(dataADHD, 'ssr_based_F_testMat', listOf_graphs_ADHD_group)  # create graphs for ADHD patients and insert to the list
-    jsonH.listOf_graphs_to_json(listOf_graphs_ADHD_group, "ADHD_group_graphs", "DB2\graphs")
+    jsonH.listOf_graphs_to_json(listOf_graphs_ADHD_group, "ADHD_group_graphs"+precentage, "DB2\graphs")
     #### above ADHD ; below control  ####
 
     folderPath = ".\\..\\DB\\"+diractory+"\\conclusionMatrixControl.json"
@@ -64,7 +64,7 @@ def gen_graphs_pressed(parent = None):
 
     listOf_graphs_control_group = []
     create_graphs(dataControl, 'ssr_based_F_testMat', listOf_graphs_control_group)  # create graphs for control patients and insert to the list
-    jsonH.listOf_graphs_to_json(listOf_graphs_control_group, "control_group_graphs", "DB2\graphs")
+    jsonH.listOf_graphs_to_json(listOf_graphs_control_group, "control_group_graphs"+precentage, "DB2\graphs")
 
  # destroy window at the end of the function
     name_of_ADHD_graph_file = "ADHD_group_graphs"
