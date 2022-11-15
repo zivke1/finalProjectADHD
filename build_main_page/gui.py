@@ -8,9 +8,11 @@ from pathlib import Path
 # Explicit imports to satisfy Flake8
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
 
-import build_load_dataset.gui as load_EEG_dataSet_win
-import build_generate_graphs.gui as generate_graphs_win
-import build_analyze_data.gui as analyze_data_win
+
+import finalProjectADHD.build_load_dataset.gui as load_EEG_dataSet_win
+import finalProjectADHD.build_generate_graphs.gui as generate_graphs_win
+import finalProjectADHD.build_analyze_data.gui as analyze_data_win
+
 
 
 OUTPUT_PATH = Path(__file__).parent

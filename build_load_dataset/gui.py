@@ -10,10 +10,10 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
 
-from utilities.json_creator import OutputHandler as jh
-from utilities.GeneralFunction import AvarageMatrix
-import build_generate_graphs.gui as generate_graphs_win
-import build_analyze_data.gui as analyze_data_win
+from finalProjectADHD.utilities.json_creator import OutputHandler as jh
+from finalProjectADHD.utilities.GeneralFunction import AvarageMatrix
+import finalProjectADHD.build_generate_graphs.gui as generate_graphs_win
+import finalProjectADHD.build_analyze_data.gui as analyze_data_win
 
 
 # from tkinter import *
@@ -23,7 +23,7 @@ from tkinter import filedialog as fd
 import sqlite3
 
 
-from build_load_dataset.LoadDataSetLogic import LoadDataSetLogic
+from finalProjectADHD.build_load_dataset.LoadDataSetLogic import LoadDataSetLogic
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
