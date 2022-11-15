@@ -139,7 +139,7 @@ class win:
         entry_image_1 = PhotoImage(
             file=relative_to_assets("entry_1.png"))
         entry_bg_1 = canvas.create_image(
-            549.0,
+            566.0,
             519.0,
             image=entry_image_1
         )
@@ -149,7 +149,7 @@ class win:
             highlightthickness=0
         )
         entry_1.place(
-            x=522.0,
+            x=540.0,
             y=501.0,
             width=54.0,
             height=34.0
@@ -183,7 +183,7 @@ class win:
             relief="flat"
         )
         button_2.place(
-            x=335.0,
+            x=320.0,
             y=501.0,
             width=22.0,
             height=27.0
@@ -278,10 +278,10 @@ class win:
         )
 
         canvas.create_text(
-            370.0,
+            350.0,
             509.0,
             anchor="nw",
-            text="Threshold value: ",
+            text="Threshold percentage: ",
             fill="#000000",
             font=("JejuMyeongjo", 16 * -1)
         )

@@ -41,7 +41,7 @@ def upload_data_set(listBox=None):
 
 
 
-def train_model_press(listBox=None , parent = None):
+def generate_graphs_press(listBox=None, parent = None):
     filePathName = listBox.selection_get()
     filePathNameADHD = filePathName + "/ADHD/"
     filePathNameControl = filePathName + "/Control/"
@@ -177,6 +177,15 @@ class win:
             fill="#9272EB",
             outline="")
 
+        canvas.create_text(
+            27.0,
+            33.0,
+            anchor="nw",
+            text="EEG Recordings Analyzer",
+            fill="#FFFAFA",
+            font=("JejuMyeongjo", 14 * -1)
+        )
+
         canvas.create_rectangle(
             234.0,
             0.0,
@@ -185,36 +194,92 @@ class win:
             fill="#E2D8EF",
             outline="")
 
+        canvas.create_text(
+            374.0,
+            563.0,
+            anchor="nw",
+            text="Choose sliding window (seconds):",
+            fill="#000000",
+            font=("JejuMyeongjo", 16 * -1)
+        )
 
-    # upload data set button
+        canvas.create_text(
+            374.0,
+            607.0,
+            anchor="nw",
+            text="Sampling frequency (Hz):",
+            fill="#000000",
+            font=("JejuMyeongjo", 16 * -1)
+        )
+
+        entry_image_1 = PhotoImage(
+            file=relative_to_assets("entry_1.png"))
+        entry_bg_1 = canvas.create_image(
+            683.0,
+            617.0,
+            image=entry_image_1
+        )
+        entry_1 = Entry(
+            bd=0,
+            bg="#D5CDEA",
+            highlightthickness=0
+        )
+        entry_1.place(
+            x=656.0,
+            y=599.0,
+            width=54.0,
+            height=34.0
+        )
+
+        entry_image_2 = PhotoImage(
+            file=relative_to_assets("entry_2.png"))
+        entry_bg_2 = canvas.create_image(
+            683.0,
+            573.0,
+            image=entry_image_2
+        )
+        entry_2 = Entry(
+            bd=0,
+            bg="#D5CDEA",
+            highlightthickness=0
+        )
+        entry_2.place(
+            x=656.0,
+            y=555.0,
+            width=54.0,
+            height=34.0
+        )
+
+
         button_image_1 = PhotoImage(
             file=relative_to_assets("button_1.png"))
         button_1 = Button(
             image=button_image_1,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda:upload_data_set(listBox=listbox),
+            command=lambda: print("button_1 clicked"),
             relief="flat"
         )
         button_1.place(
-            x=371.0,
-            y=499.0,
-            width=234.0,
-            height=48.0
+            x=432.0,
+            y=119.0,
+            width=499.0,
+            height=310.0
         )
 
+        # upload data set button
         button_image_2 = PhotoImage(
             file=relative_to_assets("button_2.png"))
         button_2 = Button(
             image=button_image_2,
             borderwidth=0,
             highlightthickness=0,
-            command= lambda:train_model_press(listBox=listbox,parent = window),
+            command=lambda:upload_data_set(listBox=listbox),
             relief="flat"
         )
         button_2.place(
-            x=797.0,
-            y=499.0,
+            x=372.0,
+            y=476.0,
             width=234.0,
             height=48.0
         )
@@ -225,18 +290,14 @@ class win:
             image=button_image_3,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: {
-                # print("button_3 clicked")
-                    window.destroy():
-                    generate_graphs_win.win()
-                             },
+            command=lambda: generate_graphs_press(listBox=listbox, parent=window),
             relief="flat"
         )
         button_3.place(
-            x=34.0,
-            y=154.0,
-            width=168.0,
-            height=37.0
+            x=813.0,
+            y=476.0,
+            width=234.0,
+            height=48.0
         )
 
         button_image_4 = PhotoImage(
@@ -245,12 +306,15 @@ class win:
             image=button_image_4,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_4 clicked"),
+            command=lambda: {
+                window.destroy():
+                    generate_graphs_win.win()
+            },
             relief="flat"
         )
         button_4.place(
             x=34.0,
-            y=92.0,
+            y=154.0,
             width=168.0,
             height=37.0
         )
@@ -261,15 +325,12 @@ class win:
             image=button_image_5,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: {
-                    window.destroy():
-                    analyze_data_win.win()
-            },
+            command=lambda: print("button_5 clicked"),
             relief="flat"
         )
         button_5.place(
             x=34.0,
-            y=215.0,
+            y=92.0,
             width=168.0,
             height=37.0
         )
@@ -298,14 +359,17 @@ class win:
             image=button_image_6,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_6 clicked"),
+            command=lambda: {
+                window.destroy():
+                    analyze_data_win.win()
+            },
             relief="flat"
         )
         button_6.place(
-            x=432.0,
-            y=117.0,
-            width=499.0,
-            height=312.0
+            x=34.0,
+            y=215.0,
+            width=168.0,
+            height=37.0
         )
 
         canvas.create_rectangle(
