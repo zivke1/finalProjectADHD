@@ -9,7 +9,7 @@ from sklearn import datasets
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
-
+import shutil
 from utilities.json_creator import OutputHandler as jh
 from utilities.GeneralFunction import AvarageMatrix
 import build_generate_graphs.gui as generate_graphs_win
@@ -57,6 +57,7 @@ def generate_graphs_press(listBox=None, parent = None):
     ret = os.path.isdir(path)
     if ret == True:
         print('The folder already exist')
+        # shutil.rmtree(path)
         # parent.labelFolderExists['text'] = "aaa"
         parent.children['labelFolderExists'].config(text = "The folder already exist")
         # parent.__class__.label.place(x=371.0,
@@ -72,7 +73,7 @@ def generate_graphs_press(listBox=None, parent = None):
 
 
     jsonC = jh()
-    print(jsonC.martix_to_json)
+    # print(jsonC.martix_to_json)
     jsonC.martix_to_json(mapOfDataADHD, "conclusionMatrixADHD",folderName)
 
     # average of all adhd patients
@@ -86,7 +87,7 @@ def generate_graphs_press(listBox=None, parent = None):
     jsonC.martix_to_csv(params_ftestAvgADHDMatrix, "params_ftestAvgADHDMatrix",folderName)
 
     mapOfDataControl, ssr_based_F_testControlList, ssr_chi2testControlList, lrtestControlList, params_ftestControlList = LoadDataSetLogic.BuildFromDir(
-        filePathNameControl)
+        filePathNameControl, windowTimeSec, freqHz)
 
 
 
