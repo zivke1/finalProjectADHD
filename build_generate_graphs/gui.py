@@ -11,9 +11,9 @@ from networkx.readwrite import json_graph
 # from tkinter import *
 # Explicit imports to satisfy Flake8
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
-import finalProjectADHD.build_load_dataset.gui as load_dataset_win
-import finalProjectADHD.build_analyze_data.gui as analyze_data_win
-from finalProjectADHD.utilities.json_creator import OutputHandler as jh
+import build_load_dataset.gui as load_dataset_win
+import build_analyze_data.gui as analyze_data_win
+from utilities.json_creator import OutputHandler as jh
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")

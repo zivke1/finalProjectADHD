@@ -10,10 +10,10 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
 
-from finalProjectADHD.utilities.json_creator import OutputHandler as jh
-from finalProjectADHD.utilities.GeneralFunction import AvarageMatrix
-import finalProjectADHD.build_generate_graphs.gui as generate_graphs_win
-import finalProjectADHD.build_analyze_data.gui as analyze_data_win
+from utilities.json_creator import OutputHandler as jh
+from utilities.GeneralFunction import AvarageMatrix
+import build_generate_graphs.gui as generate_graphs_win
+import build_analyze_data.gui as analyze_data_win
 
 
 # from tkinter import *
@@ -23,7 +23,7 @@ from tkinter import filedialog as fd
 import sqlite3
 
 
-from finalProjectADHD.build_load_dataset.LoadDataSetLogic import LoadDataSetLogic
+from build_load_dataset.LoadDataSetLogic import LoadDataSetLogic
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
@@ -42,6 +42,8 @@ def upload_data_set(listBox=None):
 
 
 def generate_graphs_press(listBox=None, parent = None):
+    windowTimeSec= parent.children['windowTimeSec'].get()
+    freqHz = parent.children['freqHz'].get()
     filePathName = listBox.selection_get()
     filePathNameADHD = filePathName + "/ADHD/"
     filePathNameControl = filePathName + "/Control/"
@@ -65,7 +67,7 @@ def generate_graphs_press(listBox=None, parent = None):
     os.mkdir(path)
 
     mapOfDataADHD, ssr_based_F_testADHDList, ssr_chi2testADHDList, lrtestADHDList, params_ftestADHDList = LoadDataSetLogic.BuildFromDir(
-        filePathNameADHD)
+        filePathNameADHD,windowTimeSec, freqHz)
 
 
 
@@ -220,6 +222,7 @@ class win:
             image=entry_image_1
         )
         entry_1 = Entry(
+            name = 'freqHz',
             bd=0,
             bg="#D5CDEA",
             highlightthickness=0
@@ -238,7 +241,9 @@ class win:
             573.0,
             image=entry_image_2
         )
+
         entry_2 = Entry(
+            name = 'windowTimeSec',
             bd=0,
             bg="#D5CDEA",
             highlightthickness=0

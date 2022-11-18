@@ -10,13 +10,13 @@ import numpy as np
 import networkx as nx
 from matplotlib.figure import Figure
 from networkx.readwrite import json_graph
-from finalProjectADHD.utilities.json_creator import OutputHandler as jh
+from utilities.json_creator import OutputHandler as jh
 # from tkinter import *
 # Explicit imports to satisfy Flake8
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
 
-import finalProjectADHD.build_load_dataset.gui as load_dataset_win
-import finalProjectADHD.build_generate_graphs.gui as generate_graphs_win
+import build_load_dataset.gui as load_dataset_win
+import build_generate_graphs.gui as generate_graphs_win
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
