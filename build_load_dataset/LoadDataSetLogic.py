@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import pandas as pd
+import copy
 from statsmodels.tsa.stattools import grangercausalitytests
 # from utilities.json_creator.py import OutputHandler as jh
 from utilities.json_creator import OutputHandler as jh
@@ -79,7 +80,7 @@ class LoadDataSetLogic:
             if file.endswith("csv"):
                 df = pd.read_csv(path + file, parse_dates=['0'])
                 colNumber = df.shape[1] - 1
-                ssr_based_F_testMat = np.zeros((colNumber, colNumber))
+
                 ssr_chi2testMat = np.zeros((colNumber, colNumber))
                 lrtestMat = np.zeros((colNumber, colNumber))
                 params_ftestMat = np.zeros((colNumber, colNumber))
@@ -115,6 +116,7 @@ class LoadDataSetLogic:
 
                 mapOfData[file] = {}
                 for type in listOfFrequencyTypes:
+                    ssr_based_F_testMat = np.zeros((colNumber, colNumber))
                     for i in range(0, colNumber):
                         for j in range(0, colNumber):
 

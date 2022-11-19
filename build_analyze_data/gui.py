@@ -13,8 +13,9 @@ from networkx.readwrite import json_graph
 from utilities.json_creator import OutputHandler as jh
 # from tkinter import *
 # Explicit imports to satisfy Flake8
-from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
-
+import tkinter as tk
+from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, ttk
+import tkinter
 import build_load_dataset.gui as load_dataset_win
 import build_generate_graphs.gui as generate_graphs_win
 
@@ -27,19 +28,24 @@ def relative_to_assets(path: str) -> Path:
 
 control_group_graphsList = []
 ADHD_group_graphsList = []
-def read_graphs():
+def read_graphs(fileNameADHD,fileNameControl):
+    control_group_graphsList.clear()
+    ADHD_group_graphsList.clear()
     jsonH = jh()
-    graph_data = jsonH.read_json("DB2\graphs", "control_group_graphs75", "Graphs")
+    #ZK change to name from the previous window
+    graph_data = jsonH.read_json("DB2\graphs", fileNameControl, "Graphs")
     for g in graph_data:
         H = json_graph.adjacency_graph(g)
         control_group_graphsList.append(H)
 
-    graph_data = jsonH.read_json("DB2\graphs", "ADHD_group_graphs75", "Graphs")
+    graph_data = jsonH.read_json("DB2\graphs", fileNameADHD, "Graphs")
     for g in graph_data:
         H = json_graph.adjacency_graph(g)
         ADHD_group_graphsList.append(H)
 
 def graph_feature5Press(parent = None):
+    frequencyBand = parent.FB.get()
+    read_graphs(parent.name_of_ADHD_graph_file+frequencyBand.lower()+parent.precentageOfThisTest,parent.name_of_control_graph_file+frequencyBand.lower()+parent.precentageOfThisTest)
     ADHDdegree_pearson_correlation_coefficientList = []
     controlDegree_pearson_correlation_coefficientList = []
     for patientADHD in ADHD_group_graphsList:
@@ -60,7 +66,7 @@ def graph_feature5Press(parent = None):
         patch.set_facecolor(color)
         # patch.set(title = "11")
 
-    fig.suptitle('Degree Pearson Correlation Coefficient', fontsize=14, fontweight='bold')
+    fig.suptitle(frequencyBand+' Degree Pearson Correlation Coefficient', fontsize=14, fontweight='bold')
     plot1.set_xlabel('ADHD                                  Control')
     canvas = FigureCanvasTkAgg(fig,
                                master=parent)
@@ -68,6 +74,9 @@ def graph_feature5Press(parent = None):
 
 
 def graph_feature2Press(parent = None):
+    frequencyBand = parent.FB.get()
+    read_graphs(parent.name_of_ADHD_graph_file + frequencyBand.lower() + parent.precentageOfThisTest,
+                parent.name_of_control_graph_file + frequencyBand.lower() + parent.precentageOfThisTest)
     ADHDAverageClusteringList = []
     controlAverageClusteringList = []
     for patientADHD in ADHD_group_graphsList:
@@ -88,7 +97,7 @@ def graph_feature2Press(parent = None):
         patch.set_facecolor(color)
         # patch.set(title = "11")
 
-    fig.suptitle('Average Clustering', fontsize=14, fontweight='bold')
+    fig.suptitle(frequencyBand + ' Average Clustering', fontsize=14, fontweight='bold')
     plot1.set_xlabel('ADHD                                  Control')
     canvas = FigureCanvasTkAgg(fig,
                                master=parent)
@@ -96,6 +105,9 @@ def graph_feature2Press(parent = None):
     # canvas.get_tk_widget().grid(row=0, column=0, pady=20, padx=20, sticky="wens")
 
 def graph_feature4Press(parent = None):
+    frequencyBand = parent.FB.get()
+    read_graphs(parent.name_of_ADHD_graph_file + frequencyBand.lower() + parent.precentageOfThisTest,
+                parent.name_of_control_graph_file + frequencyBand.lower() + parent.precentageOfThisTest)
     ADHDDegreeAssortativityCoefficientList = []
     controlDegreeAssortativityCoefficientList = []
     for patientADHD in ADHD_group_graphsList:
@@ -116,13 +128,16 @@ def graph_feature4Press(parent = None):
         patch.set_facecolor(color)
         # patch.set(title = "11")
 
-    fig.suptitle('Degree Assortativity Coefficient', fontsize=14, fontweight='bold')
+    fig.suptitle(frequencyBand +' Degree Assortativity Coefficient', fontsize=14, fontweight='bold')
     plot1.set_xlabel('ADHD                                  Control')
     canvas = FigureCanvasTkAgg(fig,
                                master=parent)
     canvas.get_tk_widget().place(x=570, y=100)
 
 def graph_feature3Press(parent = None):
+    frequencyBand = parent.FB.get()
+    read_graphs(parent.name_of_ADHD_graph_file + frequencyBand.lower() + parent.precentageOfThisTest,
+                parent.name_of_control_graph_file + frequencyBand.lower() + parent.precentageOfThisTest)
     ADHDdensityList = []
     controldensityList = []
     for patientADHD in ADHD_group_graphsList:
@@ -143,13 +158,16 @@ def graph_feature3Press(parent = None):
         patch.set_facecolor(color)
         # patch.set(title = "11")
 
-    fig.suptitle('density', fontsize=14, fontweight='bold')
+    fig.suptitle(frequencyBand +' density', fontsize=14, fontweight='bold')
     plot1.set_xlabel('ADHD                                  Control')
     canvas = FigureCanvasTkAgg(fig,
                                master=parent)
     canvas.get_tk_widget().place(x=570, y=100)
 
 def graph_feature1Press(parent = None):
+    frequencyBand = parent.FB.get()
+    read_graphs(parent.name_of_ADHD_graph_file + frequencyBand.lower() + parent.precentageOfThisTest,
+                parent.name_of_control_graph_file + frequencyBand.lower() + parent.precentageOfThisTest)
     ADHDtransitivityList = []
     controlTransitivityList = []
     for patientADHD in ADHD_group_graphsList:
@@ -170,7 +188,7 @@ def graph_feature1Press(parent = None):
         patch.set_facecolor(color)
         # patch.set(title = "11")
 
-    fig.suptitle('Transitivity', fontsize=14, fontweight='bold')
+    fig.suptitle(frequencyBand +' Transitivity', fontsize=14, fontweight='bold')
     plot1.set_xlabel('ADHD                                  Control')
     canvas = FigureCanvasTkAgg(fig,
                                master=parent)
@@ -178,15 +196,17 @@ def graph_feature1Press(parent = None):
     # canvas.get_tk_widget().grid(row=0, column=0, pady=20, padx=20, sticky="wens")
 
 class win:
-    def __init__(self, file_name_ADHD, file_name_control):
+
+    def __init__(self, file_name_ADHD, file_name_control,precentage):
         window = Tk()
         window.geometry("1170x687")
         window.configure(bg = "#FFFFFF")
 
         # those are the names of the json files in DB2 folder that contains the graphs of
         # the ADHD and control group that were generated in the previous window -> generate graphs
-        name_of_ADHD_graph_file = file_name_ADHD
-        name_of_control_graph_file = file_name_control
+        window.name_of_ADHD_graph_file = file_name_ADHD
+        window.name_of_control_graph_file = file_name_control
+        window.precentageOfThisTest = precentage
 
         canvas = Canvas(
             window,
@@ -373,6 +393,16 @@ class win:
             width=178.0,
             height=37.0
         )
+
+        window.FB = tkinter.StringVar()
+        month_cb = tkinter.ttk.Combobox(name='frequencyBandsCB', textvariable=window.FB)
+        month_cb.place( x=266.0,
+                       y=400.0,
+                       width=168.0,
+                       height=37.0)
+        month_cb['values'] = ['Alpha', 'Beta', 'Gamma', 'Theta', 'Delta']
+        month_cb['state'] = 'readonly'
+        month_cb.current(0)
 
         # canvas = Canvas(figsize=(5, 5),
         #        dpi=100)

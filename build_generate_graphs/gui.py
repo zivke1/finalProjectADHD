@@ -26,12 +26,15 @@ def remove_values_from_matrix_under_precentages(data , precentage):
     # this code is remove all the values under the threshold
     for patient in data:
         # p = patient
-        ssr_based_F_testMat = patient['ssr_based_F_testMat']
-        threshold = np.percentile(ssr_based_F_testMat, int(precentage))
-        for indexD1, listD1 in enumerate(ssr_based_F_testMat):
-            for indexD2, item in enumerate(listD1):
-                if item < threshold:
-                    ssr_based_F_testMat[indexD1][indexD2] = 0
+        for frequencyBand,matrixes  in patient.items():
+            if frequencyBand == 'patient_name':
+                continue
+            ssr_based_F_testMat = matrixes['ssr_based_F_testMat']
+            threshold = np.percentile(ssr_based_F_testMat, int(precentage))
+            for indexD1, listD1 in enumerate(ssr_based_F_testMat):
+                for indexD2, item in enumerate(listD1):
+                    if item < threshold:
+                        ssr_based_F_testMat[indexD1][indexD2] = 0
 
 
 
@@ -51,9 +54,21 @@ def gen_graphs_pressed(parent = None):
     dataADHD = conclusionMatrixADHD['Patients']
     remove_values_from_matrix_under_precentages(dataADHD, precentage)
 
-    listOf_graphs_ADHD_group = []
-    create_graphs(dataADHD, 'ssr_based_F_testMat', listOf_graphs_ADHD_group)  # create graphs for ADHD patients and insert to the list
-    jsonH.listOf_graphs_to_json(listOf_graphs_ADHD_group, "ADHD_group_graphs"+precentage, "DB2\graphs")
+    freqToListOfGraphs_ADHD_group = {}
+
+
+
+    create_graphs(dataADHD, 'ssr_based_F_testMat', freqToListOfGraphs_ADHD_group)  # create graphs for ADHD patients and insert to the list
+    jsonH.listOf_graphs_to_json(freqToListOfGraphs_ADHD_group['alphaList'], "ADHD_group_graphs_alpha"+precentage, "DB2\graphs")
+    jsonH.listOf_graphs_to_json(freqToListOfGraphs_ADHD_group['betaList'], "ADHD_group_graphs_beta" + precentage,
+                                "DB2\graphs")
+    jsonH.listOf_graphs_to_json(freqToListOfGraphs_ADHD_group['gammaList'], "ADHD_group_graphs_gamma" + precentage,
+                                "DB2\graphs")
+    jsonH.listOf_graphs_to_json(freqToListOfGraphs_ADHD_group['thetaList'], "ADHD_group_graphs_theta" + precentage,
+                                "DB2\graphs")
+    jsonH.listOf_graphs_to_json(freqToListOfGraphs_ADHD_group['deltaList'], "ADHD_group_graphs_delta" + precentage,
+                                "DB2\graphs")
+
     #### above ADHD ; below control  ####
 
     folderPath = ".\\..\\DB\\"+diractory+"\\conclusionMatrixControl.json"
@@ -62,28 +77,56 @@ def gen_graphs_pressed(parent = None):
     dataControl = conclusionMatrixControl['Patients']
     remove_values_from_matrix_under_precentages(dataControl ,precentage)
 
-    listOf_graphs_control_group = []
-    create_graphs(dataControl, 'ssr_based_F_testMat', listOf_graphs_control_group)  # create graphs for control patients and insert to the list
-    jsonH.listOf_graphs_to_json(listOf_graphs_control_group, "control_group_graphs"+precentage, "DB2\graphs")
+    freqToListOfGraphs_control_group = {}
 
+    create_graphs(dataControl, 'ssr_based_F_testMat', freqToListOfGraphs_control_group)  # create graphs for control patients and insert to the list
+    # jsonH.listOf_graphs_to_json(freqToListOfGraphs_control_group, "control_group_graphs"+precentage, "DB2\graphs")
+    jsonH.listOf_graphs_to_json(freqToListOfGraphs_control_group['alphaList'], "control_group_graphs_alpha"+precentage, "DB2\graphs")
+    jsonH.listOf_graphs_to_json(freqToListOfGraphs_control_group['betaList'], "control_group_graphs_beta" + precentage,
+                                "DB2\graphs")
+    jsonH.listOf_graphs_to_json(freqToListOfGraphs_control_group['gammaList'], "control_group_graphs_gamma" + precentage,
+                                "DB2\graphs")
+    jsonH.listOf_graphs_to_json(freqToListOfGraphs_control_group['thetaList'], "control_group_graphs_theta" + precentage,
+                                "DB2\graphs")
+    jsonH.listOf_graphs_to_json(freqToListOfGraphs_control_group['deltaList'], "control_group_graphs_delta" + precentage,
+                                "DB2\graphs")
  # destroy window at the end of the function
-    name_of_ADHD_graph_file = "ADHD_group_graphs"
-    name_of_control_graph_file = "control_group_graphs"
+    name_of_ADHD_graph_file = "ADHD_group_graphs_"
+    name_of_control_graph_file = "control_group_graphs_"
     parent.destroy()
-    analyze_data_win.win(name_of_ADHD_graph_file, name_of_control_graph_file)
+    analyze_data_win.win(name_of_ADHD_graph_file, name_of_control_graph_file,precentage)
 
-def create_graphs(patients_data, matrix_name,listOf_graphs):
+def create_graphs(patients_data, matrix_name,freqToListOfGraphs):
     ## create graph from ssr_based_F_testMat
-    for patient in patients_data:
-        ssr_based_F_testMat = patient[matrix_name]
-        # for i in range(len(ssr_based_F_testMat)):
-        #     for j in range(len(ssr_based_F_testMat[i])):
-        #         if ssr_based_F_testMat[i][j] is None:
-        #             ssr_based_F_testMat[i][j] = 0
-        listOflist_to_npArray = np.array([np.array(i) for i in ssr_based_F_testMat])
 
-        G = nx.from_numpy_matrix(listOflist_to_npArray, create_using=nx.DiGraph)
-        listOf_graphs.append(G)
+    freqToListOfGraphs['alphaList'] = []
+    freqToListOfGraphs['betaList'] = []
+    freqToListOfGraphs['gammaList'] = []
+    freqToListOfGraphs['thetaList'] = []
+    freqToListOfGraphs['deltaList'] = []
+    for patient in patients_data:
+        for frequencyBand, matrixes in patient.items():
+            if frequencyBand == 'patient_name':
+                continue
+
+            ssr_based_F_testMat = matrixes[matrix_name]
+            # for i in range(len(ssr_based_F_testMat)):
+            #     for j in range(len(ssr_based_F_testMat[i])):
+            #         if ssr_based_F_testMat[i][j] is None:
+            #             ssr_based_F_testMat[i][j] = 0
+            listOflist_to_npArray = np.array([np.array(i) for i in ssr_based_F_testMat])
+
+            G = nx.from_numpy_matrix(listOflist_to_npArray, create_using=nx.DiGraph)
+            if matrixes['frequancy_band_name'] == 'alphaList':
+                freqToListOfGraphs['alphaList'].append(G)
+            elif matrixes['frequancy_band_name'] == 'betaList':
+                freqToListOfGraphs['betaList'].append(G)
+            elif matrixes['frequancy_band_name'] == 'gammaList':
+                freqToListOfGraphs['gammaList'].append(G)
+            elif matrixes['frequancy_band_name'] == 'thetaList':
+                freqToListOfGraphs['thetaList'].append(G)
+            elif matrixes['frequancy_band_name'] == 'deltaList':
+                freqToListOfGraphs['deltaList'].append(G)
 
 ## Global value
 showInfoText = True

@@ -132,7 +132,6 @@ class win:
         )
 
 
-
         window.resizable(False, False)
         window.mainloop()
 
