@@ -57,12 +57,12 @@ def generate_graphs_press(listBox=None, parent = None):
     ret = os.path.isdir(path)
     if ret == True:
         print('The folder already exist')
-        # shutil.rmtree(path)
+        shutil.rmtree(path)         # remove non-empty folder
         # parent.labelFolderExists['text'] = "aaa"
-        parent.children['labelFolderExists'].config(text = "The folder already exist")
+        # parent.children['labelFolderExists'].config(text = "The folder already exist")
         # parent.__class__.label.place(x=371.0,
                                      # y=499.0, )
-        return
+        # return
 
     parent.children['labelFolderExists'].config(text="")
     os.mkdir(path)
