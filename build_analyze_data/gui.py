@@ -66,7 +66,7 @@ def graph_feature5Press(parent = None):
         patch.set_facecolor(color)
         # patch.set(title = "11")
 
-    fig.suptitle(frequencyBand+' Degree Pearson Correlation Coefficient', fontsize=14, fontweight='bold')
+    fig.suptitle(frequencyBand+' Degree Pearson Correlation Coefficient', fontsize=12, fontweight='bold')
     plot1.set_xlabel('ADHD                                  Control')
     canvas = FigureCanvasTkAgg(fig,
                                master=parent)
@@ -97,7 +97,7 @@ def graph_feature2Press(parent = None):
         patch.set_facecolor(color)
         # patch.set(title = "11")
 
-    fig.suptitle(frequencyBand + ' Average Clustering', fontsize=14, fontweight='bold')
+    fig.suptitle(frequencyBand + ' Average Clustering', fontsize=12, fontweight='bold')
     plot1.set_xlabel('ADHD                                  Control')
     canvas = FigureCanvasTkAgg(fig,
                                master=parent)
@@ -128,7 +128,7 @@ def graph_feature4Press(parent = None):
         patch.set_facecolor(color)
         # patch.set(title = "11")
 
-    fig.suptitle(frequencyBand +' Degree Assortativity Coefficient', fontsize=14, fontweight='bold')
+    fig.suptitle(frequencyBand +' Degree Assortativity Coefficient', fontsize=12, fontweight='bold')
     plot1.set_xlabel('ADHD                                  Control')
     canvas = FigureCanvasTkAgg(fig,
                                master=parent)
@@ -158,7 +158,7 @@ def graph_feature3Press(parent = None):
         patch.set_facecolor(color)
         # patch.set(title = "11")
 
-    fig.suptitle(frequencyBand +' density', fontsize=14, fontweight='bold')
+    fig.suptitle(frequencyBand +' density', fontsize=12, fontweight='bold')
     plot1.set_xlabel('ADHD                                  Control')
     canvas = FigureCanvasTkAgg(fig,
                                master=parent)
@@ -188,7 +188,7 @@ def graph_feature1Press(parent = None):
         patch.set_facecolor(color)
         # patch.set(title = "11")
 
-    fig.suptitle(frequencyBand +' Transitivity', fontsize=14, fontweight='bold')
+    fig.suptitle(frequencyBand +' Transitivity', fontsize=12, fontweight='bold')
     plot1.set_xlabel('ADHD                                  Control')
     canvas = FigureCanvasTkAgg(fig,
                                master=parent)
@@ -409,7 +409,7 @@ class win:
         # canvas.place(x=266.0,
         #     y=292.0)
 
-        read_graphs()   # read graphs
+        # read_graphs()   # read graphs
 
         window.resizable(False, False)
         window.mainloop()

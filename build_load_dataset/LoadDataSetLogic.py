@@ -101,13 +101,13 @@ class LoadDataSetLogic:
                     electrodeToFeq[i]['thetaList'] = []
                     electrodeToFeq[i]['deltaList'] = []
                     for k in range (listOfParts.__len__()):
-                         if listOfParts[k].size <= 2:
+                         if listOfParts[k].size != int(freqHz) * int(winLength):
                              continue
-                         delta = bandpower(listOfParts[k], int(freqHz), [0.5, 4], int(freqHz) * int(winLength))
-                         theta = bandpower(listOfParts[k], int(freqHz), [4, 8], int(freqHz) * int(winLength))
-                         alpha = bandpower(listOfParts[k], int(freqHz), [8, 12], int(freqHz) * int(winLength))
-                         beta = bandpower(listOfParts[k], int(freqHz), [12, 30], int(freqHz) * int(winLength))
-                         gamma = bandpower(listOfParts[k], int(freqHz), [30, 100], int(freqHz) * int(winLength))
+                         delta = bandpower(listOfParts[k], int(freqHz), [0.5, 4],  int(winLength))
+                         theta = bandpower(listOfParts[k], int(freqHz), [4, 8], int(winLength))
+                         alpha = bandpower(listOfParts[k], int(freqHz), [8, 12], int(winLength))
+                         beta = bandpower(listOfParts[k], int(freqHz), [12, 30],  int(winLength))
+                         gamma = bandpower(listOfParts[k], int(freqHz), [30, 100],  int(winLength))
                          electrodeToFeq[i]['alphaList'].append(alpha)
                          electrodeToFeq[i]['betaList'].append(beta)
                          electrodeToFeq[i]['gammaList'].append(gamma)
