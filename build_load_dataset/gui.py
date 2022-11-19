@@ -3,6 +3,7 @@
 import tkinter
 from pathlib import Path
 import os
+from tkinter import ttk
 #for train data set
 import matplotlib.pyplot as plt
 from sklearn import datasets
@@ -42,12 +43,13 @@ def upload_data_set(listBox=None):
 
 
 def generate_graphs_press(listBox=None, parent = None):
+    parent.children['progBar']['value'] = 0
     windowTimeSec= parent.children['windowTimeSec'].get()
     freqHz = parent.children['freqHz'].get()
     filePathName = listBox.selection_get()
     filePathNameADHD = filePathName + "/ADHD/"
     filePathNameControl = filePathName + "/Control/"
-
+    # parent.children['progBar']['value'] = 20
     path = os.getcwd()
     splits = filePathName.split("/")
     folderName = splits[len(splits) - 1]
@@ -68,7 +70,7 @@ def generate_graphs_press(listBox=None, parent = None):
     os.mkdir(path)
 
     mapOfDataADHD, ssr_based_F_testADHDList, ssr_chi2testADHDList, lrtestADHDList, params_ftestADHDList = LoadDataSetLogic.BuildFromDir(
-        filePathNameADHD,windowTimeSec, freqHz)
+        filePathNameADHD,windowTimeSec, freqHz ,parent.children['progBar'])
 
 
 
@@ -87,7 +89,7 @@ def generate_graphs_press(listBox=None, parent = None):
     jsonC.martix_to_csv(params_ftestAvgADHDMatrix, "params_ftestAvgADHDMatrix",folderName)
 
     mapOfDataControl, ssr_based_F_testControlList, ssr_chi2testControlList, lrtestControlList, params_ftestControlList = LoadDataSetLogic.BuildFromDir(
-        filePathNameControl, windowTimeSec, freqHz)
+        filePathNameControl, windowTimeSec, freqHz,parent.children['progBar'])
 
 
 
@@ -104,6 +106,7 @@ def generate_graphs_press(listBox=None, parent = None):
     params_ftestAvgControlMatrix = AvarageMatrix(params_ftestControlList)
     jsonC.martix_to_csv(params_ftestAvgControlMatrix, "params_ftestAvgControlMatrix",folderName)
 
+    parent.children['progBar']['value']= 100
 
 """
     print("train_model_press")
@@ -388,6 +391,14 @@ class win:
 
         listbox = tkinter.Listbox(height=15, width=70)
         listbox.place(x=470.0, y=146.0, )
+
+        pb = ttk.Progressbar(
+            window,name = 'progBar',
+            orient='horizontal',
+            mode='determinate',
+            length=280
+        )
+        pb.place(x=530.0, y=440.0, )
 
         labelFolderExists = tkinter.Label(name='labelFolderExists',  fg="red", bg='#E2D8EF').place(x=810,
                                                                                        y=570)

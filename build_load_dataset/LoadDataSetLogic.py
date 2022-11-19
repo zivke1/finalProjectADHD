@@ -61,12 +61,14 @@ class LoadDataSetLogic:
 
 
 
-    def BuildFromDir(path, winLength , freqHz):
+    def BuildFromDir(path, winLength , freqHz ,progBar):
         files = os.listdir(path)
-        # numberOfPatint = 0
-        # for file in files:
-        #     if file.endswith("csv"):
-        #         numberOfPatint = numberOfPatint + 1
+        numberOfPatint = 0
+        for file in files:
+            if file.endswith("csv"):
+                numberOfPatint = numberOfPatint + 1
+
+        progBarValueToAdd = 50/(2*numberOfPatint)
 
         mapOfData = {}
         ssr_based_F_testList = []
@@ -151,6 +153,7 @@ class LoadDataSetLogic:
                 lrtestList.append(lrtestMat)
 
                 params_ftestList.append(params_ftestMat)
+            progBar['value']+=progBarValueToAdd
         # jsonC = jh()
         # print(jsonC.martix_to_json)
         # jsonC.martix_to_json(mapOfData)
