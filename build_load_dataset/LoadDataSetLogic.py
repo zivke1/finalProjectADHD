@@ -101,7 +101,8 @@ class LoadDataSetLogic:
                     electrodeToFeq[i]['thetaList'] = []
                     electrodeToFeq[i]['deltaList'] = []
                     for k in range (listOfParts.__len__()):
-
+                         if listOfParts[k].size <= 2:
+                             continue
                          delta = bandpower(listOfParts[k], int(freqHz), [0.5, 4], int(freqHz) * int(winLength))
                          theta = bandpower(listOfParts[k], int(freqHz), [4, 8], int(freqHz) * int(winLength))
                          alpha = bandpower(listOfParts[k], int(freqHz), [8, 12], int(freqHz) * int(winLength))
