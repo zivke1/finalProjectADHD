@@ -1,5 +1,8 @@
 # This is a sample Python script.
 
+# shani personal token figma: figd_Jd72bW94JkQIu11xwFqTohwkNaI3E-yVXfYJz1pA
+# run figma using command: tkdesigner URL personalToken
+
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
