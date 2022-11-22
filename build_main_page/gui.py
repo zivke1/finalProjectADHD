@@ -23,6 +23,7 @@ def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
 window = Tk()
+window.title("Main Page")
 class win:
     def __init__(self, *args, **kwargs):
         window.geometry("1170x687")

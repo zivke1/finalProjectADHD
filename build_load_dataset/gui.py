@@ -144,6 +144,7 @@ def generate_graphs_press(listBox=None, parent = None):
 class win:
     def __init__(self, *args, **kwargs):
         window = Tk()
+        window.title("Load Data Set")
         window.geometry("1170x687")
         window.configure(bg = "#FFFFFF")
 
