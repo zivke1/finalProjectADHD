@@ -68,7 +68,7 @@ class LoadDataSetLogic:
             if file.endswith("csv"):
                 numberOfPatint = numberOfPatint + 1
 
-        progBarValueToAdd = 50/(2*numberOfPatint)
+        progBarValueToAdd = 50/(numberOfPatint)
 
         mapOfData = {}
         ssr_based_F_testList = []
@@ -120,6 +120,7 @@ class LoadDataSetLogic:
                 mapOfData[file] = {}
                 for type in listOfFrequencyTypes:
                     ssr_based_F_testMat = np.zeros((colNumber, colNumber))
+
                     for i in range(0, colNumber):
                         for j in range(0, colNumber):
 
