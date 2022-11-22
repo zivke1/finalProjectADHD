@@ -15,8 +15,7 @@ from utilities.json_creator import OutputHandler as jh
 from utilities.GeneralFunction import AvarageMatrix
 import build_generate_graphs.gui as generate_graphs_win
 import build_analyze_data.gui as analyze_data_win
-
-
+from threading import Thread
 # from tkinter import *
 # Explicit imports to satisfy Flake8
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
@@ -40,16 +39,18 @@ def upload_data_set(listBox=None):
 
     listBox.insert(0, filePathName)
 
-
+def openThread(listBox=None, parent=None):
+    thread = Thread(target=generate_graphs_press, args=(listBox,parent))
+    thread.start()
 
 def generate_graphs_press(listBox=None, parent = None):
     parent.children['progBar']['value'] = 0
     windowTimeSec= parent.children['windowTimeSec'].get()
     freqHz = parent.children['freqHz'].get()
     filePathName = listBox.selection_get()
+
     filePathNameADHD = filePathName + "/ADHD/"
     filePathNameControl = filePathName + "/Control/"
-    # parent.children['progBar']['value'] = 20
     path = os.getcwd()
     splits = filePathName.split("/")
     folderName = splits[len(splits) - 1]
@@ -69,13 +70,14 @@ def generate_graphs_press(listBox=None, parent = None):
     parent.children['labelFolderExists'].config(text="")
     os.mkdir(path)
 
+
     mapOfDataADHD, ssr_based_F_testADHDList, ssr_chi2testADHDList, lrtestADHDList, params_ftestADHDList = LoadDataSetLogic.BuildFromDir(
         filePathNameADHD,windowTimeSec, freqHz ,parent.children['progBar'])
 
 
 
     jsonC = jh()
-    # print(jsonC.martix_to_json)
+
     jsonC.martix_to_json(mapOfDataADHD, "conclusionMatrixADHD",folderName)
 
     # average of all adhd patients
@@ -299,7 +301,7 @@ class win:
             image=button_image_3,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: generate_graphs_press(listBox=listbox, parent=window),
+            command=lambda: openThread(listBox=listbox, parent=window),
             relief="flat"
         )
         button_3.place(

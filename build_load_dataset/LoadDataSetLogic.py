@@ -58,9 +58,6 @@ def bandpower(data, sf, band, window_sec=None, relative=False):
     return bp
 
 class LoadDataSetLogic:
-
-
-
     def BuildFromDir(path, winLength , freqHz ,progBar):
         files = os.listdir(path)
         numberOfPatint = 0
@@ -90,12 +87,14 @@ class LoadDataSetLogic:
                 mapOfElctrodeAndPart = {}
                 electrodeToFeq = {}
                 for i in range(colNumber):
+                    # convert from the csv file to parts in numpy
                     l1 = pd.Series(df[str(i)]).to_numpy()
                     l1 = l1.astype(np.float)
                     listOfParts = [l1[j:j + int(freqHz) * int(winLength)] for j in
                                        range(0, len(df[str(i)]), int(freqHz) * int(winLength))]
 
 
+                    #create map key frequency band values list of frequency band values for windows
                     electrodeToFeq[i] = {}
                     electrodeToFeq[i]['alphaList'] = []
                     electrodeToFeq[i]['betaList'] = []
@@ -124,9 +123,9 @@ class LoadDataSetLogic:
                     for i in range(0, colNumber):
                         for j in range(0, colNumber):
 
+                            #prepare for grangercausalitytests
                              data = {'0':electrodeToFeq[i][type],'1':electrodeToFeq[j][type]}
                              dataDf = pd.DataFrame(data)
-                             # y = grangercausalitytests(df[[str(i), str(j)]], maxlag=2)
                              y = grangercausalitytests(dataDf[['0', '1']], maxlag=2)
 
                              ####data from the first part
@@ -142,7 +141,6 @@ class LoadDataSetLogic:
                              params_ftest = dataFromTest["params_ftest"]
                              params_ftestMat[i][j] = params_ftest[0]
 
-                #need to add part of type!!
                     mapOfData[file][type] = [("ssr_based_F_testMat", ssr_based_F_testMat), ("ssr_chi2testMat", ssr_chi2testMat),
                                    ("lrtestMat", lrtestMat), ("params_ftestMat", params_ftestMat)]
                 print(file)
