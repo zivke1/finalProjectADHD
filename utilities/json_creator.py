@@ -15,11 +15,49 @@ class OutputHandler:
     def martix_to_json(self, mapOfData, outputFileName,outputFolder):
         conclusion_matrix = {               # create template for json file
                 "patient_name": "",
-                "ssr_based_F_testMat": [],
-                "ssr_chi2testMat": [],
-                "lrtestMat": [],
-                "params_ftestMat": []
-            }
+                "fb_matrix1":
+                {
+                    "frequancy_band_name": "",
+                    "ssr_based_F_testMat": [],
+                    "ssr_chi2testMat": [],
+                    "lrtestMat": [],
+                    "params_ftestMat": []
+                },
+                "fb_matrix2":
+                {
+                    "frequancy_band_name": "",
+                    "ssr_based_F_testMat": [],
+                    "ssr_chi2testMat": [],
+                    "lrtestMat": [],
+                    "params_ftestMat": []
+                },
+                "fb_matrix3":
+                {
+                    "frequancy_band_name": "",
+                    "ssr_based_F_testMat": [],
+                    "ssr_chi2testMat": [],
+                    "lrtestMat": [],
+                    "params_ftestMat": []
+                },
+                "fb_matrix4":
+                {
+                    "frequancy_band_name": "",
+                    "ssr_based_F_testMat": [],
+                    "ssr_chi2testMat": [],
+                    "lrtestMat": [],
+                    "params_ftestMat": []
+
+                },
+                "fb_matrix5":
+                {
+                    "frequancy_band_name": "",
+                    "ssr_based_F_testMat": [],
+                    "ssr_chi2testMat": [],
+                    "lrtestMat": [],
+                    "params_ftestMat": []
+
+                }
+        }
 
         jpath = ".\\..\\DB\\"+outputFolder + "\\" +outputFileName +".json"
         j_file = open(jpath, 'w')
@@ -27,10 +65,17 @@ class OutputHandler:
 
         for patient in mapOfData:           # insert data into struct
             conclusion_matrix['patient_name'] = patient.strip(".csv")
-            conclusion_matrix['ssr_based_F_testMat'] = mapOfData[patient][0][1].tolist()  # get the second element in the tuple which is the matrix
-            conclusion_matrix['ssr_chi2testMat'] = mapOfData[patient][1][1].tolist()
-            conclusion_matrix['lrtestMat'] = mapOfData[patient][2][1].tolist()
-            conclusion_matrix['params_ftestMat'] = mapOfData[patient][3][1].tolist()
+            i=1
+            for freq_band in mapOfData[patient]:
+                conclusion_matrix['fb_matrix'+str(i)]['frequancy_band_name'] = freq_band
+
+                conclusion_matrix['fb_matrix'+str(i)]['ssr_based_F_testMat'] = mapOfData[patient][freq_band][0][1].tolist()  # get the second element in the tuple which is the matrix
+                conclusion_matrix['fb_matrix'+str(i)]['ssr_chi2testMat'] = mapOfData[patient][freq_band][1][1].tolist()
+                conclusion_matrix['fb_matrix'+str(i)]['lrtestMat'] = mapOfData[patient][freq_band][2][1].tolist()
+                conclusion_matrix['fb_matrix'+str(i)]['params_ftestMat'] = mapOfData[patient][freq_band][3][1].tolist()
+                i+=1
+
+
             j_file.write('\t')
             json.dump(conclusion_matrix, j_file)
             j_file.write(',\n\n')
