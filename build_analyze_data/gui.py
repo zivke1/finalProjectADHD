@@ -380,13 +380,24 @@ class win:
         window.FB = tkinter.StringVar()
         month_cb = tkinter.ttk.Combobox(name='frequencyBandsCB', textvariable=window.FB)
         month_cb.place(x=270.0,
-                       y=50.0,
+                       y=65.0,
                        width=168.0,
-                       height=37.0)
+                       height=34.0)
         month_cb['values'] = ['Alpha', 'Beta', 'Gamma', 'Theta', 'Delta']
-        month_cb['state'] = 'readonly'
-        month_cb.current(0)
+        # month_cb['state'] = 'readonly'
+        # month_cb.current(0)
+        month_cb.insert(0, "Choose frequency band")
 
+
+
+        canvas.create_text(
+            550.0,
+            15.0,
+            anchor="nw",
+            text="Analyze data",
+            fill="#000000",
+            font=("JejuMyeongjo", 24 * -1)
+        )
 
         window.resizable(False, False)
         window.mainloop()

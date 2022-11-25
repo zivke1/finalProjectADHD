@@ -37,6 +37,8 @@ def upload_data_set(win = None ,id = 0):
             width=40.0,
             height=50.0
         )
+        # win.children['labelFinish'].pack_forget()
+
     elif id == 2:
         group2Path = filePathName
         win.children['checkMarkG2'].place(x=1080.0,
@@ -44,6 +46,7 @@ def upload_data_set(win = None ,id = 0):
                     width=40.0,
                     height=50.0,
                     )
+        # win.children['labelFinish'].pack()
     # listBox.insert(0, filePathName)
 
 def openThread(parent=None):
@@ -51,7 +54,7 @@ def openThread(parent=None):
     thread.start()
 
 def generate_graphs_press(parent = None):
-
+    parent.children['labelFinish'].config(text="")
     parent.children["progBar"]['value'] = 0
     entryHz = parent.children["entryHz"].get()
     entryWinSec = parent.children["entryWinSec"].get()
@@ -122,6 +125,8 @@ def generate_graphs_press(parent = None):
     params_ftestAvgControlMatrix = AvarageMatrix(params_ftestControlList)
     jsonC.martix_to_csv(params_ftestAvgControlMatrix, "params_ftestAvgControlMatrix",folderName)
     parent.children['progBar']['value']= 100
+    parent.children['labelFinish'].config(text = "Finish")
+    return
 
 
 """
@@ -268,6 +273,16 @@ class win:
             font=("JejuMyeongjo", 16 * -1)
         )
 
+        canvas.create_text(
+            570.0,
+            294.0,
+            anchor="nw",
+            text="*",
+            fill="red",
+            font=("JejuMyeongjo", 16 * -1,)
+
+        )
+
         entry_image_3 = PhotoImage(
             file=relative_to_assets("entry_3.png"))
         entry_bg_3 = canvas.create_image(
@@ -295,7 +310,35 @@ class win:
             fill="#000000",
             font=("JejuMyeongjo", 16 * -1)
         )
+        canvas.create_text(
+            555.0,
+            30.0,
+            anchor="nw",
+            text="Load raw EEG data set",
+            fill="#000000",
+            font=("JejuMyeongjo", 24 * -1)
+        )
 
+
+        canvas.create_text(
+            555.0,
+            189.0,
+            anchor="nw",
+            text="*",
+            fill="red",
+            font=("JejuMyeongjo", 16 * -1,)
+
+        )
+
+        canvas.create_text(
+            535.0,
+            105.0,
+            anchor="nw",
+            text="*",
+            fill="red",
+            font=("JejuMyeongjo", 16 * -1,)
+
+        )
         canvas.create_text(
             334.0,
             369.0,
@@ -303,6 +346,15 @@ class win:
             text="Sampling frequency (Hz):",
             fill="#000000",
             font=("JejuMyeongjo", 16 * -1)
+        )
+        canvas.create_text(
+            508.0,
+            369.0,
+            anchor="nw",
+            text="*",
+            fill="red",
+            font=("JejuMyeongjo", 16 * -1,)
+
         )
 
         button_image_1 = PhotoImage(
@@ -443,6 +495,8 @@ class win:
         pb.place(x=530.0, y=440.0, )
         labelFolderExists = tkinter.Label(name='labelFolderExists', fg="red", bg='#E2D8EF').place(x=810,
                                                                                                   y=570)
+        labelFolderExists = tkinter.Label(name='labelFinish', fg="black", bg='#E2D8EF',font=("JejuMyeongjo", 16 * -1))
+        labelFolderExists.place(x=810, y=530)
 
         window.resizable(False, False)
         window.mainloop()
