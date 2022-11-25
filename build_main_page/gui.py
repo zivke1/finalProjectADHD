@@ -23,22 +23,23 @@ def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
 window = Tk()
+window.title("Main Page")
 class win:
     def __init__(self, *args, **kwargs):
         window.geometry("1170x687")
-        window.configure(bg = "#FFFFFF")
+        window.configure(bg="#FFFFFF")
 
         canvas = Canvas(
             window,
-            bg = "#FFFFFF",
-            height = 700,
-            width = 1186,
-            bd = 0,
-            highlightthickness = 0,
-            relief = "ridge"
+            bg="#FFFFFF",
+            height=687,
+            width=1170,
+            bd=0,
+            highlightthickness=0,
+            relief="ridge"
         )
 
-        canvas.place(x = 0, y = 0)
+        canvas.place(x=0, y=0)
         canvas.create_rectangle(
             0.0,
             0.0,
@@ -46,6 +47,44 @@ class win:
             684.0,
             fill="#9272EB",
             outline="")
+
+        button_image_1 = PhotoImage(
+            file=relative_to_assets("button_1.png"))
+        button_1 = Button(
+            image=button_image_1,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: {
+                window.destroy():
+                    generate_graphs_win.win()
+            },
+            relief="flat"
+        )
+        button_1.place(
+            x=34.0,
+            y=92.0,
+            width=168.0,
+            height=37.0
+        )
+
+        button_image_2 = PhotoImage(
+            file=relative_to_assets("button_2.png"))
+        button_2 = Button(
+            image=button_image_2,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: {
+                window.destroy():
+                    load_EEG_dataSet_win.win()
+            },
+            relief="flat"
+        )
+        button_2.place(
+            x=34.0,
+            y=154.0,
+            width=168.0,
+            height=37.0
+        )
 
         canvas.create_text(
             27.0,
@@ -59,79 +98,19 @@ class win:
         canvas.create_rectangle(
             234.0,
             0.0,
-            1174.0,
+            1167.0,
             684.0,
             fill="#E2D8EF",
             outline="")
 
         canvas.create_text(
-            520.0,
+            515.0,
             74.0,
             anchor="nw",
             text="Welcome To EEG Recordings Analyzer",
             fill="#000000",
             font=("JejuMyeongjo", 24 * -1)
         )
-
-
-        button_image_1 = PhotoImage(
-            file=relative_to_assets("button_1.png"))
-        button_1 = Button(
-            image=button_image_1,
-            borderwidth=0,
-            highlightthickness=0,
-            command=lambda: {
-                window.destroy():
-                generate_graphs_win.win()
-            },
-            relief="flat"
-        )
-        button_1.place(
-            x=34.0,
-            y=163.0,
-            width=168.0,
-            height=37.0
-        )
-
-        button_image_2 = PhotoImage(
-            file=relative_to_assets("button_2.png"))
-        button_2 = Button(
-            image=button_image_2,
-            borderwidth=0,
-            highlightthickness=0,
-            command= lambda: {
-                        window.destroy():
-                        load_EEG_dataSet_win.win()
-            }, #print("button_2 clicked"),
-            relief="flat"
-        )
-        button_2.place(
-            x=34.0,
-            y=101.0,
-            width=168.0,
-            height=37.0
-        )
-
-        button_image_3 = PhotoImage(
-            file=relative_to_assets("button_3.png"))
-        button_3 = Button(
-            image=button_image_3,
-            borderwidth=0,
-            highlightthickness=0,
-            command=lambda: {
-                        window.destroy():
-                        analyze_data_win.win()
-            },
-            relief="flat"
-        )
-        button_3.place(
-            x=34.0,
-            y=224.0,
-            width=168.0,
-            height=37.0
-        )
-
-
         window.resizable(False, False)
         window.mainloop()
 
