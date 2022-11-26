@@ -121,7 +121,7 @@ def generate_graphs_press(parent = None):
     params_ftestAvgControlMatrix = AvarageMatrix(params_ftestControlList)
     jsonC.martix_to_csv(params_ftestAvgControlMatrix, "params_ftestAvgControlMatrix",folderName)
     parent.children['progBar']['value']= 100
-    parent.children['labelFinish'].config(text = "Finish upload data set\nThe folder "+folderName +" was created\ngo to generate graphs and analyse this data set")
+    parent.children['labelFinish'].config(text = "Finish upload data set\nThe folder "+folderName +"\nwas created\ngo to generate graphs and analyse this data set")
     return
 
 
@@ -424,7 +424,7 @@ class win:
         )
         button_3.place(
             x=789.0,
-            y=470.0,
+            y=490.0,
             width=234.0,
             height=48.0
         )
@@ -486,7 +486,7 @@ class win:
         labelFolderExists = tkinter.Label(name='labelFolderExists', fg="red", bg='#E2D8EF').place(x=810,
                                                                                                   y=570)
         labelFolderExists = tkinter.Label(name='labelFinish', fg="black",justify=LEFT, bg='#E2D8EF',font=("JejuMyeongjo", 16 * -1))
-        labelFolderExists.place(x=810, y=530)
+        labelFolderExists.place(x=650, y=560)
 
         window.resizable(False, False)
         window.mainloop()

@@ -44,17 +44,23 @@ def remove_values_from_matrix_under_precentages(data , precentage):
                         ssr_based_F_testMat[indexD1][indexD2] = 0
 
 
-
+files_name = ""
 def gen_graphs_pressed(parent = None):
     precentage = parent.children['precentageEntry'].get()
     jsonH = jh()
     if precentage == '':
-        parent.children['labelFolderExists'].config(text = "You must enter a threshold value")
+        parent.children['labelErr'].config(text = "You must enter a threshold value")
         return
 
-    parent.children['labelFolderExists'].config(text="")
+    parent.children['labelErr'].config(text="")
     #need to check if it don't select nothing
-    diractory = parent.children['listBoxOfDataSet'].selection_get()
+    try:
+        diractory = parent.children['listBoxOfDataSet'].selection_get()
+        files_name = diractory
+    except :
+        parent.children['labelErr'].config(text = "Please choose a data set")
+        return
+
     folderPath = ".\\..\\DB\\"+diractory+"\\conclusionMatrixADHD.json"
     f = open(folderPath)
     conclusionMatrixADHD = json.load(f)
@@ -101,7 +107,7 @@ def gen_graphs_pressed(parent = None):
     name_of_ADHD_graph_file = "ADHD_group_graphs_"
     name_of_control_graph_file = "control_group_graphs_"
     parent.destroy()
-    analyze_data_win.win(name_of_ADHD_graph_file, name_of_control_graph_file,precentage)
+    analyze_data_win.win(name_of_ADHD_graph_file, name_of_control_graph_file,precentage, files_name)
 
 def create_graphs(patients_data, matrix_name,freqToListOfGraphs):
     ## create graph from ssr_based_F_testMat
@@ -328,7 +334,7 @@ class win:
         listbox = tkinter.Listbox(name='listBoxOfDataSet', height=14, width=85)
         listbox.place(x=441.0, y=210.0, )
         directories = os.listdir(".\\..\\DB\\")
-        labelFolderExists = tkinter.Label(name='labelFolderExists', fg="red", bg='#E2D8EF').place(x=810, y=590)
+        labelErr = tkinter.Label(name='labelErr', fg="red", bg='#E2D8EF').place(x=810, y=590)
         labelInfo = tkinter.Label(name='labelInfo', fg="black", bg='#E2D8EF').place(x=300, y=590)
 
         for directory in directories:
