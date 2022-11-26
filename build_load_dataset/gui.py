@@ -4,7 +4,7 @@
 
 import tkinter
 from pathlib import Path
-from tkinter import ttk
+from tkinter import ttk, LEFT
 from threading import Thread
 import shutil
 # from tkinter import *
@@ -32,22 +32,18 @@ def upload_data_set(win = None ,id = 0):
     filePathName = fd.askdirectory()
     if id == 1:
         group1Path = filePathName
-        win.children['checkMarkG1'].place( x=1080.0,
-            y=88.0,
-            width=40.0,
-            height=50.0
-        )
-        # win.children['labelFinish'].pack_forget()
-
+        splitPath = filePathName.split("/")
+        win.children['checkMarkG1'].config(text = splitPath[splitPath.__len__()-1])
     elif id == 2:
         group2Path = filePathName
-        win.children['checkMarkG2'].place(x=1080.0,
-                    y=170.0,
-                    width=40.0,
-                    height=50.0,
-                    )
-        # win.children['labelFinish'].pack()
-    # listBox.insert(0, filePathName)
+        splitPath = filePathName.split("/")
+        win.children['checkMarkG2'].config(text=splitPath[splitPath.__len__() - 1])
+
+    if group1Path == group2Path:
+        win.children['warnningSameFolder'].config(text="You choose the same folder \nfor treatment and control")
+    else:
+        win.children['warnningSameFolder'].config(text="")
+
 
 def openThread(parent=None):
     thread = Thread(target=generate_graphs_press, args=(parent,))
@@ -125,7 +121,7 @@ def generate_graphs_press(parent = None):
     params_ftestAvgControlMatrix = AvarageMatrix(params_ftestControlList)
     jsonC.martix_to_csv(params_ftestAvgControlMatrix, "params_ftestAvgControlMatrix",folderName)
     parent.children['progBar']['value']= 100
-    parent.children['labelFinish'].config(text = "Finish")
+    parent.children['labelFinish'].config(text = "Finish upload data set\nThe folder "+folderName +" was created\ngo to generate graphs and analyse this data set")
     return
 
 
@@ -468,23 +464,17 @@ class win:
             height=37.0
         )
 
-        img = ImageTk.PhotoImage(Image.open(relative_to_assets("greenCheckmark.png")))
-        labelG1 = Label( name = "checkMarkG1",image=img)
-        labelG1.place( x=1080.0,
-            y=88.0,
-            width=40.0,
-            height=50.0
-        )
-        labelG1.pack()
-        labelG1.pack_forget()
-        labelG2 = Label(name="checkMarkG2", image=img)
-        labelG2.place(x=1080.0,
-                    y=170.0,
-                    width=40.0,
-                    height=50.0,
-                    )
-        labelG2.pack()
-        labelG2.pack_forget()
+        labelG1 = tkinter.Label(name='checkMarkG1', fg="black", bg='#E2D8EF',
+                                font=("JejuMyeongjo", 16 * -1))
+        labelG1.place(x=1080, y=100)
+
+        labelG2 = tkinter.Label(name='checkMarkG2', fg="black", bg='#E2D8EF',
+                                          font=("JejuMyeongjo", 16 * -1))
+        labelG2.place(x=1080, y=185)
+
+        warnningSameFolder = tkinter.Label(name='warnningSameFolder', fg="red", bg='#E2D8EF',justify=LEFT,
+                                font=("JejuMyeongjo", 16 * -1))
+        warnningSameFolder.place(x=850, y=250)
 
         pb = ttk.Progressbar(
             window,name = 'progBar',
@@ -495,7 +485,7 @@ class win:
         pb.place(x=530.0, y=440.0, )
         labelFolderExists = tkinter.Label(name='labelFolderExists', fg="red", bg='#E2D8EF').place(x=810,
                                                                                                   y=570)
-        labelFolderExists = tkinter.Label(name='labelFinish', fg="black", bg='#E2D8EF',font=("JejuMyeongjo", 16 * -1))
+        labelFolderExists = tkinter.Label(name='labelFinish', fg="black",justify=LEFT, bg='#E2D8EF',font=("JejuMyeongjo", 16 * -1))
         labelFolderExists.place(x=810, y=530)
 
         window.resizable(False, False)
