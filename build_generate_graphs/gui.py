@@ -21,14 +21,13 @@ import build_load_dataset.gui as load_dataset_win
 import build_analyze_data.gui as analyze_data_win
 from utilities.json_creator import OutputHandler as jh
 
-
-
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
 
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
+
 
 def remove_values_from_matrix_under_precentages(data , precentage):
     # this code is remove all the values under the threshold
@@ -150,6 +149,7 @@ def present_info_text(parent = None):       # information Icon msg - each click 
 
 
 
+
 class win:
     def __init__(self, *args, **kwargs):
         window = Tk()
@@ -239,9 +239,9 @@ class win:
             relief="flat"
         )
         button_3.place(
-            x=817.0,
-            y=489.0,
-            width=206.0,
+            x=788.0,
+            y=525.0,
+            width=235.0,
             height=50.0
         )
 
@@ -256,7 +256,7 @@ class win:
         )
         button_4.place(
             x=400.0,
-            y=127.0,
+            y=178.0,
             width=600.0,
             height=300.0
         )
@@ -264,18 +264,19 @@ class win:
         entry_image_1 = PhotoImage(
             file=relative_to_assets("entry_1.png"))
         entry_bg_1 = canvas.create_image(
-            573.0,
-            514.0,
+            649.0,
+            547.0,
             image=entry_image_1
         )
-        entry_1 = Entry(name = "precentageEntry",
+        entry_1 = Entry(
+            name="precentageEntry",
             bd=0,
             bg="#D5CDEA",
             highlightthickness=0
         )
         entry_1.place(
-            x=546.0,
-            y=496.0,
+            x=622.0,
+            y=529.0,
             width=54.0,
             height=34.0
         )
@@ -291,34 +292,44 @@ class win:
         )
         button_5.place(
             x=359.0,
-            y=496.0,
+            y=529.0,
             width=22.0,
             height=27.0
         )
 
         canvas.create_text(
             394.0,
-            504.0,
+            537.0,
             anchor="nw",
-            text="Threshold value: ",
+            text="Threshold value precentage: ",
             fill="#000000",
             font=("JejuMyeongjo", 16 * -1)
         )
 
         canvas.create_text(
-            452.0,
-            73.0,
+            445.0,
+            138.0,
             anchor="nw",
             text="Data sets list:",
             fill="#000000",
             font=("JejuMyeongjo", 24 * -1)
         )
 
+        canvas.create_text(
+            331.0,
+            58.0,
+            anchor="nw",
+            text="Choose data set you wish to generate graph features from:",
+            fill="#000000",
+            font=("JejuMyeongjo", 24 * -1)
+        )
+
+
         listbox = tkinter.Listbox(name='listBoxOfDataSet', height=14, width=85)
-        listbox.place(x=441.0, y=160.0, )
+        listbox.place(x=441.0, y=210.0, )
         directories = os.listdir(".\\..\\DB\\")
-        labelFolderExists = tkinter.Label(name='labelFolderExists', fg="red", bg='#E2D8EF').place(x=810, y=570)
-        labelInfo = tkinter.Label(name='labelInfo', fg="black", bg='#E2D8EF').place(x=300, y=570)
+        labelFolderExists = tkinter.Label(name='labelFolderExists', fg="red", bg='#E2D8EF').place(x=810, y=590)
+        labelInfo = tkinter.Label(name='labelInfo', fg="black", bg='#E2D8EF').place(x=300, y=590)
 
         for directory in directories:
             listbox.insert(0, directory)
