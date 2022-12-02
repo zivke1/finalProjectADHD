@@ -28,6 +28,28 @@ ASSETS_PATH = OUTPUT_PATH / Path("./assets")
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
+def getThresholdValue(dataADHD,dataControl,precentage):
+    allData = []
+    check = 0
+    for patient in dataADHD:
+        # p = patient
+        for frequencyBand,matrixes  in patient.items():
+            if frequencyBand == 'patient_name':
+                continue
+            allData.append(matrixes['ssr_based_F_testMat'])
+            check = np.percentile(matrixes['ssr_based_F_testMat'],int(precentage))
+            x=check
+    for patient in dataControl:
+        # p = patient
+        for frequencyBand, matrixes in patient.items():
+            if frequencyBand == 'patient_name':
+                continue
+            allData.append(matrixes['ssr_based_F_testMat'])
+
+    threshold = np.percentile(allData, int(precentage))
+    return threshold
+
+
 
 def remove_values_from_matrix_under_precentages(data , precentage):
     # this code is remove all the values under the threshold
@@ -60,11 +82,20 @@ def gen_graphs_pressed(parent = None):
     except :
         parent.children['labelErr'].config(text = "Please choose a data set")
         return
-
+    parent.children['labelErr'].config(text="")
     folderPath = ".\\..\\DB\\"+diractory+"\\conclusionMatrixADHD.json"
     f = open(folderPath)
     conclusionMatrixADHD = json.load(f)
     dataADHD = conclusionMatrixADHD['Patients']
+
+    #control start for get treshold value
+    folderPath = ".\\..\\DB\\"+diractory+"\\conclusionMatrixControl.json"
+    f = open(folderPath)
+    conclusionMatrixControl = json.load(f)
+    dataControl = conclusionMatrixControl['Patients']
+
+    thresholdValue = getThresholdValue(dataADHD,dataControl ,precentage)
+
     remove_values_from_matrix_under_precentages(dataADHD, precentage)
 
     freqToListOfGraphs_ADHD_group = {}
@@ -84,10 +115,7 @@ def gen_graphs_pressed(parent = None):
 
     #### above ADHD ; below control  ####
 
-    folderPath = ".\\..\\DB\\"+diractory+"\\conclusionMatrixControl.json"
-    f = open(folderPath)
-    conclusionMatrixControl = json.load(f)
-    dataControl = conclusionMatrixControl['Patients']
+
     remove_values_from_matrix_under_precentages(dataControl ,precentage)
 
     freqToListOfGraphs_control_group = {}
