@@ -38,7 +38,7 @@ def remove_values_from_matrix_under_precentages(data , precentage):
             if frequencyBand == 'patient_name':
                 continue
             ssr_based_F_testMat = matrixes['ssr_based_F_testMat']
-            threshold = np.percentile(ssr_based_F_testMat, int(precentage))
+            threshold = np.percentile(ssr_based_F_testMat, int(precentage))#ZK check me
             for indexD1, listD1 in enumerate(ssr_based_F_testMat):
                 for indexD2, item in enumerate(listD1):
                     if item < threshold:
