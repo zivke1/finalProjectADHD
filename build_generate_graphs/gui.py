@@ -30,7 +30,39 @@ freqToListOfGraphs_ADHD_group_individuals = {}
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
+def getThresholdValue(dataADHD,dataControl,precentage):
+    allData = []
+    check = 0
+    for patient in dataADHD:
+        # p = patient
+        for frequencyBand,matrixes  in patient.items():
+            if frequencyBand == 'patient_name':
+                continue
+            allData.append(matrixes['ssr_based_F_testMat'])
 
+    for patient in dataControl:
+        # p = patient
+        for frequencyBand, matrixes in patient.items():
+            if frequencyBand == 'patient_name':
+                continue
+            allData.append(matrixes['ssr_based_F_testMat'])
+
+    threshold = np.percentile(allData, int(precentage))
+    return threshold
+
+
+def remove_values_from_matrix_under_value(data , value):
+    # this code is remove all the values under the threshold
+    for patient in data:
+        # p = patient
+        for frequencyBand,matrixes  in patient.items():
+            if frequencyBand == 'patient_name':
+                continue
+            ssr_based_F_testMat = matrixes['ssr_based_F_testMat']
+            for indexD1, listD1 in enumerate(ssr_based_F_testMat):
+                for indexD2, item in enumerate(listD1):
+                    if item < value:
+                        ssr_based_F_testMat[indexD1][indexD2] = 0
 def remove_values_from_matrix_under_precentages(data , precentage):
     # this code is remove all the values under the threshold
     for patient in data:
@@ -39,7 +71,7 @@ def remove_values_from_matrix_under_precentages(data , precentage):
             if frequencyBand == 'patient_name':
                 continue
             ssr_based_F_testMat = matrixes['ssr_based_F_testMat']
-            threshold = np.percentile(ssr_based_F_testMat, int(precentage))
+            threshold = np.percentile(ssr_based_F_testMat, int(precentage))#ZK check me
             for indexD1, listD1 in enumerate(ssr_based_F_testMat):
                 for indexD2, item in enumerate(listD1):
                     if item < threshold:
@@ -62,13 +94,22 @@ def gen_graphs_pressed(parent = None):
     except :
         parent.children['labelErr'].config(text = "Please choose a data set")
         return
-
+    parent.children['labelErr'].config(text="")
     folderPath = ".\\..\\DB\\"+diractory+"\\conclusionMatrixADHD.json"
     f = open(folderPath)
     conclusionMatrixADHD = json.load(f)
     dataADHD = conclusionMatrixADHD['Patients']
-    remove_values_from_matrix_under_precentages(dataADHD, precentage)
 
+    #control start for get treshold value
+    folderPath = ".\\..\\DB\\"+diractory+"\\conclusionMatrixControl.json"
+    f = open(folderPath)
+    conclusionMatrixControl = json.load(f)
+    dataControl = conclusionMatrixControl['Patients']
+
+    thresholdValue = getThresholdValue(dataADHD,dataControl ,precentage)
+
+    # remove_values_from_matrix_under_precentages(dataADHD, precentage)
+    remove_values_from_matrix_under_value(dataADHD, thresholdValue)
     freqToListOfGraphs_ADHD_group = {}
 
 
@@ -85,11 +126,9 @@ def gen_graphs_pressed(parent = None):
 
     #### above ADHD ; below control  ####
 
-    folderPath = ".\\..\\DB\\"+diractory+"\\conclusionMatrixControl.json"
-    f = open(folderPath)
-    conclusionMatrixControl = json.load(f)
-    dataControl = conclusionMatrixControl['Patients']
-    remove_values_from_matrix_under_precentages(dataControl ,precentage)
+
+    # remove_values_from_matrix_under_precentages(dataControl ,precentage)
+    remove_values_from_matrix_under_value(dataControl, thresholdValue)
 
     freqToListOfGraphs_control_group = {}
 

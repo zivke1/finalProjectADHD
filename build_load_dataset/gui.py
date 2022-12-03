@@ -23,10 +23,12 @@ ASSETS_PATH = OUTPUT_PATH / Path("./assets")
 
 controlGroupPath = ""
 treatmentGroupPath = ""
+
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
 def upload_data_set(win = None ,id = 0):
+
     global controlGroupPath
     global treatmentGroupPath
     filePathName = fd.askdirectory()
@@ -61,7 +63,7 @@ def generate_graphs_press(parent = None):
         parent.children['labelFolderExists'].config(text="You must enter all the fields")
         return
     parent.children['labelFolderExists'].config(text="")
-    filePathNameADHD = treatmentGroupPath + "//"
+    filePathNameTreatment  = treatmentGroupPath + "//"
     filePathNameControl = controlGroupPath + "//"
 
     path = os.getcwd()
@@ -85,7 +87,7 @@ def generate_graphs_press(parent = None):
     os.mkdir(path)
 
     mapOfDataADHD, ssr_based_F_testADHDList, ssr_chi2testADHDList, lrtestADHDList, params_ftestADHDList = LoadDataSetLogic.BuildFromDir(
-        filePathNameADHD, entryWinSec , entryHz ,parent.children['progBar'])
+        filePathNameTreatment, entryWinSec , entryHz ,parent.children['progBar'])
 
 
 
@@ -483,8 +485,7 @@ class win:
             length=280
         )
         pb.place(x=530.0, y=440.0, )
-        labelFolderExists = tkinter.Label(name='labelFolderExists', fg="red", bg='#E2D8EF').place(x=810,
-                                                                                                  y=570)
+        labelFolderExists = tkinter.Label(name='labelFolderExists', fg="red", bg='#E2D8EF').place(x=810, y=570)
         labelFolderExists = tkinter.Label(name='labelFinish', fg="black",justify=LEFT, bg='#E2D8EF',font=("JejuMyeongjo", 16 * -1))
         labelFolderExists.place(x=650, y=560)
 
