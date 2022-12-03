@@ -21,25 +21,25 @@ from build_load_dataset.LoadDataSetLogic import LoadDataSetLogic
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
 
-group1Path = ""
-group2Path = ""
+controlGroupPath = ""
+treatmentGroupPath = ""
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
 def upload_data_set(win = None ,id = 0):
-    global group1Path
-    global group2Path
+    global controlGroupPath
+    global treatmentGroupPath
     filePathName = fd.askdirectory()
     if id == 1:
-        group1Path = filePathName
+        controlGroupPath = filePathName
         splitPath = filePathName.split("/")
         win.children['checkMarkG1'].config(text = splitPath[splitPath.__len__()-1])
     elif id == 2:
-        group2Path = filePathName
+        treatmentGroupPath = filePathName
         splitPath = filePathName.split("/")
         win.children['checkMarkG2'].config(text=splitPath[splitPath.__len__() - 1])
 
-    if group1Path == group2Path:
+    if controlGroupPath == treatmentGroupPath:
         win.children['warnningSameFolder'].config(text="You choose the same folder \nfor treatment and control")
     else:
         win.children['warnningSameFolder'].config(text="")
@@ -57,12 +57,12 @@ def generate_graphs_press(parent = None):
     entryG1 = parent.children["entryG1"].get()
     entryG2 = parent.children["entryG2"].get()
 
-    if group1Path =='' or group2Path == '' or entryHz == '' or entryWinSec == '' or entryG1 =='' or entryG2=='':
+    if controlGroupPath == '' or treatmentGroupPath == '' or entryHz == '' or entryWinSec == '' or entryG1 == '' or entryG2== '':
         parent.children['labelFolderExists'].config(text="You must enter all the fields")
         return
     parent.children['labelFolderExists'].config(text="")
-    filePathNameADHD = group1Path+"//"
-    filePathNameControl = group2Path+"//"
+    filePathNameADHD = treatmentGroupPath + "//"
+    filePathNameControl = controlGroupPath + "//"
 
     path = os.getcwd()
     # splits = filePathName.split("/")
