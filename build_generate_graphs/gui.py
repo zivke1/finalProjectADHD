@@ -37,8 +37,7 @@ def getThresholdValue(dataADHD,dataControl,precentage):
             if frequencyBand == 'patient_name':
                 continue
             allData.append(matrixes['ssr_based_F_testMat'])
-            check = np.percentile(matrixes['ssr_based_F_testMat'],int(precentage))
-            x=check
+
     for patient in dataControl:
         # p = patient
         for frequencyBand, matrixes in patient.items():

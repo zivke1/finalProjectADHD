@@ -43,7 +43,7 @@ def read_graphs(fileNameADHD,fileNameControl):
         H = json_graph.adjacency_graph(g)
         treatment_group_graphsList.append(H)
 
-def graph_feature_DPCC_Press(parent = None):
+def graph_feature_average_degree_Press(parent = None):
     frequencyBand = parent.FB.get()
     if frequencyBand == 'Choose frequency band':
         parent.children['label_asterisk'].config(text="Choose frequency band first")
@@ -51,16 +51,33 @@ def graph_feature_DPCC_Press(parent = None):
     else:
         parent.children['label_asterisk'].config(text="")
     read_graphs(parent.name_of_ADHD_graph_file+frequencyBand.lower()+parent.precentageOfThisTest,parent.name_of_control_graph_file+frequencyBand.lower()+parent.precentageOfThisTest)
-    treatmentDegree_pearson_correlation_coefficientList = []
+    treatment_average_degreeList = []
     controlDegree_pearson_correlation_coefficientList = []
     for patientTreatment in treatment_group_graphsList:
-        treatmentDegree_pearson_correlation_coefficientList.append(nx.degree_pearson_correlation_coefficient(patientTreatment))
+        degList = patientTreatment.degree()
+        sum = 0
+        cou = 0
+        for deg in degList:
+            cou +=1
+            sum+=deg[1]
+        avg = sum/cou
+        treatment_average_degreeList.append(avg)
+
+        # treatmentDegree_pearson_correlation_coefficientList.append(nx.degree_pearson_correlation_coefficient(patientTreatment))
 
     for patientcontrol in control_group_graphsList:
-        controlDegree_pearson_correlation_coefficientList.append(nx.degree_pearson_correlation_coefficient(patientcontrol))
+        degList = patientcontrol.degree()
+        sum = 0
+        cou = 0
+        for deg in degList:
+            cou += 1
+            sum += deg[1]
+        avg = sum / cou
+        controlDegree_pearson_correlation_coefficientList.append(avg)
+        # controlDegree_pearson_correlation_coefficientList.append(nx.degree_pearson_correlation_coefficient(patientcontrol))
 
     fig = Figure(figsize=(5, 5), dpi=100)
-    data = [treatmentDegree_pearson_correlation_coefficientList, controlDegree_pearson_correlation_coefficientList]
+    data = [treatment_average_degreeList, controlDegree_pearson_correlation_coefficientList]
     plot1 = fig.add_subplot(111)
     bp = plot1.boxplot(data, patch_artist=True,
                        notch='True')
@@ -71,7 +88,7 @@ def graph_feature_DPCC_Press(parent = None):
         patch.set_facecolor(color)
         # patch.set(title = "11")
 
-    fig.suptitle(frequencyBand+' Degree Pearson Correlation Coefficient', fontsize=12, fontweight='bold')
+    fig.suptitle(frequencyBand+' Average degree', fontsize=12, fontweight='bold')
     plot1.set_xlabel('Treatment                              Control')
     canvas = FigureCanvasTkAgg(fig,
                                master=parent)
@@ -207,6 +224,8 @@ def graph_feature_degAC_Press(parent = None):
     bp = plot1.boxplot(data, patch_artist=True,
                        notch='True')
 
+
+
     colors = ['#0000FF', '#00FF00']
 
     for patch, color in zip(bp['boxes'], colors):
@@ -219,6 +238,80 @@ def graph_feature_degAC_Press(parent = None):
                                master=parent)
     canvas.get_tk_widget().place(x=570, y=110)
 
+def graph_feature_global_efficiency_Press(parent = None):#we can take this also
+    frequencyBand = parent.FB.get()
+    if frequencyBand == 'Choose frequency band':
+        parent.children['label_asterisk'].config(text="Choose frequency band first")
+        return
+    else:
+        parent.children['label_asterisk'].config(text="")
+    read_graphs(parent.name_of_ADHD_graph_file+frequencyBand.lower()+parent.precentageOfThisTest,parent.name_of_control_graph_file+frequencyBand.lower()+parent.precentageOfThisTest)
+    treatment_average_degreeList = []
+    controlDegree_pearson_correlation_coefficientList = []
+    for patientTreatment in treatment_group_graphsList:
+        G2 = patientTreatment.to_undirected()
+        treatment_average_degreeList.append(nx.global_efficiency(G2))
+
+        # treatmentDegree_pearson_correlation_coefficientList.append(nx.degree_pearson_correlation_coefficient(patientTreatment))
+
+    for patientcontrol in control_group_graphsList:
+        G2 = patientcontrol.to_undirected()
+        controlDegree_pearson_correlation_coefficientList.append(nx.global_efficiency(G2))
+
+    fig = Figure(figsize=(5, 5), dpi=100)
+    data = [treatment_average_degreeList, controlDegree_pearson_correlation_coefficientList]
+    plot1 = fig.add_subplot(111)
+    bp = plot1.boxplot(data, patch_artist=True,
+                       notch='True')
+
+    colors = ['#0000FF', '#00FF00']
+
+    for patch, color in zip(bp['boxes'], colors):
+        patch.set_facecolor(color)
+        # patch.set(title = "11")
+    fig.suptitle(frequencyBand+' Global efficiency', fontsize=12, fontweight='bold')
+    plot1.set_xlabel('Treatment                              Control')
+    canvas = FigureCanvasTkAgg(fig,
+                               master=parent)
+    canvas.get_tk_widget().place(x=570, y=110)
+
+# def graph_feature_average_shortest_path_length_Press(parent = None):#we can take this also
+#     # nx.(G)
+#     frequencyBand = parent.FB.get()
+#     if frequencyBand == 'Choose frequency band':
+#         parent.children['label_asterisk'].config(text="Choose frequency band first")
+#         return
+#     else:
+#         parent.children['label_asterisk'].config(text="")
+#     read_graphs(parent.name_of_ADHD_graph_file+frequencyBand.lower()+parent.precentageOfThisTest,parent.name_of_control_graph_file+frequencyBand.lower()+parent.precentageOfThisTest)
+#     treatment_average_degreeList = []
+#     controlDegree_pearson_correlation_coefficientList = []
+#     for patientTreatment in treatment_group_graphsList:
+#         G2 = patientTreatment.to_undirected()
+#         treatment_average_degreeList.append(nx.k_nearest_neighbors(patientTreatment))
+#
+#         # treatmentDegree_pearson_correlation_coefficientList.append(nx.degree_pearson_correlation_coefficient(patientTreatment))
+#
+#     for patientcontrol in control_group_graphsList:
+#         # G2 = patientcontrol.to_undirected()
+#         controlDegree_pearson_correlation_coefficientList.append(nx.k_nearest_neighbors(patientcontrol))
+#
+#     fig = Figure(figsize=(5, 5), dpi=100)
+#     data = [treatment_average_degreeList, controlDegree_pearson_correlation_coefficientList]
+#     plot1 = fig.add_subplot(111)
+#     bp = plot1.boxplot(data, patch_artist=True,
+#                        notch='True')
+#
+#     colors = ['#0000FF', '#00FF00']
+#
+#     for patch, color in zip(bp['boxes'], colors):
+#         patch.set_facecolor(color)
+#         # patch.set(title = "11")
+#     fig.suptitle(frequencyBand+' Global efficiency', fontsize=12, fontweight='bold')
+#     plot1.set_xlabel('Treatment                              Control')
+#     canvas = FigureCanvasTkAgg(fig,
+#                                master=parent)
+#     canvas.get_tk_widget().place(x=570, y=110)
 
 class win:
 
@@ -331,7 +424,7 @@ class win:
             image=button_image_4,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: graph_feature_DPCC_Press(parent=window),
+            command=lambda: graph_feature_average_degree_Press(parent=window),
             relief="flat"
         )
         button_4.place(
@@ -395,7 +488,9 @@ class win:
             image=button_image_8,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda:graph_feature_density_Press(window),
+            # command=lambda:graph_feature_density_Press(window),
+            command=lambda: graph_feature_average_shortest_path_length_Press(window),
+
             relief="flat"
         )
         button_8.place(
