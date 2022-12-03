@@ -27,10 +27,10 @@ def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
 control_group_graphsList = []
-ADHD_group_graphsList = []
+treatment_group_graphsList = []
 def read_graphs(fileNameADHD,fileNameControl):
     control_group_graphsList.clear()
-    ADHD_group_graphsList.clear()
+    treatment_group_graphsList.clear()
     jsonH = jh()
     #ZK change to name from the previous window
     graph_data = jsonH.read_json("DB2\graphs", fileNameControl, "Graphs")
@@ -41,7 +41,7 @@ def read_graphs(fileNameADHD,fileNameControl):
     graph_data = jsonH.read_json("DB2\graphs", fileNameADHD, "Graphs")
     for g in graph_data:
         H = json_graph.adjacency_graph(g)
-        ADHD_group_graphsList.append(H)
+        treatment_group_graphsList.append(H)
 
 def graph_feature_DPCC_Press(parent = None):
     frequencyBand = parent.FB.get()
@@ -51,16 +51,16 @@ def graph_feature_DPCC_Press(parent = None):
     else:
         parent.children['label_asterisk'].config(text="")
     read_graphs(parent.name_of_ADHD_graph_file+frequencyBand.lower()+parent.precentageOfThisTest,parent.name_of_control_graph_file+frequencyBand.lower()+parent.precentageOfThisTest)
-    ADHDdegree_pearson_correlation_coefficientList = []
+    treatmentDegree_pearson_correlation_coefficientList = []
     controlDegree_pearson_correlation_coefficientList = []
-    for patientADHD in ADHD_group_graphsList:
-        ADHDdegree_pearson_correlation_coefficientList.append(nx.degree_pearson_correlation_coefficient(patientADHD))
+    for patientTreatment in treatment_group_graphsList:
+        treatmentDegree_pearson_correlation_coefficientList.append(nx.degree_pearson_correlation_coefficient(patientTreatment))
 
     for patientcontrol in control_group_graphsList:
         controlDegree_pearson_correlation_coefficientList.append(nx.degree_pearson_correlation_coefficient(patientcontrol))
 
     fig = Figure(figsize=(5, 5), dpi=100)
-    data = [ADHDdegree_pearson_correlation_coefficientList, controlDegree_pearson_correlation_coefficientList]
+    data = [treatmentDegree_pearson_correlation_coefficientList, controlDegree_pearson_correlation_coefficientList]
     plot1 = fig.add_subplot(111)
     bp = plot1.boxplot(data, patch_artist=True,
                        notch='True')
@@ -72,7 +72,7 @@ def graph_feature_DPCC_Press(parent = None):
         # patch.set(title = "11")
 
     fig.suptitle(frequencyBand+' Degree Pearson Correlation Coefficient', fontsize=12, fontweight='bold')
-    plot1.set_xlabel('ADHD                                  Control')
+    plot1.set_xlabel('Treatment                              Control')
     canvas = FigureCanvasTkAgg(fig,
                                master=parent)
     canvas.get_tk_widget().place(x=570, y=110)
@@ -86,16 +86,16 @@ def graph_feature_Transitivity_Press(parent = None):
         parent.children['label_asterisk'].config(text="")
     read_graphs(parent.name_of_ADHD_graph_file + frequencyBand.lower() + parent.precentageOfThisTest,
                 parent.name_of_control_graph_file + frequencyBand.lower() + parent.precentageOfThisTest)
-    ADHDtransitivityList = []
+    treatmentTransitivityList = []
     controlTransitivityList = []
-    for patientADHD in ADHD_group_graphsList:
-        ADHDtransitivityList.append(nx.transitivity(patientADHD))
+    for patientADHD in treatment_group_graphsList:
+        treatmentTransitivityList.append(nx.transitivity(patientADHD))
 
     for patientcontrol in control_group_graphsList:
         controlTransitivityList.append(nx.transitivity(patientcontrol))
 
     fig = Figure(figsize=(5, 5), dpi=100)
-    data = [ADHDtransitivityList,controlTransitivityList]
+    data = [treatmentTransitivityList,controlTransitivityList]
     plot1 = fig.add_subplot(111)
     bp = plot1.boxplot(data, patch_artist=True,
                        notch='True')
@@ -107,7 +107,7 @@ def graph_feature_Transitivity_Press(parent = None):
         # patch.set(title = "11")
 
     fig.suptitle(frequencyBand +' Transitivity', fontsize=12, fontweight='bold')
-    plot1.set_xlabel('ADHD                                  Control')
+    plot1.set_xlabel('Treatment                              Control')
     canvas = FigureCanvasTkAgg(fig,
                                master=parent)
     canvas.get_tk_widget().place(x=570,y=110)
@@ -122,16 +122,16 @@ def graph_feature_AvgClust_Press(parent = None):
         parent.children['label_asterisk'].config(text="")
     read_graphs(parent.name_of_ADHD_graph_file + frequencyBand.lower() + parent.precentageOfThisTest,
                 parent.name_of_control_graph_file + frequencyBand.lower() + parent.precentageOfThisTest)
-    ADHDAverageClusteringList = []
+    treatmentAverageClusteringList = []
     controlAverageClusteringList = []
-    for patientADHD in ADHD_group_graphsList:
-        ADHDAverageClusteringList.append(nx.average_clustering(patientADHD))
+    for patientTreatment in treatment_group_graphsList:
+        treatmentAverageClusteringList.append(nx.average_clustering(patientTreatment))
 
     for patientcontrol in control_group_graphsList:
         controlAverageClusteringList.append(nx.average_clustering(patientcontrol))
 
     fig = Figure(figsize=(5, 5), dpi=100)
-    data = [ADHDAverageClusteringList, controlAverageClusteringList]
+    data = [treatmentAverageClusteringList, controlAverageClusteringList]
     plot1 = fig.add_subplot(111)
     bp = plot1.boxplot(data, patch_artist=True,
                        notch='True')
@@ -143,7 +143,7 @@ def graph_feature_AvgClust_Press(parent = None):
         # patch.set(title = "11")
 
     fig.suptitle(frequencyBand + ' Average Clustering', fontsize=12, fontweight='bold')
-    plot1.set_xlabel('ADHD                                  Control')
+    plot1.set_xlabel('Treatment                              Control')
     canvas = FigureCanvasTkAgg(fig,
                                master=parent)
     canvas.get_tk_widget().place(x=570, y=110)
@@ -158,16 +158,16 @@ def graph_feature_density_Press(parent = None):
         parent.children['label_asterisk'].config(text="")
     read_graphs(parent.name_of_ADHD_graph_file + frequencyBand.lower() + parent.precentageOfThisTest,
                 parent.name_of_control_graph_file + frequencyBand.lower() + parent.precentageOfThisTest)
-    ADHDdensityList = []
+    treatmentDensityList = []
     controldensityList = []
-    for patientADHD in ADHD_group_graphsList:
-        ADHDdensityList.append(nx.density(patientADHD))
+    for patientTreatment in treatment_group_graphsList:
+        treatmentDensityList.append(nx.density(patientTreatment))
 
     for patientcontrol in control_group_graphsList:
         controldensityList.append(nx.density(patientcontrol))
 
     fig = Figure(figsize=(5, 5), dpi=100)
-    data = [ADHDdensityList, controldensityList]
+    data = [treatmentDensityList, controldensityList]
     plot1 = fig.add_subplot(111)
     bp = plot1.boxplot(data, patch_artist=True,
                        notch='True')
@@ -179,7 +179,7 @@ def graph_feature_density_Press(parent = None):
         # patch.set(title = "11")
 
     fig.suptitle(frequencyBand +' density', fontsize=12, fontweight='bold')
-    plot1.set_xlabel('ADHD                                  Control')
+    plot1.set_xlabel('Treatment                              Control')
     canvas = FigureCanvasTkAgg(fig,
                                master=parent)
     canvas.get_tk_widget().place(x=570, y=110)
@@ -193,16 +193,16 @@ def graph_feature_degAC_Press(parent = None):
         parent.children['label_asterisk'].config(text="")
     read_graphs(parent.name_of_ADHD_graph_file + frequencyBand.lower() + parent.precentageOfThisTest,
                 parent.name_of_control_graph_file + frequencyBand.lower() + parent.precentageOfThisTest)
-    ADHDDegreeAssortativityCoefficientList = []
+    treatmentDegreeAssortativityCoefficientList = []
     controlDegreeAssortativityCoefficientList = []
-    for patientADHD in ADHD_group_graphsList:
-        ADHDDegreeAssortativityCoefficientList.append(nx.degree_assortativity_coefficient(patientADHD))
+    for patientTreatment in treatment_group_graphsList:
+        treatmentDegreeAssortativityCoefficientList.append(nx.degree_assortativity_coefficient(patientTreatment))
 
     for patientcontrol in control_group_graphsList:
         controlDegreeAssortativityCoefficientList.append(nx.degree_assortativity_coefficient(patientcontrol))
 
     fig = Figure(figsize=(5, 5), dpi=100)
-    data = [ADHDDegreeAssortativityCoefficientList, controlDegreeAssortativityCoefficientList]
+    data = [treatmentDegreeAssortativityCoefficientList, controlDegreeAssortativityCoefficientList]
     plot1 = fig.add_subplot(111)
     bp = plot1.boxplot(data, patch_artist=True,
                        notch='True')
@@ -214,7 +214,7 @@ def graph_feature_degAC_Press(parent = None):
         # patch.set(title = "11")
 
     fig.suptitle(frequencyBand +' Degree Assortativity Coefficient', fontsize=12, fontweight='bold')
-    plot1.set_xlabel('ADHD                                  Control')
+    plot1.set_xlabel('Treatment                              Control')
     canvas = FigureCanvasTkAgg(fig,
                                master=parent)
     canvas.get_tk_widget().place(x=570, y=110)

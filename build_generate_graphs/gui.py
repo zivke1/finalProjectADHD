@@ -50,7 +50,18 @@ def getThresholdValue(dataADHD,dataControl,precentage):
     return threshold
 
 
-
+def remove_values_from_matrix_under_value(data , value):
+    # this code is remove all the values under the threshold
+    for patient in data:
+        # p = patient
+        for frequencyBand,matrixes  in patient.items():
+            if frequencyBand == 'patient_name':
+                continue
+            ssr_based_F_testMat = matrixes['ssr_based_F_testMat']
+            for indexD1, listD1 in enumerate(ssr_based_F_testMat):
+                for indexD2, item in enumerate(listD1):
+                    if item < value:
+                        ssr_based_F_testMat[indexD1][indexD2] = 0
 def remove_values_from_matrix_under_precentages(data , precentage):
     # this code is remove all the values under the threshold
     for patient in data:
@@ -96,8 +107,8 @@ def gen_graphs_pressed(parent = None):
 
     thresholdValue = getThresholdValue(dataADHD,dataControl ,precentage)
 
-    remove_values_from_matrix_under_precentages(dataADHD, precentage)
-
+    # remove_values_from_matrix_under_precentages(dataADHD, precentage)
+    remove_values_from_matrix_under_value(dataADHD, thresholdValue)
     freqToListOfGraphs_ADHD_group = {}
 
 
@@ -116,7 +127,8 @@ def gen_graphs_pressed(parent = None):
     #### above ADHD ; below control  ####
 
 
-    remove_values_from_matrix_under_precentages(dataControl ,precentage)
+    # remove_values_from_matrix_under_precentages(dataControl ,precentage)
+    remove_values_from_matrix_under_value(dataControl, thresholdValue)
 
     freqToListOfGraphs_control_group = {}
 
