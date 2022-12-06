@@ -281,6 +281,8 @@ def export_data_btn(freqToListOfGraphs_group_individuals, file_name):
 
         data = [
             [p],
+            ['Nodes', freqToListOfGraphs_group_individuals[p]['alphaList'][0].number_of_nodes(), freqToListOfGraphs_group_individuals[p]['betaList'][0].number_of_nodes(), freqToListOfGraphs_group_individuals[p]['gammaList'][0].number_of_nodes(), freqToListOfGraphs_group_individuals[p]['deltaList'][0].number_of_nodes(), freqToListOfGraphs_group_individuals[p]['thetaList'][0].number_of_nodes()],
+            ['Edges', freqToListOfGraphs_group_individuals[p]['alphaList'][0].number_of_edges(), freqToListOfGraphs_group_individuals[p]['betaList'][0].number_of_edges(), freqToListOfGraphs_group_individuals[p]['gammaList'][0].number_of_edges(), freqToListOfGraphs_group_individuals[p]['deltaList'][0].number_of_edges(), freqToListOfGraphs_group_individuals[p]['thetaList'][0].number_of_edges()],
             ['degree assortativity coefficient',       alpha_degree_assortativity_coefficient,       beta_degree_assortativity_coefficient,       gamma_degree_assortativity_coefficient,       theta_degree_assortativity_coefficient,       delta_degree_assortativity_coefficient],
             ['density',                                alpha_density,                                beta_density,                                gamma_density,                                theta_density,                                delta_density],
             ['average clustering',                     alpha_average_clustering,                     beta_average_clustering,                     gamma_average_clustering,                     theta_average_clustering,                     delta_average_clustering],
