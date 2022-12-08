@@ -122,6 +122,7 @@ class LoadDataSetLogic:
                     for i in range(0, colNumber):
                         for j in range(0, colNumber):
                             if i == j:
+                                ssr_based_F_testMat[i][j] = 0
                                 continue
 
                                 # prepare for grangercausalitytests
@@ -142,7 +143,7 @@ class LoadDataSetLogic:
                             params_ftest = dataFromTest["params_ftest"]
                             params_ftestMat[i][j] = params_ftest[0]
 
-                mapOfData[file][type] = [("ssr_based_F_testMat", ssr_based_F_testMat),
+                    mapOfData[file][type] = [("ssr_based_F_testMat", ssr_based_F_testMat),
                                          ("ssr_chi2testMat", ssr_chi2testMat),
                                          ("lrtestMat", lrtestMat), ("params_ftestMat", params_ftestMat)]
             print(file)
@@ -154,7 +155,7 @@ class LoadDataSetLogic:
             lrtestList.append(lrtestMat)
 
             params_ftestList.append(params_ftestMat)
-        progBar['value'] += progBarValueToAdd
+            progBar['value'] += progBarValueToAdd
 
     # jsonC = jh()
     # print(jsonC.martix_to_json)
