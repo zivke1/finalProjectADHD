@@ -233,10 +233,14 @@ def show_graph(ADHDFeatureList, controlFeatureList, frequencyBand, feature_name,
     canvas = FigureCanvasTkAgg(fig,master=parent)
     canvas.get_tk_widget().place(x=570, y=110)
 
-def exportBtn(freqToListOfGraphs_ADHD_group_individuals, freqToListOfGraphs_control_group_individuals):
+def exportBtn(freqToListOfGraphs_ADHD_group_individuals, freqToListOfGraphs_control_group_individuals, parent=None):
     filePathName = fd.askdirectory()
+    if filePathName == "":
+        parent.children['label_asterisk'].config(text="Please choose a folder for export")
+        return
+    parent.children['label_asterisk'].config(text="")
     export_data_btn(freqToListOfGraphs_ADHD_group_individuals, filePathName +'\ADHD_group_features_individuals.csv')
-    export_data_btn(freqToListOfGraphs_control_group_individuals, filePathName +'\control_group_features_individuals.csv')
+    export_data_btn(freqToListOfGraphs_control_group_individuals, filePathName +'\Control_group_features_individuals.csv')
 
 
 def export_data_btn(freqToListOfGraphs_group_individuals, file_name):
@@ -247,37 +251,38 @@ def export_data_btn(freqToListOfGraphs_group_individuals, file_name):
         writer.writerow(fieldnames)
 
     for p in freqToListOfGraphs_group_individuals:
-
+        if p=='ADHD_part2_9_Group_Control':
+            x=1
         ##### error -- this is not good, continue from here
         alpha_degree_assortativity_coefficient = nx.degree_assortativity_coefficient(freqToListOfGraphs_group_individuals[p]['alphaList'][0])
         alpha_density = nx.density(freqToListOfGraphs_group_individuals[p]['alphaList'][0])
         alpha_average_clustering = nx.average_clustering(freqToListOfGraphs_group_individuals[p]['alphaList'][0])
         alpha_transitivity = nx.transitivity(freqToListOfGraphs_group_individuals[p]['alphaList'][0])
-        alpha_degree_pearson_correlation_coefficient = nx.degree_pearson_correlation_coefficient(freqToListOfGraphs_group_individuals[p]['alphaList'][0])
+        # alpha_degree_pearson_correlation_coefficient = nx.degree_pearson_correlation_coefficient(freqToListOfGraphs_group_individuals[p]['alphaList'][0])
 
         beta_degree_assortativity_coefficient = nx.degree_assortativity_coefficient(freqToListOfGraphs_group_individuals[p]['betaList'][0])
         beta_density = nx.density(freqToListOfGraphs_group_individuals[p]['betaList'][0])
         beta_average_clustering = nx.average_clustering(freqToListOfGraphs_group_individuals[p]['betaList'][0])
         beta_transitivity = nx.transitivity(freqToListOfGraphs_group_individuals[p]['betaList'][0])
-        beta_degree_pearson_correlation_coefficient = nx.degree_pearson_correlation_coefficient(freqToListOfGraphs_group_individuals[p]['betaList'][0])
+        # beta_degree_pearson_correlation_coefficient = nx.degree_pearson_correlation_coefficient(freqToListOfGraphs_group_individuals[p]['betaList'][0])
 
         gamma_degree_assortativity_coefficient = nx.degree_assortativity_coefficient(freqToListOfGraphs_group_individuals[p]['gammaList'][0])
         gamma_density = nx.density(freqToListOfGraphs_group_individuals[p]['gammaList'][0])
         gamma_average_clustering = nx.average_clustering(freqToListOfGraphs_group_individuals[p]['gammaList'][0])
         gamma_transitivity = nx.transitivity(freqToListOfGraphs_group_individuals[p]['gammaList'][0])
-        gamma_degree_pearson_correlation_coefficient = nx.degree_pearson_correlation_coefficient(freqToListOfGraphs_group_individuals[p]['gammaList'][0])
+        # gamma_degree_pearson_correlation_coefficient = nx.degree_pearson_correlation_coefficient(freqToListOfGraphs_group_individuals[p]['gammaList'][0])
 
         delta_degree_assortativity_coefficient = nx.degree_assortativity_coefficient(freqToListOfGraphs_group_individuals[p]['deltaList'][0])
         delta_density = nx.density(freqToListOfGraphs_group_individuals[p]['deltaList'][0])
         delta_average_clustering = nx.average_clustering(freqToListOfGraphs_group_individuals[p]['deltaList'][0])
         delta_transitivity = nx.transitivity(freqToListOfGraphs_group_individuals[p]['deltaList'][0])
-        delta_degree_pearson_correlation_coefficient = nx.degree_pearson_correlation_coefficient(freqToListOfGraphs_group_individuals[p]['deltaList'][0])
+        # delta_degree_pearson_correlation_coefficient = nx.degree_pearson_correlation_coefficient(freqToListOfGraphs_group_individuals[p]['deltaList'][0])
 
         theta_degree_assortativity_coefficient = nx.degree_assortativity_coefficient(freqToListOfGraphs_group_individuals[p]['thetaList'][0])
         theta_density = nx.density(freqToListOfGraphs_group_individuals[p]['thetaList'][0])
         theta_average_clustering = nx.average_clustering(freqToListOfGraphs_group_individuals[p]['thetaList'][0])
         theta_transitivity = nx.transitivity(freqToListOfGraphs_group_individuals[p]['thetaList'][0])
-        theta_degree_pearson_correlation_coefficient = nx.degree_pearson_correlation_coefficient(freqToListOfGraphs_group_individuals[p]['thetaList'][0])
+        # theta_degree_pearson_correlation_coefficient = nx.degree_pearson_correlation_coefficient(freqToListOfGraphs_group_individuals[p]['thetaList'][0])
 
         data = [
             [p],
@@ -286,8 +291,8 @@ def export_data_btn(freqToListOfGraphs_group_individuals, file_name):
             ['degree assortativity coefficient',       alpha_degree_assortativity_coefficient,       beta_degree_assortativity_coefficient,       gamma_degree_assortativity_coefficient,       theta_degree_assortativity_coefficient,       delta_degree_assortativity_coefficient],
             ['density',                                alpha_density,                                beta_density,                                gamma_density,                                theta_density,                                delta_density],
             ['average clustering',                     alpha_average_clustering,                     beta_average_clustering,                     gamma_average_clustering,                     theta_average_clustering,                     delta_average_clustering],
-            ['transitivity',                           alpha_transitivity,                           beta_transitivity,                           gamma_transitivity,                           theta_transitivity,                           delta_transitivity],
-            ['degree pearson correlation coefficient', alpha_degree_pearson_correlation_coefficient, beta_degree_pearson_correlation_coefficient, gamma_degree_pearson_correlation_coefficient, theta_degree_pearson_correlation_coefficient, delta_degree_pearson_correlation_coefficient]
+            ['transitivity',                           alpha_transitivity,                           beta_transitivity,                           gamma_transitivity,                           theta_transitivity,                           delta_transitivity]
+            # ['degree pearson correlation coefficient', alpha_degree_pearson_correlation_coefficient, beta_degree_pearson_correlation_coefficient, gamma_degree_pearson_correlation_coefficient, theta_degree_pearson_correlation_coefficient, delta_degree_pearson_correlation_coefficient]
         ]
 
         write_to_csv(file_name, data)
@@ -465,7 +470,7 @@ class win:
             image=button_image_7,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: exportBtn(freqToListOfGraphs_ADHD_group_individuals, freqToListOfGraphs_control_group_individuals),
+            command=lambda: exportBtn(freqToListOfGraphs_ADHD_group_individuals, freqToListOfGraphs_control_group_individuals, window),
             relief="flat"
         )
         button_7.place(

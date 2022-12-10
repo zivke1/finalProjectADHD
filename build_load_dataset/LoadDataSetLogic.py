@@ -122,10 +122,6 @@ class LoadDataSetLogic:
 
                     for i in range(0, colNumber):
                         for j in range(0, colNumber):
-                             if i == j:
-                                ssr_based_F_testMat[i][j] = 0
-                                continue
-
                             #prepare for grangercausalitytests
                              data = {'0':electrodeToFeq[i][type],'1':electrodeToFeq[j][type]}
                              dataDf = pd.DataFrame(data)

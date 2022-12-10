@@ -150,7 +150,7 @@ def gen_graphs_pressed(parent = None):
     analyze_data_win.win(name_of_ADHD_graph_file, name_of_control_graph_file,precentage, files_name, freqToListOfGraphs_ADHD_group_individuals, freqToListOfGraphs_control_group_individuals)
 
 
-def create_graphs(patients_data, matrix_name,freqToListOfGraphs, freqToListOfGraphs_ADHD_group_individuals):
+def create_graphs(patients_data, matrix_name,freqToListOfGraphs, freqToListOfGraphs_individuals):
     ## create graph from ssr_based_F_testMat
 
     freqToListOfGraphs['alphaList'] = []
@@ -160,12 +160,12 @@ def create_graphs(patients_data, matrix_name,freqToListOfGraphs, freqToListOfGra
     freqToListOfGraphs['deltaList'] = []
     for patient in patients_data:
         p_name = patient['patient_name']
-        freqToListOfGraphs_ADHD_group_individuals[p_name] = {}
-        freqToListOfGraphs_ADHD_group_individuals[p_name]['alphaList'] = []
-        freqToListOfGraphs_ADHD_group_individuals[p_name]['betaList'] = []
-        freqToListOfGraphs_ADHD_group_individuals[p_name]['gammaList'] = []
-        freqToListOfGraphs_ADHD_group_individuals[p_name]['thetaList'] = []
-        freqToListOfGraphs_ADHD_group_individuals[p_name]['deltaList'] = []
+        freqToListOfGraphs_individuals[p_name] = {}
+        freqToListOfGraphs_individuals[p_name]['alphaList'] = []
+        freqToListOfGraphs_individuals[p_name]['betaList'] = []
+        freqToListOfGraphs_individuals[p_name]['gammaList'] = []
+        freqToListOfGraphs_individuals[p_name]['thetaList'] = []
+        freqToListOfGraphs_individuals[p_name]['deltaList'] = []
 
         for frequencyBand, matrixes in patient.items():
             if frequencyBand == 'patient_name':
@@ -181,19 +181,19 @@ def create_graphs(patients_data, matrix_name,freqToListOfGraphs, freqToListOfGra
             G = nx.from_numpy_matrix(listOflist_to_npArray, create_using=nx.DiGraph)
             if matrixes['frequancy_band_name'] == 'alphaList':
                 freqToListOfGraphs['alphaList'].append(G)
-                freqToListOfGraphs_ADHD_group_individuals[p_name]['alphaList'].append(G)
+                freqToListOfGraphs_individuals[p_name]['alphaList'].append(G)
             elif matrixes['frequancy_band_name'] == 'betaList':
                 freqToListOfGraphs['betaList'].append(G)
-                freqToListOfGraphs_ADHD_group_individuals[p_name]['betaList'].append(G)
+                freqToListOfGraphs_individuals[p_name]['betaList'].append(G)
             elif matrixes['frequancy_band_name'] == 'gammaList':
                 freqToListOfGraphs['gammaList'].append(G)
-                freqToListOfGraphs_ADHD_group_individuals[p_name]['gammaList'].append(G)
+                freqToListOfGraphs_individuals[p_name]['gammaList'].append(G)
             elif matrixes['frequancy_band_name'] == 'thetaList':
                 freqToListOfGraphs['thetaList'].append(G)
-                freqToListOfGraphs_ADHD_group_individuals[p_name]['thetaList'].append(G)
+                freqToListOfGraphs_individuals[p_name]['thetaList'].append(G)
             elif matrixes['frequancy_band_name'] == 'deltaList':
                 freqToListOfGraphs['deltaList'].append(G)
-                freqToListOfGraphs_ADHD_group_individuals[p_name]['deltaList'].append(G)
+                freqToListOfGraphs_individuals[p_name]['deltaList'].append(G)
 
 ## Global value
 showInfoText = True
