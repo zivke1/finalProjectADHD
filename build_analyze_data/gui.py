@@ -54,30 +54,11 @@ def graph_feature_average_degree_Press(parent = None):
     treatment_average_degreeList = []
     control_average_degreeList = []
     for patientTreatment in treatment_group_graphsList:
-        degList = patientTreatment.degree()
-        sum = 0
-        cou = 0
-        for deg in degList:
-            cou +=1
-            sum+=deg[1]
-        avg = sum/cou
-        treatment_average_degreeList.append(avg)
-
-        # treatmentDegree_pearson_correlation_coefficientList.append(nx.degree_pearson_correlation_coefficient(patientTreatment))
-
-    for patientcontrol in control_group_graphsList:
-        degList = patientcontrol.degree()
-        sum = 0
-        cou = 0
-        for deg in degList:
-            cou += 1
-            sum += deg[1]
-        avg = sum / cou
-        control_average_degreeList.append(avg)
-        # controlDegree_pearson_correlation_coefficientList.append(nx.degree_pearson_correlation_coefficient(patientcontrol))
+        treatment_average_degreeList.append(sum(dict(patientTreatment.degree()).values()) / len(patientTreatment))
+    for patientControl in control_group_graphsList:
+        control_average_degreeList.append(sum(dict(patientControl.degree()).values()) / len(patientControl))
 
     show_graph(treatment_average_degreeList, control_average_degreeList, frequencyBand, 'Average degree', parent)
-
 
 def graph_feature_Transitivity_Press(parent = None):
     frequencyBand = parent.FB.get()
@@ -241,7 +222,7 @@ def exportBtn(freqToListOfGraphs_ADHD_group_individuals, freqToListOfGraphs_cont
     parent.children['label_asterisk'].config(text="")
     export_data_btn(freqToListOfGraphs_ADHD_group_individuals, filePathName +'\ADHD_group_features_individuals.csv')
     export_data_btn(freqToListOfGraphs_control_group_individuals, filePathName +'\Control_group_features_individuals.csv')
-
+    parent.children['labelErr'].config(text="Finish")
 
 def export_data_btn(freqToListOfGraphs_group_individuals, file_name):
     with open(file_name, 'w', encoding='UTF8', newline='') as f:
@@ -251,48 +232,46 @@ def export_data_btn(freqToListOfGraphs_group_individuals, file_name):
         writer.writerow(fieldnames)
 
     for p in freqToListOfGraphs_group_individuals:
-        if p=='ADHD_part2_9_Group_Control':
-            x=1
         ##### error -- this is not good, continue from here
-        alpha_degree_assortativity_coefficient = nx.degree_assortativity_coefficient(freqToListOfGraphs_group_individuals[p]['alphaList'][0])
+        alpha_degree_average_degree = sum(dict(freqToListOfGraphs_group_individuals[p]['alphaList'][0].degree()).values()) / len(freqToListOfGraphs_group_individuals[p]['alphaList'][0])
         alpha_density = nx.density(freqToListOfGraphs_group_individuals[p]['alphaList'][0])
         alpha_average_clustering = nx.average_clustering(freqToListOfGraphs_group_individuals[p]['alphaList'][0])
         alpha_transitivity = nx.transitivity(freqToListOfGraphs_group_individuals[p]['alphaList'][0])
-        # alpha_degree_pearson_correlation_coefficient = nx.degree_pearson_correlation_coefficient(freqToListOfGraphs_group_individuals[p]['alphaList'][0])
+        alpha_global_efficiency = nx.global_efficiency(freqToListOfGraphs_group_individuals[p]['alphaList'][0].to_undirected())
 
-        beta_degree_assortativity_coefficient = nx.degree_assortativity_coefficient(freqToListOfGraphs_group_individuals[p]['betaList'][0])
+        beta_degree_average_degree = sum(dict(freqToListOfGraphs_group_individuals[p]['betaList'][0].degree()).values()) / len(freqToListOfGraphs_group_individuals[p]['betaList'][0])
         beta_density = nx.density(freqToListOfGraphs_group_individuals[p]['betaList'][0])
         beta_average_clustering = nx.average_clustering(freqToListOfGraphs_group_individuals[p]['betaList'][0])
         beta_transitivity = nx.transitivity(freqToListOfGraphs_group_individuals[p]['betaList'][0])
-        # beta_degree_pearson_correlation_coefficient = nx.degree_pearson_correlation_coefficient(freqToListOfGraphs_group_individuals[p]['betaList'][0])
+        beta_global_efficiency = nx.global_efficiency(freqToListOfGraphs_group_individuals[p]['betaList'][0].to_undirected())
 
-        gamma_degree_assortativity_coefficient = nx.degree_assortativity_coefficient(freqToListOfGraphs_group_individuals[p]['gammaList'][0])
+        gamma_degree_average_degree = sum(dict(freqToListOfGraphs_group_individuals[p]['gammaList'][0].degree()).values()) / len(freqToListOfGraphs_group_individuals[p]['gammaList'][0])
         gamma_density = nx.density(freqToListOfGraphs_group_individuals[p]['gammaList'][0])
         gamma_average_clustering = nx.average_clustering(freqToListOfGraphs_group_individuals[p]['gammaList'][0])
         gamma_transitivity = nx.transitivity(freqToListOfGraphs_group_individuals[p]['gammaList'][0])
-        # gamma_degree_pearson_correlation_coefficient = nx.degree_pearson_correlation_coefficient(freqToListOfGraphs_group_individuals[p]['gammaList'][0])
+        gamma_global_efficiency = nx.global_efficiency(freqToListOfGraphs_group_individuals[p]['gammaList'][0].to_undirected())
 
-        delta_degree_assortativity_coefficient = nx.degree_assortativity_coefficient(freqToListOfGraphs_group_individuals[p]['deltaList'][0])
+        delta_degree_average_degree = sum(dict(freqToListOfGraphs_group_individuals[p]['deltaList'][0].degree()).values()) / len(freqToListOfGraphs_group_individuals[p]['deltaList'][0])
         delta_density = nx.density(freqToListOfGraphs_group_individuals[p]['deltaList'][0])
         delta_average_clustering = nx.average_clustering(freqToListOfGraphs_group_individuals[p]['deltaList'][0])
         delta_transitivity = nx.transitivity(freqToListOfGraphs_group_individuals[p]['deltaList'][0])
-        # delta_degree_pearson_correlation_coefficient = nx.degree_pearson_correlation_coefficient(freqToListOfGraphs_group_individuals[p]['deltaList'][0])
+        delta_global_efficiency = nx.global_efficiency(freqToListOfGraphs_group_individuals[p]['deltaList'][0].to_undirected())
 
-        theta_degree_assortativity_coefficient = nx.degree_assortativity_coefficient(freqToListOfGraphs_group_individuals[p]['thetaList'][0])
+        theta_degree_average_degree = sum(dict(freqToListOfGraphs_group_individuals[p]['thetaList'][0].degree()).values()) / len(freqToListOfGraphs_group_individuals[p]['thetaList'][0])
         theta_density = nx.density(freqToListOfGraphs_group_individuals[p]['thetaList'][0])
         theta_average_clustering = nx.average_clustering(freqToListOfGraphs_group_individuals[p]['thetaList'][0])
         theta_transitivity = nx.transitivity(freqToListOfGraphs_group_individuals[p]['thetaList'][0])
-        # theta_degree_pearson_correlation_coefficient = nx.degree_pearson_correlation_coefficient(freqToListOfGraphs_group_individuals[p]['thetaList'][0])
+        theta_global_efficiency = nx.global_efficiency(freqToListOfGraphs_group_individuals[p]['thetaList'][0].to_undirected())
 
         data = [
             [p],
             ['Nodes', freqToListOfGraphs_group_individuals[p]['alphaList'][0].number_of_nodes(), freqToListOfGraphs_group_individuals[p]['betaList'][0].number_of_nodes(), freqToListOfGraphs_group_individuals[p]['gammaList'][0].number_of_nodes(), freqToListOfGraphs_group_individuals[p]['deltaList'][0].number_of_nodes(), freqToListOfGraphs_group_individuals[p]['thetaList'][0].number_of_nodes()],
             ['Edges', freqToListOfGraphs_group_individuals[p]['alphaList'][0].number_of_edges(), freqToListOfGraphs_group_individuals[p]['betaList'][0].number_of_edges(), freqToListOfGraphs_group_individuals[p]['gammaList'][0].number_of_edges(), freqToListOfGraphs_group_individuals[p]['deltaList'][0].number_of_edges(), freqToListOfGraphs_group_individuals[p]['thetaList'][0].number_of_edges()],
-            ['degree assortativity coefficient',       alpha_degree_assortativity_coefficient,       beta_degree_assortativity_coefficient,       gamma_degree_assortativity_coefficient,       theta_degree_assortativity_coefficient,       delta_degree_assortativity_coefficient],
-            ['density',                                alpha_density,                                beta_density,                                gamma_density,                                theta_density,                                delta_density],
-            ['average clustering',                     alpha_average_clustering,                     beta_average_clustering,                     gamma_average_clustering,                     theta_average_clustering,                     delta_average_clustering],
-            ['transitivity',                           alpha_transitivity,                           beta_transitivity,                           gamma_transitivity,                           theta_transitivity,                           delta_transitivity]
-            # ['degree pearson correlation coefficient', alpha_degree_pearson_correlation_coefficient, beta_degree_pearson_correlation_coefficient, gamma_degree_pearson_correlation_coefficient, theta_degree_pearson_correlation_coefficient, delta_degree_pearson_correlation_coefficient]
+            ['average degree',       alpha_degree_average_degree,    beta_degree_average_degree,       gamma_degree_average_degree,       theta_degree_average_degree,       delta_degree_average_degree],
+            ['density',              alpha_density,                  beta_density,                     gamma_density,                     theta_density,                     delta_density],
+            ['average clustering',   alpha_average_clustering,       beta_average_clustering,          gamma_average_clustering,          theta_average_clustering,          delta_average_clustering],
+            ['transitivity',         alpha_transitivity,             beta_transitivity,                gamma_transitivity,                theta_transitivity,                delta_transitivity],
+            ['global efficiency',    alpha_global_efficiency,        beta_global_efficiency,           gamma_global_efficiency,           theta_global_efficiency,           delta_global_efficiency]
         ]
 
         write_to_csv(file_name, data)
@@ -427,9 +406,9 @@ class win:
         )
         button_4.place(
             x=266.0,
-            y=363.0,
+            y=353.0,
             width=178.0,
-            height=59.0
+            height=37.0
         )
 
         button_image_5 = PhotoImage(
@@ -492,7 +471,7 @@ class win:
         )
         button_8.place(
             x=266.0,
-            y=235.0,
+            y=237.0,
             width=178.0,
             height=37.0
         )
@@ -508,9 +487,9 @@ class win:
         )
         button_9.place(
             x=266.0,
-            y=292.0,
+            y=295.0,
             width=178.0,
-            height=53.0
+            height=37.0
         )
 
         window.FB = tkinter.StringVar()
