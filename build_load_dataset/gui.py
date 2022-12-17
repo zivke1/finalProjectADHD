@@ -85,42 +85,23 @@ def generate_graphs_press(parent = None):
     parent.children['labelFolderExists'].config(text="")
     os.mkdir(path)
 
-    mapOfDataADHD, ssr_based_F_testADHDList, ssr_chi2testADHDList, lrtestADHDList, params_ftestADHDList = LoadDataSetLogic.BuildFromDir(
+    mapOfDataTreatment = LoadDataSetLogic.BuildFromDir(
         filePathNameTreatment, entryWinSec , entryHz ,parent.children['progBar'])
 
 
 
     jsonC = jh()
     print(jsonC.martix_to_json)
-    jsonC.martix_to_json(mapOfDataADHD, "conclusionMatrixADHD",folderName)
+    jsonC.martix_to_json(mapOfDataTreatment, "conclusionMatrixTreatment",folderName)
 
-    # average of all adhd patients
-    ssr_based_F_testAvgADHDMatrix = AvarageMatrix(ssr_based_F_testADHDList)
-    jsonC.martix_to_csv(ssr_based_F_testAvgADHDMatrix, "ssr_based_F_testAvgADHDMatrix",folderName)
-    ssr_chi2testAvgADHDMatrix = AvarageMatrix(ssr_chi2testADHDList)
-    jsonC.martix_to_csv(ssr_chi2testAvgADHDMatrix, "ssr_chi2testAvgADHDMatrix",folderName)
-    lrtestAvgADHDMatrix = AvarageMatrix(lrtestADHDList)
-    jsonC.martix_to_csv(lrtestAvgADHDMatrix, "lrtestAvgADHDMatrix",folderName)
-    params_ftestAvgADHDMatrix = AvarageMatrix(params_ftestADHDList)
-    jsonC.martix_to_csv(params_ftestAvgADHDMatrix, "params_ftestAvgADHDMatrix",folderName)
 
-    mapOfDataControl, ssr_based_F_testControlList, ssr_chi2testControlList, lrtestControlList, params_ftestControlList = LoadDataSetLogic.BuildFromDir(
+    mapOfDataControl = LoadDataSetLogic.BuildFromDir(
         filePathNameControl, entryWinSec , entryHz ,parent.children['progBar'])
-
 
 
 
     jsonC.martix_to_json(mapOfDataControl, "conclusionMatrixControl",folderName)
 
-    # average of all patients control
-    ssr_based_F_testAvgControlMatrix = AvarageMatrix(ssr_based_F_testControlList)
-    jsonC.martix_to_csv(ssr_based_F_testAvgControlMatrix, "ssr_based_F_testAvgControlMatrix",folderName)
-    ssr_chi2testAvgControlMatrix = AvarageMatrix(ssr_chi2testControlList)
-    jsonC.martix_to_csv(ssr_chi2testAvgControlMatrix, "ssr_chi2testAvgControlMatrix",folderName)
-    lrtestAvgControlMatrix = AvarageMatrix(lrtestControlList)
-    jsonC.martix_to_csv(lrtestAvgControlMatrix, "lrtestAvgControlMatrix",folderName)
-    params_ftestAvgControlMatrix = AvarageMatrix(params_ftestControlList)
-    jsonC.martix_to_csv(params_ftestAvgControlMatrix, "params_ftestAvgControlMatrix",folderName)
     parent.children['progBar']['value']= 100
     parent.children['labelFinish'].config(text = "Finish upload data set\nThe folder "+folderName +"\nwas created\ngo to generate graphs and analyse this data set")
     return

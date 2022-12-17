@@ -25,15 +25,15 @@ OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
 
 freqToListOfGraphs_control_group_individuals = {}
-freqToListOfGraphs_ADHD_group_individuals = {}
+freqToListOfGraphs_treatment_group_individuals = {}
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
-def getThresholdValue(dataADHD,dataControl,precentage):
+def getThresholdValue(dataTreatment, dataControl, precentage):
     allData = []
     check = 0
-    for patient in dataADHD:
+    for patient in dataTreatment:
         # p = patient
         for frequencyBand,matrixes  in patient.items():
             if frequencyBand == 'patient_name':
@@ -95,10 +95,10 @@ def gen_graphs_pressed(parent = None):
         parent.children['labelErr'].config(text = "Please choose a data set")
         return
     parent.children['labelErr'].config(text="")
-    folderPath = ".\\..\\DB\\"+diractory+"\\conclusionMatrixADHD.json"
+    folderPath = ".\\..\\DB\\"+diractory+"\\conclusionMatrixTreatment.json"
     f = open(folderPath)
-    conclusionMatrixADHD = json.load(f)
-    dataADHD = conclusionMatrixADHD['Patients']
+    conclusionMatrixTreatment = json.load(f)
+    dataTreatment = conclusionMatrixTreatment['Patients']
 
     #control start for get treshold value
     folderPath = ".\\..\\DB\\"+diractory+"\\conclusionMatrixControl.json"
@@ -106,22 +106,22 @@ def gen_graphs_pressed(parent = None):
     conclusionMatrixControl = json.load(f)
     dataControl = conclusionMatrixControl['Patients']
 
-    thresholdValue = getThresholdValue(dataADHD,dataControl ,precentage)
+    thresholdValue = getThresholdValue(dataTreatment,dataControl ,precentage)
 
     # remove_values_from_matrix_under_precentages(dataADHD, precentage)
-    remove_values_from_matrix_under_value(dataADHD, thresholdValue)
-    freqToListOfGraphs_ADHD_group = {}
+    remove_values_from_matrix_under_value(dataTreatment, thresholdValue)
+    freqToListOfGraphs_treatment_group = {}
 
 
-    create_graphs(dataADHD, 'ssr_based_F_testMat', freqToListOfGraphs_ADHD_group, freqToListOfGraphs_ADHD_group_individuals)  # create graphs for ADHD patients and insert to the list
-    jsonH.listOf_graphs_to_json(freqToListOfGraphs_ADHD_group['alphaList'], "ADHD_group_graphs_alpha"+precentage, "DB2\graphs")
-    jsonH.listOf_graphs_to_json(freqToListOfGraphs_ADHD_group['betaList'], "ADHD_group_graphs_beta" + precentage,
+    create_graphs(dataTreatment, 'ssr_based_F_testMat', freqToListOfGraphs_treatment_group, freqToListOfGraphs_treatment_group_individuals)  # create graphs for ADHD patients and insert to the list
+    jsonH.listOf_graphs_to_json(freqToListOfGraphs_treatment_group['alphaList'], "treatment_group_graphs_alpha"+precentage, "DB2\graphs")
+    jsonH.listOf_graphs_to_json(freqToListOfGraphs_treatment_group['betaList'], "treatment_group_graphs_beta" + precentage,
                                 "DB2\graphs")
-    jsonH.listOf_graphs_to_json(freqToListOfGraphs_ADHD_group['gammaList'], "ADHD_group_graphs_gamma" + precentage,
+    jsonH.listOf_graphs_to_json(freqToListOfGraphs_treatment_group['gammaList'], "treatment_group_graphs_gamma" + precentage,
                                 "DB2\graphs")
-    jsonH.listOf_graphs_to_json(freqToListOfGraphs_ADHD_group['thetaList'], "ADHD_group_graphs_theta" + precentage,
+    jsonH.listOf_graphs_to_json(freqToListOfGraphs_treatment_group['thetaList'], "treatment_group_graphs_theta" + precentage,
                                 "DB2\graphs")
-    jsonH.listOf_graphs_to_json(freqToListOfGraphs_ADHD_group['deltaList'], "ADHD_group_graphs_delta" + precentage,
+    jsonH.listOf_graphs_to_json(freqToListOfGraphs_treatment_group['deltaList'], "treatment_group_graphs_delta" + precentage,
                                 "DB2\graphs")
 
     #### above ADHD ; below control  ####
@@ -143,10 +143,10 @@ def gen_graphs_pressed(parent = None):
     jsonH.listOf_graphs_to_json(freqToListOfGraphs_control_group['deltaList'], "control_group_graphs_delta" + precentage,
                                 "DB2\graphs")
  # destroy window at the end of the function
-    name_of_ADHD_graph_file = "ADHD_group_graphs_"
+    name_of_treatment_graph_file = "treatment_group_graphs_"
     name_of_control_graph_file = "control_group_graphs_"
     parent.destroy()
-    analyze_data_win.win(name_of_ADHD_graph_file, name_of_control_graph_file,precentage, files_name, freqToListOfGraphs_ADHD_group_individuals, freqToListOfGraphs_control_group_individuals)
+    analyze_data_win.win(name_of_treatment_graph_file, name_of_control_graph_file, precentage, files_name, freqToListOfGraphs_treatment_group_individuals, freqToListOfGraphs_control_group_individuals)
 
 
 def create_graphs(patients_data, matrix_name,freqToListOfGraphs, freqToListOfGraphs_individuals):

@@ -29,7 +29,7 @@ def relative_to_assets(path: str) -> Path:
 
 control_group_graphsList = []
 treatment_group_graphsList = []
-def read_graphs(fileNameADHD,fileNameControl):
+def read_graphs(fileNameTreatment, fileNameControl):
     control_group_graphsList.clear()
     treatment_group_graphsList.clear()
     jsonH = jh()
@@ -39,7 +39,7 @@ def read_graphs(fileNameADHD,fileNameControl):
         H = json_graph.adjacency_graph(g)
         control_group_graphsList.append(H)
 
-    graph_data = jsonH.read_json("DB2\graphs", fileNameADHD, "Graphs")
+    graph_data = jsonH.read_json("DB2\graphs", fileNameTreatment, "Graphs")
     for g in graph_data:
         H = json_graph.adjacency_graph(g)
         treatment_group_graphsList.append(H)
@@ -52,7 +52,7 @@ def graph_feature_average_degree_Press(parent = None):
     else:
         parent.children['label_asterisk'].config(text="")
         parent.children['label_finish'].config(text="")
-    read_graphs(parent.name_of_ADHD_graph_file+frequencyBand.lower()+parent.precentageOfThisTest,parent.name_of_control_graph_file+frequencyBand.lower()+parent.precentageOfThisTest)
+    read_graphs(parent.name_of_treatment_graph_file+frequencyBand.lower()+parent.precentageOfThisTest,parent.name_of_control_graph_file+frequencyBand.lower()+parent.precentageOfThisTest)
     treatment_average_degreeList = []
     control_average_degreeList = []
     for patientTreatment in treatment_group_graphsList:
@@ -70,12 +70,12 @@ def graph_feature_Transitivity_Press(parent = None):
     else:
         parent.children['label_asterisk'].config(text="")
         parent.children['label_finish'].config(text="")
-    read_graphs(parent.name_of_ADHD_graph_file + frequencyBand.lower() + parent.precentageOfThisTest,
+    read_graphs(parent.name_of_treatment_graph_file + frequencyBand.lower() + parent.precentageOfThisTest,
                 parent.name_of_control_graph_file + frequencyBand.lower() + parent.precentageOfThisTest)
     treatmentTransitivityList = []
     controlTransitivityList = []
-    for patientADHD in treatment_group_graphsList:
-        treatmentTransitivityList.append(nx.transitivity(patientADHD))
+    for patientTreatment in treatment_group_graphsList:
+        treatmentTransitivityList.append(nx.transitivity(patientTreatment))
 
     for patientcontrol in control_group_graphsList:
         controlTransitivityList.append(nx.transitivity(patientcontrol))
@@ -90,7 +90,7 @@ def graph_feature_AvgClust_Press(parent = None):
     else:
         parent.children['label_asterisk'].config(text="")
         parent.children['label_finish'].config(text="")
-    read_graphs(parent.name_of_ADHD_graph_file + frequencyBand.lower() + parent.precentageOfThisTest,
+    read_graphs(parent.name_of_treatment_graph_file + frequencyBand.lower() + parent.precentageOfThisTest,
                 parent.name_of_control_graph_file + frequencyBand.lower() + parent.precentageOfThisTest)
     treatmentAverageClusteringList = []
     controlAverageClusteringList = []
@@ -110,7 +110,7 @@ def graph_feature_density_Press(parent = None):
     else:
         parent.children['label_asterisk'].config(text="")
         parent.children['label_finish'].config(text="")
-    read_graphs(parent.name_of_ADHD_graph_file + frequencyBand.lower() + parent.precentageOfThisTest,
+    read_graphs(parent.name_of_treatment_graph_file + frequencyBand.lower() + parent.precentageOfThisTest,
                 parent.name_of_control_graph_file + frequencyBand.lower() + parent.precentageOfThisTest)
     treatmentDensityList = []
     controldensityList = []
@@ -130,7 +130,7 @@ def graph_feature_degAC_Press(parent = None):
     else:
         parent.children['label_asterisk'].config(text="")
         parent.children['label_finish'].config(text="")
-    read_graphs(parent.name_of_ADHD_graph_file + frequencyBand.lower() + parent.precentageOfThisTest,
+    read_graphs(parent.name_of_treatment_graph_file + frequencyBand.lower() + parent.precentageOfThisTest,
                 parent.name_of_control_graph_file + frequencyBand.lower() + parent.precentageOfThisTest)
     treatmentDegreeAssortativityCoefficientList = []
     controlDegreeAssortativityCoefficientList = []
@@ -150,7 +150,7 @@ def graph_feature_global_efficiency_Press(parent = None):#we can take this also
     else:
         parent.children['label_asterisk'].config(text="")
         parent.children['label_finish'].config(text="")
-    read_graphs(parent.name_of_ADHD_graph_file+frequencyBand.lower()+parent.precentageOfThisTest,parent.name_of_control_graph_file+frequencyBand.lower()+parent.precentageOfThisTest)
+    read_graphs(parent.name_of_treatment_graph_file+frequencyBand.lower()+parent.precentageOfThisTest,parent.name_of_control_graph_file+frequencyBand.lower()+parent.precentageOfThisTest)
     treatment_global_efficiencyList = []
     control_global_efficiencyList = []
     for patientTreatment in treatment_group_graphsList:
@@ -204,9 +204,9 @@ def graph_feature_global_efficiency_Press(parent = None):#we can take this also
 #                                master=parent)
 #     canvas.get_tk_widget().place(x=570, y=110)
 
-def show_graph(ADHDFeatureList, controlFeatureList, frequencyBand, feature_name, parent=None):
+def show_graph(treatmentFeatureList, controlFeatureList, frequencyBand, feature_name, parent=None):
     fig = Figure(figsize=(5, 5), dpi=100)
-    data = [ADHDFeatureList, controlFeatureList]
+    data = [treatmentFeatureList, controlFeatureList]
     plot1 = fig.add_subplot(111)
     bp = plot1.boxplot(data, patch_artist=True, notch='True')
     colors = ['#0000FF', '#00FF00']
@@ -221,14 +221,14 @@ def show_graph(ADHDFeatureList, controlFeatureList, frequencyBand, feature_name,
     canvas = FigureCanvasTkAgg(fig,master=parent)
     canvas.get_tk_widget().place(x=570, y=110)
 
-def exportBtn(freqToListOfGraphs_ADHD_group_individuals, freqToListOfGraphs_control_group_individuals, parent=None):
+def exportBtn(freqToListOfGraphs_treatment_group_individuals, freqToListOfGraphs_control_group_individuals, parent=None):
     filePathName = fd.askdirectory()
     parent.children['label_finish'].config(text="")
     if filePathName == "":
         parent.children['label_asterisk'].config(text="Please choose a folder for export")
         return
     parent.children['label_asterisk'].config(text="")
-    export_data_btn(freqToListOfGraphs_ADHD_group_individuals, filePathName +'\ADHD_group_features_individuals.csv')
+    export_data_btn(freqToListOfGraphs_treatment_group_individuals, filePathName + '\treatment_group_features_individuals.csv')
     export_data_btn(freqToListOfGraphs_control_group_individuals, filePathName +'\Control_group_features_individuals.csv')
     parent.children['label_finish'].config(text="Finish to export")
     os.startfile(filePathName)
@@ -301,7 +301,7 @@ def on_closing(root):
 
 class win:
 
-    def __init__(self, file_name_ADHD, file_name_control ,precentage, files_name, freqToListOfGraphs_ADHD_group_individuals, freqToListOfGraphs_control_group_individuals):
+    def __init__(self, file_name_treatment, file_name_control, precentage, files_name, freqToListOfGraphs_treatment_group_individuals, freqToListOfGraphs_control_group_individuals):
         window = Tk()
         window.title("Analyze Data")
         window.geometry("1170x687")
@@ -309,7 +309,7 @@ class win:
 
         # those are the names of the json files in DB2 folder that contains the graphs of
         # the ADHD and control group that were generated in the previous window -> generate graphs
-        window.name_of_ADHD_graph_file = file_name_ADHD
+        window.name_of_treatment_graph_file = file_name_treatment
         window.name_of_control_graph_file = file_name_control
         window.precentageOfThisTest = precentage
 
@@ -458,7 +458,7 @@ class win:
             image=button_image_7,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: exportBtn(freqToListOfGraphs_ADHD_group_individuals, freqToListOfGraphs_control_group_individuals, window),
+            command=lambda: exportBtn(freqToListOfGraphs_treatment_group_individuals, freqToListOfGraphs_control_group_individuals, window),
             relief="flat"
         )
         button_7.place(

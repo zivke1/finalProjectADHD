@@ -68,10 +68,6 @@ class LoadDataSetLogic:
         progBarValueToAdd = 50/(numberOfPatint)
 
         mapOfData = {}
-        ssr_based_F_testList = []
-        ssr_chi2testList = []
-        lrtestList = []
-        params_ftestList = []
         listOfFrequencyTypes = ['alphaList' ,'betaList','gammaList' ,'thetaList','deltaList']
 
 
@@ -80,9 +76,7 @@ class LoadDataSetLogic:
                 df = pd.read_csv(path + file, parse_dates=['0'])
                 colNumber = df.shape[1] - 1
 
-                ssr_chi2testMat = np.zeros((colNumber, colNumber))
-                lrtestMat = np.zeros((colNumber, colNumber))
-                params_ftestMat = np.zeros((colNumber, colNumber))
+
 
                 mapOfElctrodeAndPart = {}
                 electrodeToFeq = {}
@@ -106,9 +100,9 @@ class LoadDataSetLogic:
                              continue
                          delta = bandpower(listOfParts[k], int(freqHz), [0.5, 4],  int(winLength))
                          theta = bandpower(listOfParts[k], int(freqHz), [4, 8], int(winLength))
-                         alpha = bandpower(listOfParts[k], int(freqHz), [8, 12], int(winLength))
-                         beta = bandpower(listOfParts[k], int(freqHz), [12, 30],  int(winLength))
-                         gamma = bandpower(listOfParts[k], int(freqHz), [30, 100],  int(winLength))
+                         alpha = bandpower(listOfParts[k], int(freqHz), [8, 13], int(winLength))
+                         beta = bandpower(listOfParts[k], int(freqHz), [13, 30],  int(winLength))
+                         gamma = bandpower(listOfParts[k], int(freqHz), [30, 45],  int(winLength))
                          electrodeToFeq[i]['alphaList'].append(alpha)
                          electrodeToFeq[i]['betaList'].append(beta)
                          electrodeToFeq[i]['gammaList'].append(gamma)
@@ -120,6 +114,9 @@ class LoadDataSetLogic:
                 for type in listOfFrequencyTypes:
                     ssr_based_F_testMat = np.zeros((colNumber, colNumber))
 
+                    ssr_chi2testMat = np.zeros((colNumber, colNumber))
+                    lrtestMat = np.zeros((colNumber, colNumber))
+                    params_ftestMat = np.zeros((colNumber, colNumber))
                     for i in range(0, colNumber):
                         for j in range(0, colNumber):
                             #prepare for grangercausalitytests
@@ -146,13 +143,5 @@ class LoadDataSetLogic:
                 # shani you need to add here fill json for the map above
                 # map of patient name -> couples of 4 matrices and their names
 
-                ssr_based_F_testList.append(ssr_based_F_testMat)
-                ssr_chi2testList.append(ssr_chi2testMat)
-                lrtestList.append(lrtestMat)
-
-                params_ftestList.append(params_ftestMat)
             progBar['value']+=progBarValueToAdd
-        # jsonC = jh()
-        # print(jsonC.martix_to_json)
-        # jsonC.martix_to_json(mapOfData)
-        return mapOfData, ssr_based_F_testList, ssr_chi2testList, lrtestList, params_ftestList
+        return mapOfData
