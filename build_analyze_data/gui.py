@@ -50,6 +50,7 @@ def graph_feature_average_degree_Press(parent = None):
         return
     else:
         parent.children['label_asterisk'].config(text="")
+        parent.children['label_finish'].config(text="")
     read_graphs(parent.name_of_ADHD_graph_file+frequencyBand.lower()+parent.precentageOfThisTest,parent.name_of_control_graph_file+frequencyBand.lower()+parent.precentageOfThisTest)
     treatment_average_degreeList = []
     control_average_degreeList = []
@@ -67,6 +68,7 @@ def graph_feature_Transitivity_Press(parent = None):
         return
     else:
         parent.children['label_asterisk'].config(text="")
+        parent.children['label_finish'].config(text="")
     read_graphs(parent.name_of_ADHD_graph_file + frequencyBand.lower() + parent.precentageOfThisTest,
                 parent.name_of_control_graph_file + frequencyBand.lower() + parent.precentageOfThisTest)
     treatmentTransitivityList = []
@@ -86,6 +88,7 @@ def graph_feature_AvgClust_Press(parent = None):
         return
     else:
         parent.children['label_asterisk'].config(text="")
+        parent.children['label_finish'].config(text="")
     read_graphs(parent.name_of_ADHD_graph_file + frequencyBand.lower() + parent.precentageOfThisTest,
                 parent.name_of_control_graph_file + frequencyBand.lower() + parent.precentageOfThisTest)
     treatmentAverageClusteringList = []
@@ -105,6 +108,7 @@ def graph_feature_density_Press(parent = None):
         return
     else:
         parent.children['label_asterisk'].config(text="")
+        parent.children['label_finish'].config(text="")
     read_graphs(parent.name_of_ADHD_graph_file + frequencyBand.lower() + parent.precentageOfThisTest,
                 parent.name_of_control_graph_file + frequencyBand.lower() + parent.precentageOfThisTest)
     treatmentDensityList = []
@@ -124,6 +128,7 @@ def graph_feature_degAC_Press(parent = None):
         return
     else:
         parent.children['label_asterisk'].config(text="")
+        parent.children['label_finish'].config(text="")
     read_graphs(parent.name_of_ADHD_graph_file + frequencyBand.lower() + parent.precentageOfThisTest,
                 parent.name_of_control_graph_file + frequencyBand.lower() + parent.precentageOfThisTest)
     treatmentDegreeAssortativityCoefficientList = []
@@ -143,6 +148,7 @@ def graph_feature_global_efficiency_Press(parent = None):#we can take this also
         return
     else:
         parent.children['label_asterisk'].config(text="")
+        parent.children['label_finish'].config(text="")
     read_graphs(parent.name_of_ADHD_graph_file+frequencyBand.lower()+parent.precentageOfThisTest,parent.name_of_control_graph_file+frequencyBand.lower()+parent.precentageOfThisTest)
     treatment_global_efficiencyList = []
     control_global_efficiencyList = []
@@ -216,13 +222,14 @@ def show_graph(ADHDFeatureList, controlFeatureList, frequencyBand, feature_name,
 
 def exportBtn(freqToListOfGraphs_ADHD_group_individuals, freqToListOfGraphs_control_group_individuals, parent=None):
     filePathName = fd.askdirectory()
+    parent.children['label_finish'].config(text="")
     if filePathName == "":
         parent.children['label_asterisk'].config(text="Please choose a folder for export")
         return
     parent.children['label_asterisk'].config(text="")
     export_data_btn(freqToListOfGraphs_ADHD_group_individuals, filePathName +'\ADHD_group_features_individuals.csv')
     export_data_btn(freqToListOfGraphs_control_group_individuals, filePathName +'\Control_group_features_individuals.csv')
-    parent.children['labelErr'].config(text="Finish")
+    parent.children['label_finish'].config(text="Finish to export")
 
 def export_data_btn(freqToListOfGraphs_group_individuals, file_name):
     with open(file_name, 'w', encoding='UTF8', newline='') as f:
@@ -515,7 +522,8 @@ class win:
             font=("JejuMyeongjo", 24 * -1)
         )
 
-        label_asterisk = tkinter.Label(name='label_asterisk', fg="red", bg='#E2D8EF').place(x=270, y=630)
+        label_asterisk = tkinter.Label(name='label_asterisk', fg="red", bg='#E2D8EF').place(x=270, y=620)
+        label_finish = tkinter.Label(name='label_finish', fg="green", bg='#E2D8EF').place(x=270, y=640)
         # window.children['label_asterisk'].config(text="Choose frequency band first")
 
         window.resizable(False, False)
