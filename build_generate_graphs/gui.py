@@ -7,7 +7,6 @@ from pathlib import Path
 
 # from tkinter import *
 # Explicit imports to satisfy Flake8
-from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
 import os
 import tkinter
 import json
@@ -20,6 +19,7 @@ from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
 import build_load_dataset.gui as load_dataset_win
 import build_analyze_data.gui as analyze_data_win
 from utilities.json_creator import OutputHandler as jh
+import functools
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
@@ -54,7 +54,7 @@ def getThresholdValue(dataADHD,dataControl,precentage):
 def remove_values_from_matrix_under_value(data , value):
     # this code is remove all the values under the threshold
     for patient in data:
-        # p = patient
+
         for frequencyBand,matrixes  in patient.items():
             if frequencyBand == 'patient_name':
                 continue
@@ -66,7 +66,7 @@ def remove_values_from_matrix_under_value(data , value):
 def remove_values_from_matrix_under_precentages(data , precentage):
     # this code is remove all the values under the threshold
     for patient in data:
-        # p = patient
+
         for frequencyBand,matrixes  in patient.items():
             if frequencyBand == 'patient_name':
                 continue
@@ -133,7 +133,6 @@ def gen_graphs_pressed(parent = None):
     freqToListOfGraphs_control_group = {}
 
     create_graphs(dataControl, 'ssr_based_F_testMat', freqToListOfGraphs_control_group, freqToListOfGraphs_control_group_individuals)  # create graphs for control patients and insert to the list
-    # jsonH.listOf_graphs_to_json(freqToListOfGraphs_control_group, "control_group_graphs"+precentage, "DB2\graphs")
     jsonH.listOf_graphs_to_json(freqToListOfGraphs_control_group['alphaList'], "control_group_graphs_alpha"+precentage, "DB2\graphs")
     jsonH.listOf_graphs_to_json(freqToListOfGraphs_control_group['betaList'], "control_group_graphs_beta" + precentage,
                                 "DB2\graphs")
@@ -172,10 +171,6 @@ def create_graphs(patients_data, matrix_name,freqToListOfGraphs, freqToListOfGra
                 continue
 
             ssr_based_F_testMat = matrixes[matrix_name]
-            # for i in range(len(ssr_based_F_testMat)):
-            #     for j in range(len(ssr_based_F_testMat[i])):
-            #         if ssr_based_F_testMat[i][j] is None:
-            #             ssr_based_F_testMat[i][j] = 0
             listOflist_to_npArray = np.array([np.array(i) for i in ssr_based_F_testMat])
 
             G = nx.from_numpy_matrix(listOflist_to_npArray, create_using=nx.DiGraph)
@@ -208,7 +203,13 @@ def present_info_text(parent = None):       # information Icon msg - each click 
     showInfoText = not showInfoText
 
 
-
+def on_closing(root):
+    dir = '..\DB2\graphs'
+    # check first if dir exist
+    # delete dir content
+    for f in os.listdir(dir):
+        os.remove(os.path.join(dir, f))
+    root.destroy()
 
 class win:
     def __init__(self, *args, **kwargs):
@@ -395,4 +396,8 @@ class win:
             listbox.insert(0, directory)
 
         window.resizable(False, False)
+
+        on_close_with_params = functools.partial(on_closing, window)
+        window.protocol("WM_DELETE_WINDOW", on_close_with_params)
+
         window.mainloop()

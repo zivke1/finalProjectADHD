@@ -17,6 +17,7 @@ from networkx.readwrite import json_graph
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,
                                                NavigationToolbar2Tk)
 import networkx as nx
+import functools
 
 
 OUTPUT_PATH = Path(__file__).parent
@@ -272,8 +273,8 @@ def export_data_btn(freqToListOfGraphs_group_individuals, file_name):
 
         data = [
             [p],
-            ['Nodes', freqToListOfGraphs_group_individuals[p]['alphaList'][0].number_of_nodes(), freqToListOfGraphs_group_individuals[p]['betaList'][0].number_of_nodes(), freqToListOfGraphs_group_individuals[p]['gammaList'][0].number_of_nodes(), freqToListOfGraphs_group_individuals[p]['deltaList'][0].number_of_nodes(), freqToListOfGraphs_group_individuals[p]['thetaList'][0].number_of_nodes()],
-            ['Edges', freqToListOfGraphs_group_individuals[p]['alphaList'][0].number_of_edges(), freqToListOfGraphs_group_individuals[p]['betaList'][0].number_of_edges(), freqToListOfGraphs_group_individuals[p]['gammaList'][0].number_of_edges(), freqToListOfGraphs_group_individuals[p]['deltaList'][0].number_of_edges(), freqToListOfGraphs_group_individuals[p]['thetaList'][0].number_of_edges()],
+            ['Nodes', freqToListOfGraphs_group_individuals[p]['alphaList'][0].number_of_nodes(), freqToListOfGraphs_group_individuals[p]['betaList'][0].number_of_nodes(), freqToListOfGraphs_group_individuals[p]['gammaList'][0].number_of_nodes(), freqToListOfGraphs_group_individuals[p]['thetaList'][0].number_of_nodes(), freqToListOfGraphs_group_individuals[p]['deltaList'][0].number_of_nodes()],
+            ['Edges', freqToListOfGraphs_group_individuals[p]['alphaList'][0].number_of_edges(), freqToListOfGraphs_group_individuals[p]['betaList'][0].number_of_edges(), freqToListOfGraphs_group_individuals[p]['gammaList'][0].number_of_edges(), freqToListOfGraphs_group_individuals[p]['thetaList'][0].number_of_edges(), freqToListOfGraphs_group_individuals[p]['deltaList'][0].number_of_edges()],
             ['average degree',       alpha_degree_average_degree,    beta_degree_average_degree,       gamma_degree_average_degree,       theta_degree_average_degree,       delta_degree_average_degree],
             ['density',              alpha_density,                  beta_density,                     gamma_density,                     theta_density,                     delta_density],
             ['average clustering',   alpha_average_clustering,       beta_average_clustering,          gamma_average_clustering,          theta_average_clustering,          delta_average_clustering],
@@ -289,13 +290,13 @@ def write_to_csv(name , data):
         # write multiple rows
         writer.writerows(data)
 
-# def on_closing(root):
-#     dir = '..\DB2\graphs'
-#     # check first if dir exist
-#     # delete dir content
-#     for f in os.listdir(dir):
-#         os.remove(os.path.join(dir, f))
-#     root.destroy()
+def on_closing(root):
+    dir = '..\DB2\graphs'
+    # check first if dir exist
+    # delete dir content
+    for f in os.listdir(dir):
+        os.remove(os.path.join(dir, f))
+    root.destroy()
 
 class win:
 
@@ -527,5 +528,6 @@ class win:
         # window.children['label_asterisk'].config(text="Choose frequency band first")
 
         window.resizable(False, False)
-        # window.protocol("WM_DELETE_WINDOW", on_closing(window))
+        on_close_with_params = functools.partial(on_closing, window)
+        window.protocol("WM_DELETE_WINDOW", on_close_with_params)
         window.mainloop()

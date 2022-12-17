@@ -3,15 +3,15 @@
 # https://github.com/ParthJadhav/Tkinter-Designer
 import tkinter
 from pathlib import Path
-
+import os
 # from tkinter import *
 # Explicit imports to satisfy Flake8
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
-
+import functools
 
 import build_load_dataset.gui as load_EEG_dataSet_win
 import build_generate_graphs.gui as generate_graphs_win
-import build_analyze_data.gui as analyze_data_win
+
 
 
 
@@ -24,6 +24,15 @@ def relative_to_assets(path: str) -> Path:
 
 window = Tk()
 window.title("Main Page")
+
+def on_closing(root):
+    dir = '..\DB2\graphs'
+    # check first if dir exist
+    # delete dir content
+    for f in os.listdir(dir):
+        os.remove(os.path.join(dir, f))
+    root.destroy()
+
 class win:
     def __init__(self, *args, **kwargs):
         window.geometry("1170x687")
@@ -112,6 +121,8 @@ class win:
             font=("JejuMyeongjo", 24 * -1)
         )
         window.resizable(False, False)
+        on_close_with_params = functools.partial(on_closing, window)
+        window.protocol("WM_DELETE_WINDOW", on_close_with_params)
         window.mainloop()
 
 if __name__ == "__main__":

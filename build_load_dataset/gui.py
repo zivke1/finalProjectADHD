@@ -7,8 +7,7 @@ from pathlib import Path
 from tkinter import ttk, LEFT
 from threading import Thread
 import shutil
-# from tkinter import *
-# Explicit imports to satisfy Flake8
+
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage,Label
 import build_generate_graphs.gui as generate_graphs_win
 from tkinter import filedialog as fd
@@ -20,7 +19,7 @@ from build_load_dataset.LoadDataSetLogic import LoadDataSetLogic
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
-
+import functools
 controlGroupPath = ""
 treatmentGroupPath = ""
 
@@ -127,58 +126,13 @@ def generate_graphs_press(parent = None):
     return
 
 
-"""
-    print("train_model_press")
-    #take each point in the matrix
-    Iris = datasets.load_iris()#the data set i need to take the
-    irisData = Iris.data[50:150]
-    trueLabels = Iris.target[50:150]  # true labeling
-
-    X_train, X_test, trainLabels, testLabels = train_test_split(irisData, trueLabels, test_size=0.40)#take the testing presangeges from the combobox
-    plt.plot()
-    plt.title("The Iris Dataset labels")
-    plt.xlabel(Iris.feature_names[0])
-    plt.ylabel(Iris.feature_names[1])
-    plt.scatter(X_train[:, 0], X_train[:, 1], c=trainLabels, s=30, label="train")
-
-    # generate a linear SVM model and fit the train data
-    svClassifier = SVC(kernel='rbf', C=1000)
-    svClassifier.fit(X_train, trainLabels)
-    # get and plot the support vectors
-    suppportVectors = svClassifier.support_vectors_
-    plt.scatter(suppportVectors[:, 0], suppportVectors[:, 1], c="red", marker="+", s=200, label="support vectors")
-    # predict the labels of the test vectors
-    predictedLabels = svClassifier.predict(X_test)
-    #i cant print the data and see something because it has more then 2D
-    plt.scatter(X_test[:, 0], X_test[:, 1], c=predictedLabels, marker="x", s=50, label="test")
-    plt.legend()
-    plt.show()
-
-
-######confusin matrix build
-    table = np.zeros((2, 2), dtype=np.int32)
-
-    for i in range(40):
-        if ((predictedLabels[i] == testLabels[i]) and testLabels[i] == 1):  # add one to TP
-            table[0, 0] += 1
-        elif (predictedLabels[i] == testLabels[i] and testLabels[i] == 2):  # add to TN
-            table[1, 1] += 1
-        elif (predictedLabels[i] != testLabels[i] and testLabels[i] == 1):  # add to FN
-            table[0, 1] += 1
-        elif (predictedLabels[i] != testLabels[i] and testLabels[i] == 2):  # add to FP
-            table[1, 0] += 1
-
-    print("TP ")
-    print(table[0][0])
-    print("FN  ")
-    print(table[0][1])
-    print("FP ")
-    print(table[1][0])
-    print("TN ")
-    print(table[1][1])
-"""
-
-
+def on_closing(root):
+    dir = '..\DB2\graphs'
+    # check first if dir exist
+    # delete dir content
+    for f in os.listdir(dir):
+        os.remove(os.path.join(dir, f))
+    root.destroy()
 
 class win:
     def __init__(self, *args, **kwargs):
@@ -490,4 +444,6 @@ class win:
         labelFolderExists.place(x=650, y=560)
 
         window.resizable(False, False)
+        on_close_with_params = functools.partial(on_closing, window)
+        window.protocol("WM_DELETE_WINDOW", on_close_with_params)
         window.mainloop()
