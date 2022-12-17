@@ -18,7 +18,7 @@ from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,
                                                NavigationToolbar2Tk)
 import networkx as nx
 import functools
-
+import subprocess
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
@@ -231,6 +231,7 @@ def exportBtn(freqToListOfGraphs_ADHD_group_individuals, freqToListOfGraphs_cont
     export_data_btn(freqToListOfGraphs_ADHD_group_individuals, filePathName +'\ADHD_group_features_individuals.csv')
     export_data_btn(freqToListOfGraphs_control_group_individuals, filePathName +'\Control_group_features_individuals.csv')
     parent.children['label_finish'].config(text="Finish to export")
+    os.startfile(filePathName)
 
 def export_data_btn(freqToListOfGraphs_group_individuals, file_name):
     with open(file_name, 'w', encoding='UTF8', newline='') as f:
