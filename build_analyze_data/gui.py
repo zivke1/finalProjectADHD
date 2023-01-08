@@ -17,6 +17,8 @@ from networkx.readwrite import json_graph
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,
                                                NavigationToolbar2Tk)
 import networkx as nx
+from datetime import datetime
+# from entropy_estimators import discrete_sequence
 
 
 OUTPUT_PATH = Path(__file__).parent
@@ -165,6 +167,63 @@ def graph_feature_global_efficiency_Press(parent = None):#we can take this also
     show_graph(treatment_global_efficiencyList, control_global_efficiencyList, frequencyBand,'Global Efficiency', parent)
 
 
+def graph_feature_path_length_Press(parent = None):#we can take this also
+    frequencyBand = parent.FB.get()
+    if frequencyBand == 'Choose frequency band':
+        parent.children['label_asterisk'].config(text="Choose frequency band first")
+        return
+    else:
+        parent.children['label_asterisk'].config(text="")
+        parent.children['label_finish'].config(text="")
+    read_graphs(parent.name_of_ADHD_graph_file+frequencyBand.lower()+parent.precentageOfThisTest,parent.name_of_control_graph_file+frequencyBand.lower()+parent.precentageOfThisTest)
+    treatment_path_lengthList = []
+    control_path_lengthList = []
+    for patientTreatment in treatment_group_graphsList:
+        # G2 = patientTreatment.to_undirected()
+        # treatment_global_efficiencyList.append(nx.average_shortest_path_length(G2, True))
+        treatment_path_lengthList.append(path_length(patientTreatment))
+
+
+    for patientcontrol in control_group_graphsList:
+        # G2 = patientcontrol.to_undirected()
+        # control_global_efficiencyList.append(nx.average_shortest_path_length(G2, True))
+        control_path_lengthList.append(path_length(patientcontrol))
+
+    show_graph(treatment_path_lengthList, control_path_lengthList, frequencyBand,'Path Length', parent)
+
+def path_length(G):
+    # get a list of the connected components
+    connected_components = list(nx.weakly_connected_components(G))
+
+    # initialize a list to store the average shortest path lengths for each connected component
+    average_path_lengths = []
+
+    # iterate over the connected components
+    for component in connected_components:
+        # create a subgraph containing only the nodes in the connected component
+        subgraph = G.subgraph(component)
+
+        # calculate the shortest path lengths between all pairs of nodes in the subgraph
+        shortest_path_lengths = nx.all_pairs_shortest_path_length(subgraph)
+
+        # calculate the average shortest path length for the subgraph
+        total_path_length = 0
+        num_pairs = 0
+        for source, path_lengths in shortest_path_lengths:
+            for target, path_length in path_lengths.items():
+                total_path_length += path_length
+                num_pairs += 1
+        average_path_length = total_path_length / num_pairs
+
+        # add the average shortest path length to the list
+        average_path_lengths.append(average_path_length)
+
+    # calculate the overall average shortest path length for the entire graph
+    overall_average_path_length = sum(average_path_lengths) / len(average_path_lengths)
+
+    return overall_average_path_length
+
+
 # def graph_feature_average_shortest_path_length_Press(parent = None):#we can take this also
 #     # nx.(G)
 #     frequencyBand = parent.FB.get()
@@ -222,14 +281,16 @@ def show_graph(ADHDFeatureList, controlFeatureList, frequencyBand, feature_name,
 
 def exportBtn(freqToListOfGraphs_ADHD_group_individuals, freqToListOfGraphs_control_group_individuals, parent=None):
     filePathName = fd.askdirectory()
+    now = datetime.now()  # current date and time
+    date_time = now.strftime("%d%m%Y_%H%M%S")
     parent.children['label_finish'].config(text="")
     if filePathName == "":
         parent.children['label_asterisk'].config(text="Please choose a folder for export")
         return
     parent.children['label_asterisk'].config(text="")
-    export_data_btn(freqToListOfGraphs_ADHD_group_individuals, filePathName +'\ADHD_group_features_individuals.csv')
-    export_data_btn(freqToListOfGraphs_control_group_individuals, filePathName +'\Control_group_features_individuals.csv')
-    parent.children['label_finish'].config(text="Finish to export")
+    export_data_btn(freqToListOfGraphs_ADHD_group_individuals, filePathName +'\\' + date_time + '_Treatment_group_features_individuals.csv')
+    export_data_btn(freqToListOfGraphs_control_group_individuals, filePathName +'\\'+ date_time +'_Control_group_features_individuals.csv')
+    parent.children['label_finish'].config(text="Finish exporting")
 
 def export_data_btn(freqToListOfGraphs_group_individuals, file_name):
     with open(file_name, 'w', encoding='UTF8', newline='') as f:
@@ -272,8 +333,8 @@ def export_data_btn(freqToListOfGraphs_group_individuals, file_name):
 
         data = [
             [p],
-            ['Nodes', freqToListOfGraphs_group_individuals[p]['alphaList'][0].number_of_nodes(), freqToListOfGraphs_group_individuals[p]['betaList'][0].number_of_nodes(), freqToListOfGraphs_group_individuals[p]['gammaList'][0].number_of_nodes(), freqToListOfGraphs_group_individuals[p]['deltaList'][0].number_of_nodes(), freqToListOfGraphs_group_individuals[p]['thetaList'][0].number_of_nodes()],
-            ['Edges', freqToListOfGraphs_group_individuals[p]['alphaList'][0].number_of_edges(), freqToListOfGraphs_group_individuals[p]['betaList'][0].number_of_edges(), freqToListOfGraphs_group_individuals[p]['gammaList'][0].number_of_edges(), freqToListOfGraphs_group_individuals[p]['deltaList'][0].number_of_edges(), freqToListOfGraphs_group_individuals[p]['thetaList'][0].number_of_edges()],
+            ['Nodes', freqToListOfGraphs_group_individuals[p]['alphaList'][0].number_of_nodes(), freqToListOfGraphs_group_individuals[p]['betaList'][0].number_of_nodes(), freqToListOfGraphs_group_individuals[p]['gammaList'][0].number_of_nodes(), freqToListOfGraphs_group_individuals[p]['thetaList'][0].number_of_nodes(), freqToListOfGraphs_group_individuals[p]['deltaList'][0].number_of_nodes()],
+            ['Edges', freqToListOfGraphs_group_individuals[p]['alphaList'][0].number_of_edges(), freqToListOfGraphs_group_individuals[p]['betaList'][0].number_of_edges(), freqToListOfGraphs_group_individuals[p]['gammaList'][0].number_of_edges(), freqToListOfGraphs_group_individuals[p]['thetaList'][0].number_of_edges(), freqToListOfGraphs_group_individuals[p]['deltaList'][0].number_of_edges()],
             ['average degree',       alpha_degree_average_degree,    beta_degree_average_degree,       gamma_degree_average_degree,       theta_degree_average_degree,       delta_degree_average_degree],
             ['density',              alpha_density,                  beta_density,                     gamma_density,                     theta_density,                     delta_density],
             ['average clustering',   alpha_average_clustering,       beta_average_clustering,          gamma_average_clustering,          theta_average_clustering,          delta_average_clustering],
@@ -489,7 +550,7 @@ class win:
             image=button_image_9,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: graph_feature_global_efficiency_Press(window),
+            command=lambda: graph_feature_global_efficiency_Press(window), #graph_feature_path_length_Press(window)
             relief="flat"
         )
         button_9.place(
