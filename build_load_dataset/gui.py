@@ -61,7 +61,7 @@ def generate_graphs_press(parent = None):
     if controlGroupPath == '' or treatmentGroupPath == '' or entryHz == '' or entryWinSec == '' or entryG1 == '' or entryG2== '':
         parent.children['labelFolderExists'].config(text="You must enter all the fields")
         return
-    parent.children['labelFolderExists'].config(text="")
+    parent.children['labelFolderExists'].config(text="Processing...")
     filePathNameTreatment  = treatmentGroupPath + "//"
     filePathNameControl = controlGroupPath + "//"
 
@@ -223,7 +223,7 @@ class win:
             114.0,
             image=entry_image_3
         )
-        entry_3 = Entry(name = "entryG1",
+        entry_3 = Entry(name = "entryG1",    #control group
             bd=0,
             bg="#D5CDEA",
             highlightthickness=0
@@ -296,7 +296,7 @@ class win:
             image=button_image_1,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: upload_data_set(win=window,id =1),
+            command=lambda: upload_data_set(win=window,id =1),    # control
             relief="flat"
         )
         button_1.place(
@@ -313,7 +313,7 @@ class win:
             198.0,
             image=entry_image_4
         )
-        entry_4 = Entry(name = "entryG2",
+        entry_4 = Entry(name = "entryG2",     # treatment group
             bd=0,
             bg="#D5CDEA",
             highlightthickness=0
@@ -340,7 +340,7 @@ class win:
             image=button_image_2,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: upload_data_set(win=window,id =2),
+            command=lambda: upload_data_set(win=window,id =2),   # treatment
             relief="flat"
         )
         button_2.place(

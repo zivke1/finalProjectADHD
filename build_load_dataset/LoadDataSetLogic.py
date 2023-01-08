@@ -122,7 +122,7 @@ class LoadDataSetLogic:
                             #prepare for grangercausalitytests
                              data = {'0':electrodeToFeq[i][type],'1':electrodeToFeq[j][type]}
                              dataDf = pd.DataFrame(data)
-                             y = grangercausalitytests(dataDf[['0', '1']], maxlag=2)
+                             y = grangercausalitytests(dataDf[['0', '1']], maxlag=3)
 
                              ####data from the first part
                              dataFromTest = y[1][0]
