@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import copy
 from statsmodels.tsa.stattools import grangercausalitytests
-# from utilities.json_creator.py import OutputHandler as jh
+
 from utilities.json_creator import OutputHandler as jh
 
 
@@ -78,7 +78,7 @@ class LoadDataSetLogic:
 
 
 
-                mapOfElctrodeAndPart = {}
+
                 electrodeToFeq = {}
                 for i in range(colNumber):
                     # convert from the csv file to parts in numpy
@@ -126,9 +126,8 @@ class LoadDataSetLogic:
 
                              ####data from the first part
                              dataFromTest = y[1][0]
-                             # type(dataFromTest)
+
                              ssr_ftest = dataFromTest["ssr_ftest"]
-                             # t = ssr_ftest[0]
                              ssr_based_F_testMat[i][j] = ssr_ftest[0]
                              ssr_chi2test = dataFromTest["ssr_chi2test"]
                              ssr_chi2testMat[i][j] = ssr_chi2test[0]
@@ -140,8 +139,7 @@ class LoadDataSetLogic:
                     mapOfData[file][type] = [("ssr_based_F_testMat", ssr_based_F_testMat), ("ssr_chi2testMat", ssr_chi2testMat),
                                    ("lrtestMat", lrtestMat), ("params_ftestMat", params_ftestMat)]
                 print(file)
-                # shani you need to add here fill json for the map above
-                # map of patient name -> couples of 4 matrices and their names
+
 
             progBar['value']+=progBarValueToAdd
         return mapOfData

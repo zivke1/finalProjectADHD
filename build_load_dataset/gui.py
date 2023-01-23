@@ -66,20 +66,16 @@ def generate_graphs_press(parent = None):
     filePathNameControl = controlGroupPath + "//"
 
     path = os.getcwd()
-    # splits = filePathName.split("/")
-    # folderName = splits[len(splits) - 1]
+
     folderName = entryG1+"_"+entryG2+"_Hz"+entryHz+"_WinSec"+entryWinSec
-    # loadDataSet = LoadDataSetLogic()
     path = path.removesuffix("build_main_page")
     path = path + "DB\\" + folderName
     ret = os.path.isdir(path)
     if ret == True:
         print('The folder already exist')
         shutil.rmtree(path)  # remove non-empty folder
-        # parent.labelFolderExists['text'] = "aaa"
         parent.children['labelFolderExists'].config(text = "The folder already exist")
-        # parent.__class__.label.place(x=371.0,
-                                     # y=499.0, )
+
 
 
     parent.children['labelFolderExists'].config(text="")

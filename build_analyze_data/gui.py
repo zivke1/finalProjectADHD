@@ -4,8 +4,6 @@
 import csv
 import os
 from pathlib import Path
-# from tkinter import *
-# Explicit imports to satisfy Flake8
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, ttk
 import tkinter
 from tkinter import filedialog as fd
@@ -20,7 +18,6 @@ import networkx as nx
 import functools
 import subprocess
 from datetime import datetime
-# from entropy_estimators import discrete_sequence
 
 
 OUTPUT_PATH = Path(__file__).parent
@@ -36,7 +33,7 @@ def read_graphs(fileNameTreatment, fileNameControl):
     control_group_graphsList.clear()
     treatment_group_graphsList.clear()
     jsonH = jh()
-    #ZK change to name from the previous window
+
     graph_data = jsonH.read_json("DB2\graphs", fileNameControl, "Graphs")
     for g in graph_data:
         H = json_graph.adjacency_graph(g)
@@ -160,7 +157,6 @@ def graph_feature_global_efficiency_Press(parent = None):#we can take this also
         G2 = patientTreatment.to_undirected()
         treatment_global_efficiencyList.append(nx.global_efficiency(G2))
 
-        # treatmentDegree_pearson_correlation_coefficientList.append(nx.degree_pearson_correlation_coefficient(patientTreatment))
 
     for patientcontrol in control_group_graphsList:
         G2 = patientcontrol.to_undirected()
@@ -181,14 +177,10 @@ def graph_feature_path_length_Press(parent = None):#we can take this also
     treatment_path_lengthList = []
     control_path_lengthList = []
     for patientTreatment in treatment_group_graphsList:
-        # G2 = patientTreatment.to_undirected()
-        # treatment_global_efficiencyList.append(nx.average_shortest_path_length(G2, True))
         treatment_path_lengthList.append(path_length(patientTreatment))
 
 
     for patientcontrol in control_group_graphsList:
-        # G2 = patientcontrol.to_undirected()
-        # control_global_efficiencyList.append(nx.average_shortest_path_length(G2, True))
         control_path_lengthList.append(path_length(patientcontrol))
 
     show_graph(treatment_path_lengthList, control_path_lengthList, frequencyBand,'Path Length', parent)
@@ -226,43 +218,7 @@ def path_length(G):
     return overall_average_path_length
 
 
-# def graph_feature_average_shortest_path_length_Press(parent = None):#we can take this also
-#     # nx.(G)
-#     frequencyBand = parent.FB.get()
-#     if frequencyBand == 'Choose frequency band':
-#         parent.children['label_asterisk'].config(text="Choose frequency band first")
-#         return
-#     else:
-#         parent.children['label_asterisk'].config(text="")
-#     read_graphs(parent.name_of_ADHD_graph_file+frequencyBand.lower()+parent.precentageOfThisTest,parent.name_of_control_graph_file+frequencyBand.lower()+parent.precentageOfThisTest)
-#     treatment_average_degreeList = []
-#     controlDegree_pearson_correlation_coefficientList = []
-#     for patientTreatment in treatment_group_graphsList:
-#         G2 = patientTreatment.to_undirected()
-#         treatment_average_degreeList.append(nx.k_nearest_neighbors(patientTreatment))
-#
-#         # treatmentDegree_pearson_correlation_coefficientList.append(nx.degree_pearson_correlation_coefficient(patientTreatment))
-#
-#     for patientcontrol in control_group_graphsList:
-#         # G2 = patientcontrol.to_undirected()
-#         controlDegree_pearson_correlation_coefficientList.append(nx.k_nearest_neighbors(patientcontrol))
-#
-#     fig = Figure(figsize=(5, 5), dpi=100)
-#     data = [treatment_average_degreeList, controlDegree_pearson_correlation_coefficientList]
-#     plot1 = fig.add_subplot(111)
-#     bp = plot1.boxplot(data, patch_artist=True,
-#                        notch='True')
-#
-#     colors = ['#0000FF', '#00FF00']
-#
-#     for patch, color in zip(bp['boxes'], colors):
-#         patch.set_facecolor(color)
-#         # patch.set(title = "11")
-#     fig.suptitle(frequencyBand+' Global efficiency', fontsize=12, fontweight='bold')
-#     plot1.set_xlabel('Treatment                              Control')
-#     canvas = FigureCanvasTkAgg(fig,
-#                                master=parent)
-#     canvas.get_tk_widget().place(x=570, y=110)
+
 
 def show_graph(treatmentFeatureList, controlFeatureList, frequencyBand, feature_name, parent=None):
     fig = Figure(figsize=(5, 5), dpi=100)
@@ -273,7 +229,6 @@ def show_graph(treatmentFeatureList, controlFeatureList, frequencyBand, feature_
 
     for patch, color in zip(bp['boxes'], colors):
         patch.set_facecolor(color)
-        # patch.set(title = "11")
 
     fig.suptitle(frequencyBand + ' ' + feature_name, fontsize=12, fontweight='bold')
     plot1.set_xlabel('Treatment                                  Control')
@@ -291,11 +246,6 @@ def exportBtn(freqToListOfGraphs_treatment_group_individuals, freqToListOfGraphs
         return
     parent.children['label_asterisk'].config(text="")
 
-    # export_data_btn(freqToListOfGraphs_treatment_group_individuals, filePathName + '\treatment_group_features_individuals.csv')
-    # export_data_btn(freqToListOfGraphs_control_group_individuals, filePathName +'\Control_group_features_individuals.csv')
-    # parent.children['label_finish'].config(text="Finish to export")
-    # os.startfile(filePathName)
-
     export_data_btn(freqToListOfGraphs_treatment_group_individuals, filePathName +'\\' + date_time + '_Treatment_group_features_individuals.csv')
     export_data_btn(freqToListOfGraphs_control_group_individuals, filePathName +'\\'+ date_time +'_Control_group_features_individuals.csv')
     parent.children['label_finish'].config(text="Finish exporting")
@@ -309,7 +259,7 @@ def export_data_btn(freqToListOfGraphs_group_individuals, file_name):
         writer.writerow(fieldnames)
 
     for p in freqToListOfGraphs_group_individuals:
-        ##### error -- this is not good, continue from here
+
         alpha_degree_average_degree = sum(dict(freqToListOfGraphs_group_individuals[p]['alphaList'][0].degree()).values()) / len(freqToListOfGraphs_group_individuals[p]['alphaList'][0])
         alpha_density = nx.density(freqToListOfGraphs_group_individuals[p]['alphaList'][0])
         alpha_average_clustering = nx.average_clustering(freqToListOfGraphs_group_individuals[p]['alphaList'][0])
@@ -576,10 +526,8 @@ class win:
                        width=168.0,
                        height=34.0)
         month_cb['values'] = ['Alpha', 'Beta', 'Gamma', 'Theta', 'Delta']
-        # month_cb['state'] = 'readonly'
-        # month_cb.current(0)
         month_cb.insert(0, "Choose frequency band")
-        # error_no_frequency_band_was_chosen(canvas)
+
 
 
         title = "Graph features of files: " + files_name
@@ -594,7 +542,7 @@ class win:
 
         label_asterisk = tkinter.Label(name='label_asterisk', fg="red", bg='#E2D8EF').place(x=270, y=620)
         label_finish = tkinter.Label(name='label_finish', fg="green", bg='#E2D8EF').place(x=270, y=640)
-        # window.children['label_asterisk'].config(text="Choose frequency band first")
+
 
         window.resizable(False, False)
         on_close_with_params = functools.partial(on_closing, window)

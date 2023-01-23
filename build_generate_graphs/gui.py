@@ -5,16 +5,14 @@
 
 from pathlib import Path
 
-# from tkinter import *
-# Explicit imports to satisfy Flake8
+
 import os
 import tkinter
 import json
 import numpy as np
 import networkx as nx
 from networkx.readwrite import json_graph
-# from tkinter import *
-# Explicit imports to satisfy Flake8
+
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
 import build_load_dataset.gui as load_dataset_win
 import build_analyze_data.gui as analyze_data_win
@@ -34,14 +32,14 @@ def getThresholdValue(dataTreatment, dataControl, precentage):
     allData = []
     check = 0
     for patient in dataTreatment:
-        # p = patient
+
         for frequencyBand,matrixes  in patient.items():
             if frequencyBand == 'patient_name':
                 continue
             allData.append(matrixes['ssr_based_F_testMat'])
 
     for patient in dataControl:
-        # p = patient
+
         for frequencyBand, matrixes in patient.items():
             if frequencyBand == 'patient_name':
                 continue
@@ -199,7 +197,7 @@ def present_info_text(parent = None):       # information Icon msg - each click 
         parent.children['labelInfo'].config(text = "Threshold value will determine the percentage of data we will discard.")
         showInfoText = not showInfoText
         return
-    parent.children['labelInfo'].config(text="")   ## <--- TODO: find better way to remove label
+    parent.children['labelInfo'].config(text="")
     showInfoText = not showInfoText
 
 

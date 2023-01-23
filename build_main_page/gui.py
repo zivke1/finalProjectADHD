@@ -4,8 +4,6 @@
 import tkinter
 from pathlib import Path
 import os
-# from tkinter import *
-# Explicit imports to satisfy Flake8
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
 import functools
 
